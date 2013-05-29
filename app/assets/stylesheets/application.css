@@ -11,9 +11,66 @@
  *= require_self
  *= require_tree .
  */
+body {
+	font-family: "runda-1","runda-2","Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-size: 12px;
+	color: #000000;
+}
+h3 {
+	margin: 0;
+	padding: 15px 0 5px 0;
+}
+h4 {
+	margin: 0;
+	padding: 0;
+	padding-top: 20px;
+}
+a {
+	text-decoration: none;
+	color: #000000;
+}
+.login_panel {
+	background-color: #CCCCCC;
+	display: table-cell;
+	padding: 10px 20px;
+}
+.login_panel label {
+	font-size: 15px;
+}
+.logout_link a {
+	background: red;
+	margin-left: 5px;
+	padding: 2px 5px;
+	color: white;
+	font-weight: bold;
+}
+.about_you {
+	margin-left: 2px;
+	font-style: italic;
 
+}
+.logout_link a:hover {
+	background: blue;
+}
+.add_payment {
+	border: 1px black solid;
+	width: 400px;
+	padding-left: 10px;
+	padding-bottom: 10px;
+	margin-top: 10px;
+	background-color: #CCCCCC;
+}
+.add_payment select {
+	margin-right: 5px;
+}
 .add_payment input[type=text] {
 	width: 50px;
+}
+.add_payment input[type=submit], .login_panel input[type=submit] {
+	background-color: green;
+	color: white;
+	font-weight: bold;
+	margin-left: 5px;
 }
 .flash_error .flash_notice {
 	font-size: 10px;
@@ -23,4 +80,20 @@
 }
 .flash_notice {
 	color: green;
+}
+table {
+	border-collapse: collapse;
+	margin-top: 10px;
+	text-transform: capitalize;
+}
+th {
+	color: #FFF;
+	background-color: #2163AE;
+}
+th, td {
+	padding:5px;
+	text-align: left;
+}
+table, th, td {
+	border: 1px solid black;
 }
