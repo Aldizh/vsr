@@ -8,6 +8,7 @@ class SessionsController < ApplicationController
       session[:current_reseller3_id] = reseller3[:id]
       session[:current_reseller3_login] = reseller3[:login]
       session[:password] = reseller3[:password]
+      flash[:notice] = "You are successfuly logged in!"
       redirect_to '/reseller3s'
     else
       flash[:error] = "Wrong Login or Password!"
@@ -17,6 +18,7 @@ class SessionsController < ApplicationController
 
   def destroy
   	reset_session
+    flash[:notice] = "You are successfuly logged out!"
   	redirect_to '/sessions/new'
   end
 end

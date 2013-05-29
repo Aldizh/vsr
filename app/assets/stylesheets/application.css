@@ -11,6 +11,10 @@
  *= require_self
  *= require_tree .
  */
+
+ /**
+	COLOR: CIAO-RED = #CC0606;
+ */
 body {
 	font-family: "runda-1","runda-2","Helvetica Neue",Helvetica,Arial,sans-serif;
 	font-size: 12px;
@@ -38,7 +42,7 @@ a {
 	font-size: 15px;
 }
 .logout_link a {
-	background: red;
+	background: #CC0606;
 	margin-left: 5px;
 	padding: 2px 5px;
 	color: white;
@@ -73,10 +77,10 @@ a {
 	margin-left: 5px;
 }
 .flash_error .flash_notice {
-	font-size: 10px;
+	font-size: 8px;
 }
 .flash_error {
-	color: red;
+	color: #CC0606;
 }
 .flash_notice {
 	color: green;
