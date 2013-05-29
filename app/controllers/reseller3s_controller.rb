@@ -86,8 +86,6 @@ class Reseller3sController < ApplicationController
 
     redirect_to "/reseller3s/viewMyResellers"
 
-    #{"jsonrpc"=>"2.0", "id"=>1, "result"=>{"login"=>"Tes7", "balance"=>1.0, "clientsLimit"=>105.0}}
-    #{"jsonrpc"=>"2.0", "id"=>1, "error"=>{"code"=>-1, "message"=>"Unknown error occured. Please contact administrator for more details.", "data"=>{"errorNumber"=>"02e2280bf7da4c06adf78edae1a2e40f"}}}
     
   end
 
