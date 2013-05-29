@@ -1,5 +1,10 @@
 Vsr::Application.routes.draw do
 
+  get "reseller1s/viewMyClients"
+  post "reseller1s/viewMyClients"
+  get "reseller1s/addPayment"
+  post "reseller1s/addPayment"
+
   get "reseller2s/viewMyResellers"
   post "reseller2s/viewMyResellers"
   get "reseller2s/addPayment"
@@ -16,6 +21,7 @@ Vsr::Application.routes.draw do
   get "sessions/destroy"
 
   resources :sessions
+  resources :reseller1s
   resources :reseller2s
   resources :reseller3s
 
