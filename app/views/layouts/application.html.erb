@@ -9,7 +9,10 @@
 <body>
 
 <% if flash[:error] %>
-  <div class="error"><%= flash[:error] %></div>
+  <div class="flash_error"><%= flash[:error] %></div>
+<% end %>
+<% if flash[:notice] %>
+  <div class="flash_notice"><%= flash[:notice] %></div>
 <% end %>
 <%= render 'shared/menu' %>
 

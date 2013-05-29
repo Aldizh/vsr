@@ -1,13 +1,9 @@
-<div>
-
 <% if session[:current_reseller3_id] %>
   <%= link_to "Log out", '/sessions/destroy', :class => 'logout_link' %>
-  <nav>
-  	<ul>
-  		<li><%= link_to "Home", "/reseller3s/" %></li>
-  		<li><%= link_to "My Resellers", "/reseller3s/viewMyResellers" %></li>
-  	</ul>
-  </nav>
+    <table>
+      <tr>
+        <td><%= link_to "Home", "/reseller3s/" %></td>
+        <td><%= link_to "My Resellers", "/reseller3s/viewMyResellers" %></td>
+      </tr>
+    </table>
 <% end %>
-
-</div>

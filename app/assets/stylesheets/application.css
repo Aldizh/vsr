@@ -11,3 +11,16 @@
  *= require_self
  *= require_tree .
  */
+
+.add_payment input[type=text] {
+	width: 50px;
+}
+.flash_error .flash_notice {
+	font-size: 10px;
+}
+.flash_error {
+	color: red;
+}
+.flash_notice {
+	color: green;
+}
