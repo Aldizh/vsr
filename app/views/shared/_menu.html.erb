@@ -6,4 +6,7 @@
         <td><%= link_to "My Resellers", "/reseller3s/viewMyResellers" %></td>
       </tr>
     </table>
+<% else session[:current_reseller3_id]%>
+  <%= "Please login to view your info" %></br>
+  <%= link_to "Login", '/sessions/new' %>
 <% end %>
