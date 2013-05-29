@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
       session[:current_reseller3_id] = reseller3[:id]
       session[:current_reseller3_login] = reseller3[:login]
       session[:password] = reseller3[:password]
-      redirect_to '/resellers3'
+      redirect_to '/reseller3s'
     else
       flash[:error] = "Wrong Login or Password!"
       redirect_to '/sessions/new'

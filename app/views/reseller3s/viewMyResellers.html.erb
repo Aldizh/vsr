@@ -1,0 +1,30 @@
+<h2>These are my clients</h2>
+<% if session[:current_reseller3_id] %>
+
+  <div class="add_payment">
+    <%= form_tag do %>
+      <%= select_tag "reseller", "<option>Tenzin</option><option>Aldi</option>".html_safe %>
+    <%= submit_tag "Add Payment" %>
+<% end %>
+  </div>
+
+  <table class = "list">
+    <thead>
+      <tr>
+        <th> id </th>
+        <th> login </th>
+        <th> Balance </td>
+      </tr>
+    </thead>
+    <tbody>
+      <% @myResellers.each do |r| %>
+      <tr>
+        <td><%= r[:id] %> </td>
+        <td><%= r[:login] %></td>
+        <td><%= r[:callsLimit] %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+  
+<% end %>

@@ -1,7 +1,7 @@
 Vsr::Application.routes.draw do
-  get "resellers3/index"
-  get "resellers3/getMyDetails"
-
+  get "reseller2s/show"
+  get "reseller3s/index"
+  get "reseller3s/viewMyResellers"
   get "sessions/new"
 
   get "sessions/create"
@@ -9,7 +9,8 @@ Vsr::Application.routes.draw do
   get "sessions/destroy"
 
   resources :sessions
-  resources :resellers3
+  resources :reseller2s
+  resources :reseller3s
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
