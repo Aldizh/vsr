@@ -1,2 +1,7 @@
-<h3>Welcome <%= @result["result"]["login"] %>!</h3>
-<p> Your Balance is <%= @result["result"]["clientsLimit"] %></p>
+<% if session[:current_reseller3_id] %>
+  <h3>Welcome <%= @result["result"]["login"] %>!</h3>
+  <p> Your Balance is <%= @result["result"]["clientsLimit"] %></p>
+<% else %>
+  <%= flash[:error] = "You must be logged in to view this page" %>
+  <%= link_to "Login", "/sessions/new" %>
+<% end %>
