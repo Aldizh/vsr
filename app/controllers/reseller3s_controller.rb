@@ -78,8 +78,6 @@ class Reseller3sController < ApplicationController
       :headers => { :accept => :json, :content_type => :json}).execute
 
     @result = ActiveSupport::JSON.decode(@response) 
-    puts "TASHI DELEK!"
-    puts @result
 
     if @result["error"] 
       flash[:error_payment] = "Payment did not go through. Please try again!"
