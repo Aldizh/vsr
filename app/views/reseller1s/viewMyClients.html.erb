@@ -1,4 +1,4 @@
-<% if session[:current_reseller3_id] %>
+<% if session[:current_reseller1_id] %>
 <div class="add_payment">
   <h3> Add payment for you clients </h3>
   <% if flash[:error_payment] %>
@@ -7,13 +7,13 @@
   <% if flash[:notice_payment] %>
     <div class="flash_notice"><%= flash[:notice_payment] %></div>
   <% end %>
-  <% myResellers_name = [] %>
-  <% @myResellers.each do |r| %>
-    <% myResellers_name.push(r[:login]) %>
+  <% myClients_name = [] %>
+  <% @myClients.each do |r| %>
+    <% myClients_name.push(r[:login]) %>
   <% end %>
   <%= form_tag :action => 'addPayment' do %>
     <%= label_tag "Client's Login: " %>
-    <%= select :resellers3, :login, myResellers_name.collect {|r_name| r_name} %>
+    <%= select :resellers1, :login, myClients_name.collect {|r_name| r_name} %>
     <%= label_tag "Amount:" %>
     <%= text_field_tag :payment_amount, (params[:payment_amount] or "0.00") %>  
     <%= submit_tag "Add" %>
@@ -25,20 +25,15 @@
     <tr>
       <th> id </th>
       <th> login </th>
-      <th> Balance </td>
       <th> Type </td>
-      <th> Password </td>  
     </tr>
   </thead>
   <tbody>
-  <% @myResellers.each do |r| %>
+  <% @myClients.each do |r| %>
     <tr>
-      <td><%= r[:id] %> </td>
+      <td><%= r[:id_client] %> </td>
       <td><%= r[:login] %></td>
-      <td><%= r[:callsLimit] %></td>
       <td><%= r[:type] %></td>
-      <td><%= r[:password] %></td>
-
     </tr>
   <% end %>
   </tbody>

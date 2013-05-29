@@ -1,12 +1,12 @@
 require 'net/http'
 require 'json'
 require 'rest_client'
-class Reseller2sController < ApplicationController  
+class Reseller1sController < ApplicationController  
 
-def index
+  def index
 
     @url = "https://209.200.231.9/vsr3/reseller.api"
-    @login = "#{session[:current_reseller2_login]}"
+    @login = "#{session[:current_reseller1_login]}"
     @password = "#{session[:password]}"
 
     @data = {
@@ -31,11 +31,11 @@ def index
 
   end
 
-  def viewMyResellers
-    @myResellers = DB[:resellers1].where(:idReseller => session[:current_reseller2_id])
+  def viewMyClients
+    @myClients = DB[:clientsshared].where(:id_reseller => session[:current_reseller1_id])
     respond_to do |format|
       format.html
-        format.json { render json: @myResellers }
+        format.json { render json: @myClients }
     end
   end
 
@@ -43,12 +43,12 @@ def index
 
     temp_payment = params[:payment_amount]
     payment = temp_payment.to_f #changed payment to float
-    temp_hash = params[:resellers3]
+    temp_hash = params[:resellers1]
     login = temp_hash["login"] rescue nil
 
 
     @url = "https://209.200.231.9/vsr3/reseller.api"
-    @login = "#{session[:current_reseller2_login]}"
+    @login = "#{session[:current_reseller1_login]}"
     @password = "#{session[:password]}"
 
     @data = {
@@ -76,8 +76,6 @@ def index
       :headers => { :accept => :json, :content_type => :json}).execute
 
     @result = ActiveSupport::JSON.decode(@response) 
-    puts "TASHI DELEK!"
-    puts @result
 
     if @result["error"] 
       flash[:error_payment] = "Payment did not go through. Please try again!"
@@ -85,7 +83,9 @@ def index
       flash[:notice_payment] = "Payment added successfully!"
     end
 
-    redirect_to "/reseller2s/viewMyResellers"
+    redirect_to "/reseller1s/viewMyResellers"
+
+    
   end
 
   def show
