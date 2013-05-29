@@ -44,6 +44,7 @@ class Reseller3sController < ApplicationController
     @hash = params[:resellers3]
     #puts @hash.is_a?(Hash)
     @login = hash["login"] rescue nil
+    puts @login
     @myReseller = DB[:resellers2].where(:login => @login)
     #@type = 0
     puts "BLAAAAAA"
