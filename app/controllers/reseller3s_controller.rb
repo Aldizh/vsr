@@ -45,15 +45,8 @@ class Reseller3sController < ApplicationController
 
     temp_payment = params[:payment_amount]
     payment = temp_payment.to_f #changed payment to float
-    #puts "WOOOOOOOOOOOO"
-    #puts payment
     temp_hash = params[:resellers3]
     login = temp_hash["login"] rescue nil
-    #@myReseller = DB[:resellers2].where(:login => @login)
-    #@myReseller.each do |reseller|
-      #@type = reseller[:type]
-      #puts reseller
-    #end
 
 
     @url = "https://209.200.231.9/vsr3/reseller.api"
