@@ -8,9 +8,11 @@
         <% myResellers_name.push(r[:login]) %>
       <% end %>
   </ul>
-    <%= form_tag do %>
-      <%= label_tag "Your Reseller's Name: " %>
-      <%= select :resellers3, :reseller_to_add_payment, myResellers_name.collect {|r_name| r_name} %>
+    <%= form_tag :action => 'addPayment' do %>
+      <%= label_tag "Your Reseller's Login: " %>
+      <%= select :resellers3, :login, myResellers_name.collect {|r_name| r_name} %>
+      <%= label_tag "Payment amout" %>
+      <%= text_field_tag :payment_amount %>  
       <%= submit_tag "Add Payment" %>
     <% end %>
   </div>
@@ -21,6 +23,7 @@
         <th> id </th>
         <th> login </th>
         <th> Balance </td>
+        <th> Type </td>
       </tr>
     </thead>
     <tbody>
@@ -29,6 +32,8 @@
         <td><%= r[:id] %> </td>
         <td><%= r[:login] %></td>
         <td><%= r[:callsLimit] %></td>
+        <td><%= r[:type] %></td>
+
       </tr>
       <% end %>
     </tbody>

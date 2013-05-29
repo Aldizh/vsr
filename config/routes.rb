@@ -2,6 +2,9 @@ Vsr::Application.routes.draw do
   get "reseller2s/show"
   get "reseller3s/index"
   get "reseller3s/viewMyResellers"
+  post "reseller3s/viewMyResellers"
+  get "reseller3s/addPayment"
+  post "reseller3s/addPayment"
   get "sessions/new"
 
   get "sessions/create"

@@ -30,8 +30,9 @@ class Reseller3sController < ApplicationController
   end
 
   def viewMyResellers
-    #puts "DAMNNNNNNNNNNNNNN"
     @myResellers = DB[:resellers2].where(:idReseller => session[:current_reseller3_id])
+    res = params[:resellers3]
+    puts res
     respond_to do |format|
       format.html
         format.json { render json: @myResellers }
@@ -39,6 +40,19 @@ class Reseller3sController < ApplicationController
   end
 
   def addPayment
+    @payment = params[:payment_amount]
+    @hash = params[:resellers3]
+    #puts @hash.is_a?(Hash)
+    @login = hash["login"] rescue nil
+    @myReseller = DB[:resellers2].where(:login => @login)
+    #@type = 0
+    puts "BLAAAAAA"
+    puts @myReseller[:type]
+    @myReseller.each do |reseller|
+      @type = reseller[:type]
+      puts @type
+    end
+    
   end
 
   def show
