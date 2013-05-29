@@ -26,9 +26,6 @@ class Reseller3sController < ApplicationController
       :headers => { :accept => :json, :content_type => :json}).execute
 
     @result = ActiveSupport::JSON.decode(@response)  
-   
-    puts @result
-
   end
 
   def viewMyResellers
