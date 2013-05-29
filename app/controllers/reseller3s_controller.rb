@@ -41,14 +41,50 @@ class Reseller3sController < ApplicationController
 
   def addPayment
 
-    @payment = params[:payment_amount]
-    @hash = params[:resellers3]
-    #puts @hash.is_a?(Hash)
-    @login = @hash["login"] rescue nil
-    @myReseller = DB[:resellers2].where(:login => @login)
-    @myReseller.each do |reseller|
-      @type = reseller[:type]
-    end
+    temp_payment = params[:payment_amount]
+    payment = temp_payment.to_f #changed payment to float
+    #puts "WOOOOOOOOOOOO"
+    #puts payment
+    temp_hash = params[:resellers3]
+    login = temp_hash["login"] rescue nil
+    #@myReseller = DB[:resellers2].where(:login => @login)
+    #@myReseller.each do |reseller|
+      #@type = reseller[:type]
+      #puts reseller
+    #end
+
+
+    @url = "https://209.200.231.9/vsr3/reseller.api"
+    @login = "#{session[:current_reseller3_login]}"
+    @password = "#{session[:password]}"
+
+    @data = {
+      "jsonrpc" => "2.0",
+      "id" => 1,
+      "method" => "doClientPayment",
+      "params" => {
+        "login" => login,
+        "clientType" => "Reseller",
+        "payment" => {
+            "paymentType" => "Payment",
+            "amount" => payment,
+            "desription" => ""
+        }
+      }
+    }.to_json
+
+
+    @response = RestClient::Request.new(
+      :method => :post,
+      :payload => @data,
+      :url => @url,
+      :user => @login,
+      :password => @password,
+      :headers => { :accept => :json, :content_type => :json}).execute
+
+    @result = ActiveSupport::JSON.decode(@response) 
+    puts "TASHI DELEK!"
+    puts @response
     
   end
 
