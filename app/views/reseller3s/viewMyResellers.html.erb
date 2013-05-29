@@ -19,7 +19,7 @@
     <%= submit_tag "Add" %>
   <% end %>
 </div>
-<h4>List of your clients ... </h4>
+<h4>List of your agents ... </h4>
 <table class = "list">
   <thead>
     <tr>
@@ -27,7 +27,6 @@
       <th> login </th>
       <th> Balance </td>
       <th> Type </td>
-      <th> Password </td>  
     </tr>
   </thead>
   <tbody>
@@ -37,8 +36,6 @@
       <td><%= r[:login] %></td>
       <td><%= r[:callsLimit] %></td>
       <td><%= r[:type] %></td>
-      <td><%= r[:password] %></td>
-
     </tr>
   <% end %>
   </tbody>

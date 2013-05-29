@@ -1,24 +1,21 @@
 <% if session[:current_reseller3_id] %>
   <span class="about_you">You are logged in as <strong><%= session[:current_reseller3_login] %></strong></span>
-  <span class="logout_link"><%= link_to "Log out", '/sessions/destroy', :class => 'logout_link' %></span>
     <table class="menu">
       <tr>
         <td><%= link_to "Home", "/reseller3s/" %></td>
-        <td><%= link_to "My Resellers", "/reseller3s/viewMyResellers" %></td>
+        <td><%= link_to "My Agents", "/reseller3s/viewMyResellers" %></td>
       </tr>
     </table>
 <% elsif session[:current_reseller2_id] %>
   <span class="about_you">You are logged in as <strong><%= session[:current_reseller2_login] %></strong></span>
-  <span class="logout_link"><%= link_to "Log out", '/sessions/destroy', :class => 'logout_link' %></span>
     <table class="menu">
       <tr>
         <td><%= link_to "Home", "/reseller2s/" %></td>
-        <td><%= link_to "My Resellers", "/reseller2s/viewMyResellers" %></td>
+        <td><%= link_to "My Agents", "/reseller2s/viewMyResellers" %></td>
       </tr>
     </table>
 <% elsif session[:current_reseller1_id] %>
   <span class="about_you">You are logged in as <strong><%= session[:current_reseller1_login] %></strong></span>
-  <span class="logout_link"><%= link_to "Log out", '/sessions/destroy', :class => 'logout_link' %></span>
     <table class="menu">
       <tr>
         <td><%= link_to "Home", "/reseller1s/" %></td>
