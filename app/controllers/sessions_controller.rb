@@ -1,5 +1,14 @@
 class SessionsController < ApplicationController
   def new
+    if session[:current_reseller3_id]
+      redirect_to '/reseller3s'
+    end
+    if session[:current_reseller2_id]
+      redirect_to '/reseller2s'
+    end
+    if session[:current_reseller1_id]
+      redirect_to '/reseller1s'
+    end
   end
 
   def create
