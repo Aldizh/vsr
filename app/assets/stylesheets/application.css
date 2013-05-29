@@ -102,7 +102,6 @@ a {
 table {
 	border-collapse: collapse;
 	margin-top: 10px;
-	text-transform: capitalize;
 }
 th {
 	color: #FFF;
