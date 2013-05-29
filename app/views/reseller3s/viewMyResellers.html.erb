@@ -1,11 +1,18 @@
 <h2>These are my clients</h2>
 <% if session[:current_reseller3_id] %>
-
-  <div class="add_payment">
+  <div class="add_payment" style = "border: 1px solid black; padding: 5px;">
+    <h3> ADD PAYMENT </h3>
+  <% myResellers_name = [] %>
+  <ul>
+  <% @myResellers.each do |r| %>
+        <% myResellers_name.push(r[:login]) %>
+      <% end %>
+  </ul>
     <%= form_tag do %>
-      <%= select_tag "reseller", "<option>Tenzin</option><option>Aldi</option>".html_safe %>
-    <%= submit_tag "Add Payment" %>
-<% end %>
+      <%= label_tag "Your Reseller's Name: " %>
+      <%= select :resellers3, :reseller_to_add_payment, myResellers_name.collect {|r_name| r_name} %>
+      <%= submit_tag "Add Payment" %>
+    <% end %>
   </div>
 
   <table class = "list">
