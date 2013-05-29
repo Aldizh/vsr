@@ -44,17 +44,22 @@ a {
 .logout_link a {
 	background: #CC0606;
 	margin-left: 5px;
+}
+.login_link a {
+	background: green;
+}
+.logout_link a, .login_link a {
 	padding: 2px 5px;
 	color: white;
 	font-weight: bold;
+}
+.logout_link a:hover {
+	background: blue;
 }
 .about_you {
 	margin-left: 2px;
 	font-style: italic;
 
-}
-.logout_link a:hover {
-	background: blue;
 }
 .add_payment {
 	border: 1px black solid;
@@ -85,10 +90,18 @@ a {
 .flash_notice {
 	color: green;
 }
+.menu td {
+	background-color: blue;
+}
+.menu td a {
+	color: white;
+}
+.menu td a:hover {
+	color: #CCCCCC;
+}
 table {
 	border-collapse: collapse;
 	margin-top: 10px;
-	text-transform: capitalize;
 }
 th {
 	color: #FFF;
