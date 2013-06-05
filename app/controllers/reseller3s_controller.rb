@@ -37,20 +37,22 @@ class Reseller3sController < ApplicationController
     @data = {
     "jsonrpc" => "2.0",
     "id" => 1,
-    "method" => "getMyPaymentsHistory",
+    "method" => "getClientPaymentsHistory",
     "params" => {
+        "login" => "dbah",
+        "clientType" => "Reseller",
         "filter" => {
-            "dateFrom" => "2013-06-01",
-            "dateTo" => "2013-06-05",
+            "dateFrom" => "2012-05-01",
+            "dateTo" => "2013-06-01",
             "moneyFrom" => 0,
-            "moneyTo" => 10
-        },
-        "paging" => {
+            "moneyTo" => 20
+    },
+            "paging" => {
             "pageNumber" => 0,
             "pageSize" => 10,
             "sortColumn" => "date",
             "descending" => false
-        }
+            }
       }
     }.to_json
 
