@@ -17,6 +17,11 @@
     <%= label_tag "Amount:" %>
     <%= text_field_tag :payment_amount, (params[:payment_amount] or "0.00") %>  
     <%= submit_tag "Add" %>
+    <br><br>
+    <%= label_tag "Note:" %><br>
+    <%= text_area_tag :payment_note, (params[:payment_note] or "") %>  
+    <br><br>
+    <%= submit_tag "Add" %>
   <% end %>
 </div>
 <h4>List of your clients ... </h4>
@@ -26,6 +31,7 @@
       <th> id </th>
       <th> login </th>
       <th> Type </td>
+      <th> </td>
     </tr>
   </thead>
   <tbody>
@@ -34,6 +40,7 @@
       <td><%= r[:id_client] %> </td>
       <td><%= r[:login] %></td>
       <td><%= r[:type] %></td>
+      <td><%= link_to "View Payment History", :login => r[:login], :action => "payment_history" %></td>
     </tr>
   <% end %>
   </tbody>
