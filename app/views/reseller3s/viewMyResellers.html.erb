@@ -27,6 +27,7 @@
       <th> login </th>
       <th> Balance </td>
       <th> Type </td>
+      <th> Payment History </td>
     </tr>
   </thead>
   <tbody>
@@ -36,6 +37,7 @@
       <td><%= r[:login] %></td>
       <td><%= r[:callsLimit] %></td>
       <td><%= r[:type] %></td>
+      <td><%= link_to "View payment", :id => r[:id], :action => "payment_history" %></td>
     </tr>
   <% end %>
   </tbody>

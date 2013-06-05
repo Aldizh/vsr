@@ -28,17 +28,30 @@ class Reseller3sController < ApplicationController
     @result = ActiveSupport::JSON.decode(@response)  
   end
   
-  def client_types
+  def payment_history
 
     @url = "https://209.200.231.9/vsr3/reseller.api"
     @login = "#{session[:current_reseller3_login]}"
     @password = "#{session[:password]}"
 
     @data = {
-      "jsonrpc" => "2.0",
-      "id" => 1,
-      "method" => "arrayOfClientTypes",
-      "params" => {}
+    "jsonrpc" => "2.0",
+    "id" => 1,
+    "method" => "getMyPaymentsHistory",
+    "params" => {
+        "filter" => {
+            "dateFrom" => "2013-06-01",
+            "dateTo" => "2013-06-05",
+            "moneyFrom" => 0,
+            "moneyTo" => 10
+        },
+        "paging" => {
+            "pageNumber" => 0,
+            "pageSize" => 10,
+            "sortColumn" => "date",
+            "descending" => false
+        }
+      }
     }.to_json
 
     
@@ -51,8 +64,6 @@ class Reseller3sController < ApplicationController
       :headers => { :accept => :json, :content_type => :json}).execute
 
     @result = ActiveSupport::JSON.decode(@response)  
-    puts "jksabgfjka"
-    puts @result
 
   end
 
@@ -72,10 +83,6 @@ class Reseller3sController < ApplicationController
     payment = temp_payment.to_f #changed payment to float
     temp_hash = params[:resellers3]
     login = temp_hash["login"] rescue nil
-    puts "LOGINNNNNNNNN"
-    puts login.is_a?(String)
-    puts "PAYMENTTTTT"
-    puts payment
 
 
     @url = "https://209.200.231.9/vsr3/reseller.api"
@@ -108,8 +115,6 @@ class Reseller3sController < ApplicationController
 
     @result = ActiveSupport::JSON.decode(@response) 
 
-    puts "RESPONSEEEEEEE"
-    puts @result
 
     if @result["error"] 
       flash[:error_payment] = "Payment did not go through. Please try again!"
