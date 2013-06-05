@@ -82,7 +82,7 @@ class Reseller1sController < ApplicationController
   end
 
   def viewMyClients
-    @myResellers = DB[:clientsshared].where(:id_client => session[:current_reseller1_id])
+    @myClients = DB[:clientsshared].where(:id_client => session[:current_reseller1_id])
     respond_to do |format|
       format.html
         format.json { render json: @myClients }
