@@ -1,11 +1,18 @@
 <% var = @result["result"]%>
 <h3> Payment History </h3>
-<div>
-  <ul>
-  	<% var["records"].each do |e| %>
-  	  <li>Date: <%= e["date"] %></li>
-  	  <li>Amount: <%= e["amount"] %></li>
-  	  <li>Description: <%= e["description"] %></li>
-  	<% end %>
-  </ul>
-</div>
+  	<table class="payment_history">
+  	  <thead>
+  		<th>Date</th>
+  		<th>Amount</th>
+  	    <th>Note</th>
+  	  </thead>
+  	  <tbody>
+  	  	<% var["records"].each do |e| %>
+  	  	<tr>
+  	  		<td><%= e["date"] %></td>
+  	  		<td><%= e["amount"] %></td>
+  	  		<td><%= e["description"] %></td>
+  	  	</tr>
+  	  	<% end %>
+  	  </tbody>
+</table>

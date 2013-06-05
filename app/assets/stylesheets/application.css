@@ -103,6 +103,7 @@ a {
 table {
 	border-collapse: collapse;
 	margin-top: 10px;
+	text-align: center;
 }
 th {
 	color: #FFF;

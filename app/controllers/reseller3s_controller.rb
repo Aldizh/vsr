@@ -33,17 +33,20 @@ class Reseller3sController < ApplicationController
     @url = "https://209.200.231.9/vsr3/reseller.api"
     @login = "#{session[:current_reseller3_login]}"
     @password = "#{session[:password]}"
+    login = params[:login]
+    puts "LOGINNNNNNN"
+    puts login
 
     @data = {
     "jsonrpc" => "2.0",
     "id" => 1,
     "method" => "getClientPaymentsHistory",
     "params" => {
-        "login" => "dbah",
+        "login" => login,
         "clientType" => "Reseller",
         "filter" => {
-            "dateFrom" => "2012-05-01",
-            "dateTo" => "2013-06-01",
+            "dateFrom" => "2013-05-01",
+            "dateTo" => "2013-06-06",
             "moneyFrom" => 0,
             "moneyTo" => 20
     },
@@ -51,7 +54,7 @@ class Reseller3sController < ApplicationController
             "pageNumber" => 0,
             "pageSize" => 10,
             "sortColumn" => "date",
-            "descending" => false
+            "descending" => true
             }
       }
     }.to_json
@@ -82,6 +85,7 @@ class Reseller3sController < ApplicationController
   def addPayment
 
     temp_payment = params[:payment_amount]
+    payment_note = params[:payment_note]
     payment = temp_payment.to_f #changed payment to float
     temp_hash = params[:resellers3]
     login = temp_hash["login"] rescue nil
@@ -102,7 +106,7 @@ class Reseller3sController < ApplicationController
         "payment" => { 
           "paymentType" => "Payment", 
           "amount" => payment, 
-          "description" => "payment update" 
+          "description" => payment_note
           } 
         }
     }.to_json
