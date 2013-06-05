@@ -72,27 +72,31 @@ class Reseller3sController < ApplicationController
     payment = temp_payment.to_f #changed payment to float
     temp_hash = params[:resellers3]
     login = temp_hash["login"] rescue nil
+    puts "LOGINNNNNNNNN"
+    puts login.is_a?(String)
+    puts "PAYMENTTTTT"
+    puts payment
 
 
     @url = "https://209.200.231.9/vsr3/reseller.api"
     @login = "#{session[:current_reseller3_login]}"
     @password = "#{session[:password]}"
 
-    @data = {
-      "jsonrpc" => "2.0",
-      "id" => 1,
-      "method" => "doClientPayment",
-      "params" => {
-        "login" => login,
-        "clientType" => 66,
-        "payment" => {
-            "paymentType" => "Payment",
-            "amount" => payment,
-            "desription" => ""
-        }
-      }
-    }.to_json
 
+    @data = { 
+      "jsonrpc" => "2.0", 
+      "id" => 1, 
+      "method" => "doClientPayment", 
+      "params" => { 
+        "login" => login, 
+        "clientType" => "Reseller", 
+        "payment" => { 
+          "paymentType" => "Payment", 
+          "amount" => payment, 
+          "description" => "payment update" 
+          } 
+        }
+    }.to_json
 
     @response = RestClient::Request.new(
       :method => :post,
@@ -103,6 +107,9 @@ class Reseller3sController < ApplicationController
       :headers => { :accept => :json, :content_type => :json}).execute
 
     @result = ActiveSupport::JSON.decode(@response) 
+
+    puts "RESPONSEEEEEEE"
+    puts @result
 
     if @result["error"] 
       flash[:error_payment] = "Payment did not go through. Please try again!"
