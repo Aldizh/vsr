@@ -1,0 +1,11 @@
+<% var = @result["result"]%>
+<h3> Payment History </h3>
+<div>
+  <ul>
+  	<% var["records"].each do |e| %>
+  	  <li>Date: <%= e["date"] %></li>
+  	  <li>Amount: <%= e["amount"] %></li>
+  	  <li>Description: <%= e["description"] %></li>
+  	<% end %>
+  </ul>
+</div>

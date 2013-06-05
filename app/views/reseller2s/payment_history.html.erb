@@ -1,0 +1,6 @@
+<% if session[:current_reseller3_id] %>
+  <h4>These are is the payment history for this month </br><%= @result["result"]["records"] rescue nil %>!</h4>
+<% else %>
+  <%= flash[:error] = "You must be logged in to view this page" %>
+  <%= link_to "Login", "/sessions/new" %>
+<% end %>
