@@ -33,16 +33,19 @@ class Reseller3sController < ApplicationController
     @url = "https://209.200.231.9/vsr3/reseller.api"
     @login = "#{session[:current_reseller3_login]}"
     @password = "#{session[:password]}"
-    login = params[:login]
+    client_login = params[:login]
+    client_id = params[:id]
     puts "LOGINNNNNNN"
-    puts login
+    puts client_login
+    puts "IDDDDDD"
+    puts client_id
 
     @data = {
     "jsonrpc" => "2.0",
     "id" => 1,
     "method" => "getClientPaymentsHistory",
     "params" => {
-        "login" => login,
+        "login" => client_login,
         "clientType" => "Reseller",
         "filter" => {
             "dateFrom" => "2013-05-01",
