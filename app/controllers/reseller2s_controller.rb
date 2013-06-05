@@ -3,7 +3,7 @@ require 'json'
 require 'rest_client'
 class Reseller2sController < ApplicationController  
 
-def index
+  def index
 
     @url = "https://209.200.231.9/vsr3/reseller.api"
     @login = "#{session[:current_reseller2_login]}"
@@ -26,7 +26,33 @@ def index
       :headers => { :accept => :json, :content_type => :json}).execute
 
     @result = ActiveSupport::JSON.decode(@response)  
-   
+
+  end
+
+  def client_types
+
+    @url = "https://209.200.231.9/vsr3/reseller.api"
+    @login = "#{session[:current_reseller2_login]}"
+    @password = "#{session[:password]}"
+
+    @data = {
+      "jsonrpc" => "2.0",
+      "id" => 1,
+      "method" => "arrayOfClientTypes",
+      "params" => {}
+    }.to_json
+
+    
+    @response = RestClient::Request.new(
+      :method => :post,
+      :payload => @data,
+      :url => @url,
+      :user => @login,
+      :password => @password,
+      :headers => { :accept => :json, :content_type => :json}).execute
+
+    @result = ActiveSupport::JSON.decode(@response)  
+    puts "jksabgfjka"
     puts @result
 
   end
@@ -87,6 +113,8 @@ def index
 
     redirect_to "/reseller2s/viewMyResellers"
   end
+
+
 
   def show
     

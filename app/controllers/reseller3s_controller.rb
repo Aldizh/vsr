@@ -27,6 +27,34 @@ class Reseller3sController < ApplicationController
 
     @result = ActiveSupport::JSON.decode(@response)  
   end
+  
+  def client_types
+
+    @url = "https://209.200.231.9/vsr3/reseller.api"
+    @login = "#{session[:current_reseller3_login]}"
+    @password = "#{session[:password]}"
+
+    @data = {
+      "jsonrpc" => "2.0",
+      "id" => 1,
+      "method" => "arrayOfClientTypes",
+      "params" => {}
+    }.to_json
+
+    
+    @response = RestClient::Request.new(
+      :method => :post,
+      :payload => @data,
+      :url => @url,
+      :user => @login,
+      :password => @password,
+      :headers => { :accept => :json, :content_type => :json}).execute
+
+    @result = ActiveSupport::JSON.decode(@response)  
+    puts "jksabgfjka"
+    puts @result
+
+  end
 
   def viewMyResellers
     @myResellers = DB[:resellers2].where(:idReseller => session[:current_reseller3_id])
@@ -56,7 +84,7 @@ class Reseller3sController < ApplicationController
       "method" => "doClientPayment",
       "params" => {
         "login" => login,
-        "clientType" => "Reseller",
+        "clientType" => 66,
         "payment" => {
             "paymentType" => "Payment",
             "amount" => payment,
