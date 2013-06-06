@@ -56,7 +56,7 @@ class Reseller1sController < ApplicationController
         "login" => client_login,
         "clientType" => "Retail",
         "filter" => {
-            "dateFrom" => "#{year}-05-01",
+            "dateFrom" => "#{year}-01-01",
             "dateTo" => date_to,
             "moneyFrom" => 0,
             "moneyTo" => 20

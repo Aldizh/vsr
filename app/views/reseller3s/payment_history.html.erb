@@ -1,6 +1,6 @@
 <% var = @result["result"]%>
 <h3> Payment History </h3>
-<p>Important: To include a particular month's record, make sure to select the following month.</p>
+<p>Important: To include a particular day's record, make sure to select the following day.</p>
   <%= form_tag :action => 'filteredPaymentHistory' do %>
     <%= label_tag "From: " %>
     <%= date_select("filteredPaymentHistory", "from_date", :default => {:day => 1, :month => 1}, :order => [:day, :month, :year]) %>
