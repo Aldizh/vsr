@@ -13,6 +13,8 @@ Vsr::Application.routes.draw do
   post "reseller2s/addPayment"
   get "reseller2s/payment_history"
   post "reseller2s/payment_history"
+  get "reseller2s/filteredPaymentHistory"
+  post "reseller2s/filteredPaymentHistory"
 
   get "reseller3s/viewMyResellers"
   post "reseller3s/viewMyResellers"
