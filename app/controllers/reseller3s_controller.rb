@@ -40,10 +40,7 @@ class Reseller3sController < ApplicationController
     today = Time.new
     puts "TODAYAAAAAAA"
     puts today
-
-    puts to_day
-    puts to_month
-
+    
     @data = {
     "jsonrpc" => "2.0",
     "id" => 1,
