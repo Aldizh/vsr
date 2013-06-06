@@ -37,6 +37,13 @@ class Reseller3sController < ApplicationController
     client_id = params[:id]
     session[:client_login] = client_login
 
+    today = Time.new
+    puts "TODAYAAAAAAA"
+    puts today
+
+    puts to_day
+    puts to_month
+
     @data = {
     "jsonrpc" => "2.0",
     "id" => 1,
@@ -45,8 +52,8 @@ class Reseller3sController < ApplicationController
         "login" => client_login,
         "clientType" => "Reseller",
         "filter" => {
-            "dateFrom" => "2013-05-01",
-            "dateTo" => "2013-06-06",
+            "dateFrom" => "2013-01-01",
+            "dateTo" => "2013-06-07",
             "moneyFrom" => 0,
             "moneyTo" => 20
     },
