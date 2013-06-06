@@ -25,15 +25,84 @@ class Reseller3sController < ApplicationController
       :password => @password,
       :headers => { :accept => :json, :content_type => :json}).execute
 
-    @result = ActiveSupport::JSON.decode(@response)  
+    @result = ActiveSupport::JSON.decode(@response)
   end
-  
-  def payment_history
+
+  def profits
+    @url = "https://209.200.231.9/vsr3/reseller.api"
+    @login = "#{session[:current_reseller3_login]}"
+    @password = "#{session[:password]}"
+
+    total_profits = 0
+    start_date = "01-01-2009"
+    end_date = "06-07-2013"#to be changed later
+    total_revenue = 0
+    total_cost = 0
+
+    @data1 = {
+    "jsonrpc" => "2.0",
+    "id" => 1,
+    "method" => "getMyPaymentsHistory",
+    "params" => {
+        "filter" => {
+            "dateFrom" => start_date,
+            "dateTo" => end_date,
+            "moneyFrom" => 0,
+            "moneyTo" => 10
+        },
+        "paging" => {
+            "pageNumber" => 0,
+            "pageSize" => 10,
+            "sortColumn" => "date",
+            "descending" => false
+        }
+      }
+    }.to_json
+    @response = RestClient::Request.new(
+      :method => :post,
+      :payload => @data1,
+      :url => @url,
+      :user => @login,
+      :password => @password,
+      :headers => { :accept => :json, :content_type => :json}).execute
+
+    @result1 = ActiveSupport::JSON.decode(@response)
+
+    i = 0
+    while i < @result1["result"]["totalCount"]
+      @result1["result"]["records"].each do |c|
+        total_cost += c["amount"]
+      end
+      i += 1
+    end
+
+    #calculate profit
+    @clients = viewMyResellers()
+    @clients.each do |r|
+      @res = payment_history(r[:login])
+      @res["result"]["records"].each do |c|
+        total_revenue += c["amount"]
+      end
+    end
+    pr = total_revenue - total_cost
+    return pr
+
+  end
+
+  def viewMyProfits
+    @profit = profits()
+  end
+
+  def payment_history(login=nil)
 
     @url = "https://209.200.231.9/vsr3/reseller.api"
     @login = "#{session[:current_reseller3_login]}"
     @password = "#{session[:password]}"
-    client_login = params[:login]
+    if login
+      client_login = login
+    else
+      client_login = params[:login]
+    end
     client_id = params[:id]
 
     @data = {
@@ -68,7 +137,7 @@ class Reseller3sController < ApplicationController
       :headers => { :accept => :json, :content_type => :json}).execute
 
     @result = ActiveSupport::JSON.decode(@response)  
-
+    return @result
   end
 
   def viewMyResellers
@@ -79,6 +148,7 @@ class Reseller3sController < ApplicationController
       format.html
         format.json { render json: @myResellers }
     end
+    return @myResellers
   end
 
   def addPayment
