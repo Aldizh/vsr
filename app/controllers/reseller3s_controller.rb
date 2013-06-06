@@ -9,91 +9,33 @@ class Reseller3sController < ApplicationController
     @login = "#{session[:current_reseller3_login]}"
     @password = "#{session[:password]}"
 
-    start_date = "01-01-2009"
-    end_date = "07-08-2013"#to be changed later
-    @total_revenue = 0
-    @total_cost = 0
-
-    @data1 = {
+    @data = {
       "jsonrpc" => "2.0",
       "id" => 1,
       "method" => "getMyDetails",
       "params" => {}
     }.to_json
+
     
-    @data2 = {
-    "jsonrpc" => "2.0",
-    "id" => 1,
-    "method" => "getMyPaymentsHistory",
-    "params" => {
-        "filter" => {
-            "dateFrom" => start_date,
-            "dateTo" => end_date,
-            "moneyFrom" => 0,
-            "moneyTo" => 10
-        },
-        "paging" => {
-            "pageNumber" => 0,
-            "pageSize" => 100,
-            "sortColumn" => "date",
-            "descending" => false
-        }
-      }
-    }.to_json
-    
-    @response1 = RestClient::Request.new(
+    @response = RestClient::Request.new(
       :method => :post,
-      :payload => @data1,
+      :payload => @data,
       :url => @url,
       :user => @login,
       :password => @password,
       :headers => { :accept => :json, :content_type => :json}).execute
 
-    @result1 = ActiveSupport::JSON.decode(@response1)
-
-    @response2 = RestClient::Request.new(
-      :method => :post,
-      :payload => @data2,
-      :url => @url,
-      :user => @login,
-      :password => @password,
-      :headers => { :accept => :json, :content_type => :json}).execute
-
-    @result2 = ActiveSupport::JSON.decode(@response2)
-
-    i = 0
-    while i < @result2["result"]["totalCount"]
-      @result2["result"]["records"].each do |c|
-        @total_cost += c["amount"]
-      end
-      i += 1
-    end
-
-    #calculate profit
-    @clients = DB[:resellers2].where(:idReseller => session[:current_reseller3_id])
-    @clients.each do |r|
-      @res = payment_history(r[:login])
-      @res["result"]["records"].each do |c|
-        @total_revenue += c["amount"]
-      end
-    end
-  
-    @profit = @total_revenue - @total_cost
-    puts "PROOOOOOO"
-    puts @profit
+    @result = ActiveSupport::JSON.decode(@response)  
   end
-
-  def payment_history(login=nil)
+  
+  def payment_history
 
     @url = "https://209.200.231.9/vsr3/reseller.api"
     @login = "#{session[:current_reseller3_login]}"
     @password = "#{session[:password]}"
-    if login
-      client_login = login
-    else
-      client_login = params[:login]
-    end
+    client_login = params[:login]
     client_id = params[:id]
+    session[:client_login] = client_login
 
     @data = {
     "jsonrpc" => "2.0",
@@ -110,7 +52,7 @@ class Reseller3sController < ApplicationController
     },
             "paging" => {
             "pageNumber" => 0,
-            "pageSize" => 100,
+            "pageSize" => 10,
             "sortColumn" => "date",
             "descending" => true
             }
@@ -127,20 +69,85 @@ class Reseller3sController < ApplicationController
       :headers => { :accept => :json, :content_type => :json}).execute
 
     @result = ActiveSupport::JSON.decode(@response)  
-    return @result
+
+  end
+
+  def filteredPaymentHistory
+    @url = "https://209.200.231.9/vsr3/reseller.api"
+    @login = "#{session[:current_reseller3_login]}"
+    @password = "#{session[:password]}"
+    client_login = session[:client_login]
+    date = params[:filteredPaymentHistory]
+    puts "FROM DATEEEEEEEEE"
+    puts date
+    puts client_login
+
+    # addLeadingZero is a helper method to add a leading zero for single digit
+    # day or month so that we pass the right date formats to the api method - getClientPaymentsHistory
+
+    from_date_day = date["from_date(3i)"]
+    from_date_day = addLeadingZero(from_date_day)
+
+    from_date_month = date["from_date(2i)"]
+    from_date_month = addLeadingZero(from_date_month)
+
+    from_date_year = date["from_date(1i)"]
+
+    to_date_day = date["to_date(3i)"]
+    to_date_day = addLeadingZero(to_date_day)
+
+    to_date_month = date["to_date(2i)"]
+    to_date_month = addLeadingZero(to_date_month)
+
+    to_date_year = date["to_date(1i)"]
+
+    date_from = "#{from_date_year}-#{from_date_month}-#{from_date_day}"
+    date_to = "#{to_date_year}-#{to_date_month}-#{to_date_day}"
+
+    @data = {
+    "jsonrpc" => "2.0",
+    "id" => 1,
+    "method" => "getClientPaymentsHistory",
+    "params" => {
+        "login" => client_login,
+        "clientType" => "Reseller",
+        "filter" => {
+            "dateFrom" => date_from,
+            "dateTo" => date_to,
+            "moneyFrom" => 0,
+            "moneyTo" => 20
+    },
+            "paging" => {
+            "pageNumber" => 0,
+            "pageSize" => 10,
+            "sortColumn" => "date",
+            "descending" => true
+            }
+      }
+    }.to_json
+
+    
+    @response = RestClient::Request.new(
+      :method => :post,
+      :payload => @data,
+      :url => @url,
+      :user => @login,
+      :password => @password,
+      :headers => { :accept => :json, :content_type => :json}).execute
+
+    @result = ActiveSupport::JSON.decode(@response)
+    puts @result  
+    
   end
 
   def viewMyResellers
     @myResellers = DB[:resellers2].where(:idReseller => session[:current_reseller3_id])
     res = params[:resellers3]
     puts res
-        puts @myResellers.all
-
     respond_to do |format|
       format.html
         format.json { render json: @myResellers }
     end
-    return @myResellers
   end
 
   def addPayment
@@ -196,6 +203,13 @@ class Reseller3sController < ApplicationController
 
   def show
     
+  end
+
+  def addLeadingZero (arg)
+    if arg.to_i < 10
+      arg = "0" + arg
+      return arg
+    end
   end
 
 end
