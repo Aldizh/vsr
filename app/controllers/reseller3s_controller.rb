@@ -144,6 +144,8 @@ class Reseller3sController < ApplicationController
     @myResellers = DB[:resellers2].where(:idReseller => session[:current_reseller3_id])
     res = params[:resellers3]
     puts res
+        puts @myResellers.all
+
     respond_to do |format|
       format.html
         format.json { render json: @myResellers }

@@ -77,9 +77,8 @@ class Reseller2sController < ApplicationController
   end
 
   def viewMyResellers
-    @myResellers = DB[:resellers2].where(:idReseller => session[:current_reseller2_id])
+    @myResellers = DB[:resellers1].where(:idReseller => session[:current_reseller2_id])
     res = params[:resellers2]
-    puts res
     respond_to do |format|
       format.html
         format.json { render json: @myResellers }
