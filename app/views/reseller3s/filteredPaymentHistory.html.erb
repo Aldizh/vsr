@@ -1,10 +1,10 @@
 <% var = @result["result"]%>
 <h3> Payment History </h3>
-  <%= form_tag :action => 'filteredPaymentHistory' do %>
+<%= form_tag :action => 'filteredPaymentHistory' do %>
     <%= label_tag "From: " %>
     <%= date_select("filteredPaymentHistory", "from_date", :order => [:month, :year]) %>
     <%= label_tag "To: " %>
-    <%= date_select("filteredPaymentHistory", "to_date", :order => [:month, :year])%>
+    <%= date_select("filteredPaymentHistory", "to_date", :order => [:month, :year]) %>
     <%= submit_tag "Filter" %>
   <% end %>
   	<table class="payment_history">
