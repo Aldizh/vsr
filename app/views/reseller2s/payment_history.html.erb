@@ -9,7 +9,8 @@
   	  <tbody>
   	  	<% var["records"].each do |e| %>
   	  	<tr>
-  	  		<td><%= e["date"] %></td>
+  	  		<% date_components = e["date"].split('T') %>
+  	  		<td><%= date_components[0] %></td>
   	  		<td><%= e["amount"] %></td>
   	  		<td><%= e["description"] %></td>
   	  	</tr>

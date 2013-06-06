@@ -35,10 +35,6 @@ class Reseller3sController < ApplicationController
     @password = "#{session[:password]}"
     client_login = params[:login]
     client_id = params[:id]
-    puts "LOGINNNNNNN"
-    puts client_login
-    puts "IDDDDDD"
-    puts client_id
 
     @data = {
     "jsonrpc" => "2.0",
