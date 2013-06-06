@@ -36,6 +36,8 @@ class Reseller2sController < ApplicationController
     @password = "#{session[:password]}"
     client_login = params[:login]
     client_id = params[:id]
+    session[:client_login] = client_login
+
 
     @data = {
     "jsonrpc" => "2.0",
@@ -70,15 +72,19 @@ class Reseller2sController < ApplicationController
 
     @result = ActiveSupport::JSON.decode(@response)  
 
+
+
   end
 
+      
   def filteredPaymentHistory
     @url = "https://209.200.231.9/vsr3/reseller.api"
     @login = "#{session[:current_reseller2_login]}"
     @password = "#{session[:password]}"
     client_login = session[:client_login]
+
     date = params[:filteredPaymentHistory]
-   
+    
 
     # addLeadingZero is a helper method to add a leading zero for single digit
     # day or month so that we pass the right date formats to the api method - getClientPaymentsHistory
@@ -134,9 +140,10 @@ class Reseller2sController < ApplicationController
       :headers => { :accept => :json, :content_type => :json}).execute
 
     @result = ActiveSupport::JSON.decode(@response)
-    puts @result  
+    puts "RESULLTTTTTTUTUTUTIU"
+    puts @result
     
-  end
+  end    
 
   def viewMyResellers
     @myResellers = DB[:resellers1].where(:idReseller => session[:current_reseller2_id])
