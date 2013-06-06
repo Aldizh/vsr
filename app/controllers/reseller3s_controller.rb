@@ -38,8 +38,10 @@ class Reseller3sController < ApplicationController
     session[:client_login] = client_login
 
     today = Time.new
-    puts "TODAYAAAAAAA"
-    puts today
+    date = (today.to_s).split(" ")
+    date_to = date[0]
+    date_comps = date_to.split("-")
+    year = date_comps[0]
     
     @data = {
     "jsonrpc" => "2.0",
@@ -49,8 +51,8 @@ class Reseller3sController < ApplicationController
         "login" => client_login,
         "clientType" => "Reseller",
         "filter" => {
-            "dateFrom" => "2013-01-01",
-            "dateTo" => "2013-06-07",
+            "dateFrom" => "#{year}-01-01",
+            "dateTo" => date_to,
             "moneyFrom" => 0,
             "moneyTo" => 20
     },

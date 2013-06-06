@@ -41,6 +41,12 @@ class Reseller1sController < ApplicationController
     client_login = params[:login]
     client_id = params[:id]
     session[:client_login] = client_login
+    
+    today = Time.new
+    date = (today.to_s).split(" ")
+    date_to = date[0]
+    date_comps = date_to.split("-")
+    year = date_comps[0]
 
     @data = {
     "jsonrpc" => "2.0",
@@ -50,8 +56,8 @@ class Reseller1sController < ApplicationController
         "login" => client_login,
         "clientType" => "Retail",
         "filter" => {
-            "dateFrom" => "2013-05-01",
-            "dateTo" => "2013-06-06",
+            "dateFrom" => "#{year}-05-01",
+            "dateTo" => date_to,
             "moneyFrom" => 0,
             "moneyTo" => 20
     },
