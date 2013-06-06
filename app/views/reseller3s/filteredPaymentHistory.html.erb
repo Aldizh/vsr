@@ -8,18 +8,19 @@
     <%= submit_tag "Filter" %>
   <% end %>
   	<table class="payment_history">
-  	  <thead>
-  		<th>Date</th>
-  		<th>Amount</th>
-  	    <th>Note</th>
-  	  </thead>
-  	  <tbody>
-  	  	<% var["records"].each do |e| %>
-  	  	<tr>
-  	  		<td><%= e["date"] %></td>
-  	  		<td><%= e["amount"] %></td>
-  	  		<td><%= e["description"] %></td>
-  	  	</tr>
-  	  	<% end %>
-  	  </tbody>
+      <thead>
+      <th>Date</th>
+      <th>Amount</th>
+        <th>Note</th>
+      </thead>
+      <tbody>
+        <% var["records"].each do |e| %>
+        <tr>
+          <% date_components = e["date"].split('T') %>
+          <td><%= date_components[0] %></td>
+          <td><%= e["amount"] %></td>
+          <td><%= e["description"] %></td>
+        </tr>
+        <% end %>
+      </tbody>
 </table>
