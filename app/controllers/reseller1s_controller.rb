@@ -39,6 +39,8 @@ class Reseller1sController < ApplicationController
     @login = "#{session[:current_reseller1_login]}"
     @password = "#{session[:password]}"
     client_login = params[:login]
+    client_id = params[:id]
+    session[:client_login] = client_login
 
     @data = {
     "jsonrpc" => "2.0",
@@ -46,7 +48,7 @@ class Reseller1sController < ApplicationController
     "method" => "getClientPaymentsHistory",
     "params" => {
         "login" => client_login,
-        "clientType" => "Client",
+        "clientType" => "Retail",
         "filter" => {
             "dateFrom" => "2013-05-01",
             "dateTo" => "2013-06-06",
@@ -71,7 +73,7 @@ class Reseller1sController < ApplicationController
       :password => @password,
       :headers => { :accept => :json, :content_type => :json}).execute
 
-    @result = ActiveSupport::JSON.decode(@response)  
+    @result = ActiveSupport::JSON.decode(@response) 
 
   end
 
@@ -103,7 +105,7 @@ class Reseller1sController < ApplicationController
       "method" => "doClientPayment", 
       "params" => { 
         "login" => login, 
-        "clientType" => "Reseller", 
+        "clientType" => "Retail", 
         "payment" => { 
           "paymentType" => "Payment", 
           "amount" => payment, 

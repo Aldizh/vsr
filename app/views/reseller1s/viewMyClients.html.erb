@@ -16,7 +16,6 @@
     <%= select :resellers1, :login, myClients_name.collect {|r_name| r_name} %>
     <%= label_tag "Amount:" %>
     <%= text_field_tag :payment_amount, (params[:payment_amount] or "0.00") %>  
-    <%= submit_tag "Add" %>
     <br><br>
     <%= label_tag "Note:" %><br>
     <%= text_area_tag :payment_note, (params[:payment_note] or "") %>  
@@ -30,7 +29,7 @@
     <tr>
       <th> id </th>
       <th> login </th>
-      <th> Type </td>
+      <th> Balance </th>
       <th> </td>
     </tr>
   </thead>
@@ -39,7 +38,7 @@
     <tr>
       <td><%= r[:id_client] %> </td>
       <td><%= r[:login] %></td>
-      <td><%= r[:type] %></td>
+      <td><%= r[:account_state] %></td>
       <td><%= link_to "View Payment History", :login => r[:login], :action => "payment_history" %></td>
     </tr>
   <% end %>
