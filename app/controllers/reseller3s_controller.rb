@@ -9,37 +9,19 @@ class Reseller3sController < ApplicationController
     @login = "#{session[:current_reseller3_login]}"
     @password = "#{session[:password]}"
 
-    @data = {
+    start_date = "01-01-2009"
+    end_date = "07-08-2013"#to be changed later
+    @total_revenue = 0
+    @total_cost = 0
+
+    @data1 = {
       "jsonrpc" => "2.0",
       "id" => 1,
       "method" => "getMyDetails",
       "params" => {}
     }.to_json
-
     
-    @response = RestClient::Request.new(
-      :method => :post,
-      :payload => @data,
-      :url => @url,
-      :user => @login,
-      :password => @password,
-      :headers => { :accept => :json, :content_type => :json}).execute
-
-    @result = ActiveSupport::JSON.decode(@response)
-  end
-
-  def profits
-    @url = "https://209.200.231.9/vsr3/reseller.api"
-    @login = "#{session[:current_reseller3_login]}"
-    @password = "#{session[:password]}"
-
-    total_profits = 0
-    start_date = "01-01-2009"
-    end_date = "06-07-2013"#to be changed later
-    total_revenue = 0
-    total_cost = 0
-
-    @data1 = {
+    @data2 = {
     "jsonrpc" => "2.0",
     "id" => 1,
     "method" => "getMyPaymentsHistory",
@@ -52,13 +34,14 @@ class Reseller3sController < ApplicationController
         },
         "paging" => {
             "pageNumber" => 0,
-            "pageSize" => 10,
+            "pageSize" => 100,
             "sortColumn" => "date",
             "descending" => false
         }
       }
     }.to_json
-    @response = RestClient::Request.new(
+    
+    @response1 = RestClient::Request.new(
       :method => :post,
       :payload => @data1,
       :url => @url,
@@ -66,31 +49,38 @@ class Reseller3sController < ApplicationController
       :password => @password,
       :headers => { :accept => :json, :content_type => :json}).execute
 
-    @result1 = ActiveSupport::JSON.decode(@response)
+    @result1 = ActiveSupport::JSON.decode(@response1)
+
+    @response2 = RestClient::Request.new(
+      :method => :post,
+      :payload => @data2,
+      :url => @url,
+      :user => @login,
+      :password => @password,
+      :headers => { :accept => :json, :content_type => :json}).execute
+
+    @result2 = ActiveSupport::JSON.decode(@response2)
 
     i = 0
-    while i < @result1["result"]["totalCount"]
-      @result1["result"]["records"].each do |c|
-        total_cost += c["amount"]
+    while i < @result2["result"]["totalCount"]
+      @result2["result"]["records"].each do |c|
+        @total_cost += c["amount"]
       end
       i += 1
     end
 
     #calculate profit
-    @clients = viewMyResellers()
+    @clients = DB[:resellers2].where(:idReseller => session[:current_reseller3_id])
     @clients.each do |r|
       @res = payment_history(r[:login])
       @res["result"]["records"].each do |c|
-        total_revenue += c["amount"]
+        @total_revenue += c["amount"]
       end
     end
-    pr = total_revenue - total_cost
-    return pr
-
-  end
-
-  def viewMyProfits
-    @profit = profits()
+  
+    @profit = @total_revenue - @total_cost
+    puts "PROOOOOOO"
+    puts @profit
   end
 
   def payment_history(login=nil)
@@ -120,7 +110,7 @@ class Reseller3sController < ApplicationController
     },
             "paging" => {
             "pageNumber" => 0,
-            "pageSize" => 10,
+            "pageSize" => 100,
             "sortColumn" => "date",
             "descending" => true
             }

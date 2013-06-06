@@ -14,8 +14,6 @@ Vsr::Application.routes.draw do
   get "reseller2s/payment_history"
   post "reseller2s/payment_history"
 
-  get "/reseller3s/viewMyProfits"
-  post "/reseller3s/viewMyProfits"
   get "reseller3s/viewMyResellers"
   post "reseller3s/viewMyResellers"
   get "reseller3s/addPayment"
