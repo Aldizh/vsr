@@ -31,13 +31,7 @@ class Reseller1sController < ApplicationController
 
   end
 
-  def viewMyClients
-    @myClients = DB[:clientsshared].where(:id_reseller => session[:current_reseller1_id])
-    respond_to do |format|
-      format.html
-        format.json { render json: @myClients }
-    end
-  end
+
 
   def payment_history
 
@@ -82,7 +76,7 @@ class Reseller1sController < ApplicationController
   end
 
   def viewMyClients
-    @myClients = DB[:clientsshared].where(:id_client => session[:current_reseller1_id])
+    @myClients = DB[:clientsshared].where(:id_reseller => session[:current_reseller1_id])
     respond_to do |format|
       format.html
         format.json { render json: @myClients }
