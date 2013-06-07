@@ -10,7 +10,7 @@
   </thead>
   <tbody>
     <% @my_cdr.each do |r| %>
-	<% r.each do |c| %>
+	  <% r.each do |c| %>
      	<tr>
      	<td> <%= c[:caller_id] %></td>
      	<td> <%= c[:cost] %></td>
