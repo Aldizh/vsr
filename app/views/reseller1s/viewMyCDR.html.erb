@@ -1,7 +1,9 @@
-<% @my_cdr.each do |c| %>
-     <ul>
-     <li> <%= c[:cost] %></li>
-     <li> <%= c[:call_start] %></li>
-     <li> <%= c[:id_call] %> </li>
- </ul>
+<% @my_cdr.each do |r| %>
+	<% r.each do |c| %>
+     	<ul>
+     	<li> <%= c[:cost] %></li>
+     	<li> <%= c[:call_start] %></li>
+     	<li> <%= c[:id_call] %> </li>
+ 		</ul>
+ 	<% end %>
 <% end %>

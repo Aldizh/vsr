@@ -158,14 +158,20 @@ class Reseller1sController < ApplicationController
   end
 
   def viewMyCDR
-    @my_cdr = DB[:calls].where(:id_client => session[:current_reseller1_id]) # ids of my clients 
+    @my_cdr = []
+    total_cdr = DB[:calls] #cache this so we don't have to query db inside loop
+    my_clients = DB[:clientsshared].where(:id_reseller => session[:current_reseller1_id])
+    client_ids = []
+    my_clients.each do |c|
+      client_ids.push(c[:id_client])
+    end
+    client_ids.each do |id|
+      @my_cdr.push(total_cdr.where(:id_client => id))
+    end
+    
+    #@my_cdr = DB[:calls].where(:id_client => session[:current_reseller1_id]) # ids of my clients 
     # @1 = DB[:calls].where(:id_client => @myfirstclient)
     # @2 = DB[:calls].where(:id_client => @myfirstclient)
-
-    respond_to do |format|
-      format.html
-        format.json { render json: @myClients }
-    end
   end
 
   def addPayment
