@@ -4,6 +4,7 @@
       <tr>
         <td><%= link_to "Home", "/reseller3s/" %></td>
         <td><%= link_to "My Agents", "/reseller3s/viewMyResellers" %></td>
+        <td><%= link_to "View Clients CDR", "/reseller3s/viewMyResellersCDR" %></td>
       </tr>
     </table>
 <% elsif session[:current_reseller2_id] %>
@@ -12,7 +13,7 @@
       <tr>
         <td><%= link_to "Home", "/reseller2s/" %></td>
         <td><%= link_to "My Agents", "/reseller2s/viewMyResellers" %></td>
-        <td><%= link_to "View My CDR", "/reseller2s/viewMyCDR" %></td>
+        <td><%= link_to "View Clients CDR", "/reseller2s/viewMyResellersCDR" %></td>
       </tr>
     </table>
 <% elsif session[:current_reseller1_id] %>
@@ -21,7 +22,7 @@
       <tr>
         <td><%= link_to "Home", "/reseller1s/" %></td>
         <td><%= link_to "My Clients", "/reseller1s/viewMyClients" %></td>
-        <td><%= link_to "View My CDR", "/reseller1s/viewMyCDR" %></td>
+        <td><%= link_to "View My CDR", "/reseller1s/viewMyClientsCDR" %></td>
       </tr>
     </table>
 

@@ -157,7 +157,7 @@ class Reseller1sController < ApplicationController
     end
   end
 
-  def viewMyCDR
+  def viewMyClientsCDR
     @my_cdr = []
     total_cdr = DB[:calls] #cache this so we don't have to query db inside loop
     my_clients = DB[:clientsshared].where(:id_reseller => session[:current_reseller1_id])
@@ -168,10 +168,7 @@ class Reseller1sController < ApplicationController
     client_ids.each do |id|
       @my_cdr.push(total_cdr.where(:id_client => id))
     end
-    
-    #@my_cdr = DB[:calls].where(:id_client => session[:current_reseller1_id]) # ids of my clients 
-    # @1 = DB[:calls].where(:id_client => @myfirstclient)
-    # @2 = DB[:calls].where(:id_client => @myfirstclient)
+  
   end
 
   def addPayment

@@ -8,7 +8,7 @@ Vsr::Application.routes.draw do
   post "reseller1s/payment_history"
   get "reseller1s/filteredPaymentHistory"
   post "reseller1s/filteredPaymentHistory"
-  get "reseller1s/viewMyCDR"
+  get "reseller1s/viewMyClientsCDR"
 
   get "reseller2s/viewMyResellers"
   post "reseller2s/viewMyResellers"
@@ -18,7 +18,7 @@ Vsr::Application.routes.draw do
   post "reseller2s/payment_history"
   get "reseller2s/filteredPaymentHistory"
   post "reseller2s/filteredPaymentHistory"
-  get "reseller2s/viewMyCDR"
+  get "reseller2s/viewMyResellersCDR"
 
   get "reseller3s/viewMyResellers"
   post "reseller3s/viewMyResellers"
@@ -28,6 +28,7 @@ Vsr::Application.routes.draw do
   post "reseller3s/payment_history"
   get "reseller3s/filteredPaymentHistory"
   post "reseller3s/filteredPaymentHistory"
+  get "reseller3s/viewMyResellersCDR"
 
   get "sessions/new"
   

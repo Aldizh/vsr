@@ -159,7 +159,7 @@ class Reseller2sController < ApplicationController
     end
   end
 
-  def viewMyCDR
+  def viewMyResellersCDR
     @my_cdr = []
     total_cdr = DB[:calls] #cache this so we don't have to query db inside loop
     my_direct_clients = DB[:Resellers1].where(:idReseller => session[:current_reseller2_id])

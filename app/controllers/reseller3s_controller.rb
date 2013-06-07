@@ -84,9 +84,7 @@ class Reseller3sController < ApplicationController
     @password = "#{session[:password]}"
     client_login = session[:client_login]
     date = params[:filteredPaymentHistory]
-    puts "FROM DATEEEEEEEEE"
-    puts date
-    puts client_login
+
 
     # addLeadingZero is a helper method to add a leading zero for single digit
     # day or month so that we pass the right date formats to the api method - getClientPaymentsHistory
@@ -153,6 +151,29 @@ class Reseller3sController < ApplicationController
     respond_to do |format|
       format.html
         format.json { render json: @myResellers }
+    end
+  end
+
+
+  def viewMyResellersCDR
+    @my_cdr = []
+    @client_CDR = []
+    total_cdr = DB[:calls] #cache this so we don't have to query db inside loop
+    my_direct_clients = DB[:Resellers2].where(:idReseller => session[:current_reseller3_id])
+    reseller2s_ids = []
+    reseller1s_ids = []
+    my_direct_clients.each do |c|
+      reseller2s_ids.push(c[:id])
+    end
+
+    reseller2s_ids.each do |id|
+     @temp = DB[:Resellers1].where(:idReseller => id)
+     @temp.each do |e|
+      reseller1s_ids.push(e[:id])
+     end
+    end
+    reseller1s_ids.each do |id|
+      @my_cdr.push(total_cdr.where(:id_reseller => id))
     end
   end
 
