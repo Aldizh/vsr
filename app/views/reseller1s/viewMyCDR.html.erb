@@ -1,9 +1,25 @@
-<% @my_cdr.each do |r| %>
+<table class = "list">
+  <thead>
+    <tr>
+      <th> caller id </th>
+      <th> cost (in USD) </th>
+      <th> start time </th>
+      <th> end time</th>
+      <th> duration </th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @my_cdr.each do |r| %>
 	<% r.each do |c| %>
-     	<ul>
-     	<li> <%= c[:cost] %></li>
-     	<li> <%= c[:call_start] %></li>
-     	<li> <%= c[:id_call] %> </li>
- 		</ul>
+     	<tr>
+     	<td> <%= c[:caller_id] %></td>
+     	<td> <%= c[:cost] %></td>
+     	<td> <%= c[:call_start] %></td>
+     	<td> <%= c[:call_end] %> </td>
+     	<td> <%= c[:duration] %> s </td>
+ 		</tr>
  	<% end %>
-<% end %>
+    <% end %>
+  </tr>
+  </tbody>
+</table>
