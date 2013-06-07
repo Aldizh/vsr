@@ -146,13 +146,22 @@ class Reseller1sController < ApplicationController
       :headers => { :accept => :json, :content_type => :json}).execute
 
     @result = ActiveSupport::JSON.decode(@response)
-    puts "RESULLTTTTTTUTUTUTIU"
-    puts @result
     
   end
 
   def viewMyClients
     @myClients = DB[:clientsshared].where(:id_reseller => session[:current_reseller1_id])
+    respond_to do |format|
+      format.html
+        format.json { render json: @myClients }
+    end
+  end
+
+  def viewMyCDR
+    @my_cdr = DB[:calls].where(:id_client => session[:current_reseller1_id]) # ids of my clients 
+    # @1 = DB[:calls].where(:id_client => @myfirstclient)
+    # @2 = DB[:calls].where(:id_client => @myfirstclient)
+
     respond_to do |format|
       format.html
         format.json { render json: @myClients }
