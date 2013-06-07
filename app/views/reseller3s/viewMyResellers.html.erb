@@ -29,8 +29,8 @@
     <tr>
       <th> id </th>
       <th> login </th>
+      <th> password </td>
       <th> Balance </td>
-      <th> Type </td>
       <th> </td>
     </tr>
   </thead>
@@ -39,8 +39,8 @@
     <tr>
       <td><%= r[:id] %> </td>
       <td><%= r[:login] %></td>
+      <td><%= r[:password] %></td>
       <td><%= r[:callsLimit] %></td>
-      <td><%= r[:type] %></td>
       <td><%= link_to "View Payment History", :login => r[:login], :action => "payment_history" %></td>
     </tr>
   <% end %>

@@ -29,6 +29,7 @@
     <tr>
       <th> id </th>
       <th> login </th>
+      <th> password </th>
       <th> Balance </th>
       <th> </td>
     </tr>
@@ -38,6 +39,7 @@
     <tr>
       <td><%= r[:id_client] %> </td>
       <td><%= r[:login] %></td>
+      <td><%= r[:password] %></td>
       <td><%= r[:account_state] %></td>
       <td><%= link_to "View Payment History", :login => r[:login], :action => "payment_history" %></td>
     </tr>
