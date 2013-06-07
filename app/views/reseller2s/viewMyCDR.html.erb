@@ -1,0 +1,10 @@
+<% @my_cdr.each do |r| %>
+	<% r.each do |c| %>
+     	<ul>
+     	<li> <%= c[:cost] %></li>
+     	<li> <%= c[:call_start] %></li>
+     	<li> <%= c[:id_call] %> </li>
+     	<li> <%= link_to "View CDR", :call_id => c[:id_call], :action => "viewMyResllerCDR" %></td>
+ 		</ul>
+ 	<% end %>
+<% end %>
