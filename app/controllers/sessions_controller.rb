@@ -38,7 +38,7 @@ class SessionsController < ApplicationController
       flash[:notice] = "You are successfuly logged in!"
       redirect_to '/reseller1s'
     elsif client
-      session[:current_client_id] = client[:id]
+      session[:current_client_id] = client[:id_client]
       session[:current_client_login] = client[:login]
       session[:password] = client[:password]
       flash[:notice] = "You are successfuly logged in!"

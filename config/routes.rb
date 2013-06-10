@@ -1,11 +1,5 @@
 Vsr::Application.routes.draw do
 
-  get "clients/payment_history"
-  post "clients/payment_history"
-  get "clients/filteredPaymentHistory"
-  post "clients/filteredPaymentHistory"
-  get "clients/viewMyCDR"
-
   get "reseller1s/viewMyClients"
   post "reseller1s/viewMyClients"
   get "reseller1s/addPayment"

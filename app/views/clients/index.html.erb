@@ -1,6 +1,63 @@
 <% if session[:current_client_id] %>
-  <h3>Welcome <%= @result["result"]["login"] rescue nil %>!</h3>
-  <p> Your Balance is <%= @result["result"]["clientsLimit"] rescue nil%></p>
+  <% @result.each do |result| %>
+    <h3>Welcome <%= result[:login] rescue nil %>!</h3>
+    <p> Your Balance is <%= result[:account_state] rescue nil%></p>
+    <h4>Payment History</h4>
+       <p><em> Note: Caller ID is not necessarily the same as Login ID. </em></p>
+       <table class = "list">
+  		 <thead>
+    		<tr>
+      		<th> Type </th>
+      		<th> Data </th>
+      		<th> Amount (in USD) </th>
+      		<th> Note </th>
+    		</tr>
+  		 </thead>
+  		 <tbody>
+  		  <% @payments.each do |payment| %>
+     		<tr>
+     		<td> <%= payment[:type] %></td>
+     		<% date_components = payment[:data].to_s.split(" ") %>
+     		<td> <%= date_components[0] %></td>
+     		<td> <%= payment[:money] %></td>
+     		<% if payment[:description] != "" %>
+     		  <td> <%= payment[:description] %></td>
+     		<% else %>
+     		  <td> N/A </td>
+     		<% end %>
+ 			</tr>
+    	  <% end %>
+  		</tr>
+  		</tbody>
+	</table>
+    <h4>Call History</h4>
+       <p><em> Note: Caller ID is not necessarily the same as Login ID. </em></p>
+       <table class = "list">
+  		 <thead>
+    		<tr>
+      		<th> caller id </th>
+      		<th> cost (in USD) </th>
+      		<th> start time </th>
+      		<th> end time</th>
+      		<th> duration </th>
+      		<th> Call to: </th>
+    		</tr>
+  		 </thead>
+  		 <tbody>
+  		  <% @calls.each do |call| %>
+     		<tr>
+     		<td> <%= call[:caller_id] %></td>
+     		<td> <%= call[:cost] %></td>
+     		<td> <%= call[:call_start] %></td>
+     		<td> <%= call[:call_end] %> </td>
+     		<td> <%= call[:duration] %> s </td>
+      		<td> <%= call[:called_number] %> </td>
+ 			</tr>
+    	  <% end %>
+  		</tr>
+  		</tbody>
+	</table>
+  <% end %>
 <% else %>
   <%= flash[:error] = "You must be logged in to view this page" %>
   <%= link_to "Login", "/sessions/new" %>

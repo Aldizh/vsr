@@ -145,8 +145,6 @@ class Reseller2sController < ApplicationController
       :headers => { :accept => :json, :content_type => :json}).execute
 
     @result = ActiveSupport::JSON.decode(@response)
-    puts "RESULLTTTTTTUTUTUTIU"
-    puts @result
     
   end    
 
@@ -171,9 +169,6 @@ class Reseller2sController < ApplicationController
       @my_cdr.push(total_cdr.where(:id_reseller => id))
     end
     
-    #@my_cdr = DB[:calls].where(:id_client => session[:current_reseller1_id]) # ids of my clients 
-    # @1 = DB[:calls].where(:id_client => @myfirstclient)
-    # @2 = DB[:calls].where(:id_client => @myfirstclient)
   end
 
   def addPayment
