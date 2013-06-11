@@ -160,15 +160,19 @@ class Reseller2sController < ApplicationController
   def viewMyResellersCDR
     @my_cdr = []
     total_cdr = DB[:calls] #cache this so we don't have to query db inside loop
-    my_direct_clients = DB[:Resellers1].where(:idReseller => session[:current_reseller2_id])
-    client_ids = []
-    my_direct_clients.each do |c|
-      client_ids.push(c[:id])
-    end
+    client_ids = getClientsIDs()
     client_ids.each do |id|
       @my_cdr.push(total_cdr.where(:id_reseller => id))
+    end 
+  end
+
+  def viewActiveCalls
+    @active_calls = []
+    calls = DB[:currentcalls] #cache this so we don't have to query db inside loop
+    client_ids = getClientsIDs()
+    client_ids.each do |id|
+      @active_calls.push(calls.where(:id_client => id))
     end
-    
   end
 
   def addPayment
@@ -218,7 +222,6 @@ class Reseller2sController < ApplicationController
     end
 
     redirect_to "/reseller2s/viewMyResellers"
-
     
   end
 
@@ -231,6 +234,15 @@ class Reseller2sController < ApplicationController
       arg = "0" + arg
       return arg
     end
+  end
+
+  def getClientsIDs
+    my_direct_clients = DB[:Resellers1].where(:idReseller => session[:current_reseller2_id])
+    client_ids = []
+    my_direct_clients.each do |c|
+      client_ids.push(c[:id])
+    end
+    return client_ids
   end
 
 end

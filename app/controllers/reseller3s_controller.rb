@@ -154,17 +154,21 @@ class Reseller3sController < ApplicationController
     end
   end
 
+  def viewActiveCalls
+    @active_calls = []
+    calls = DB[:currentcalls] #cache this so we don't have to query db inside loop
+    client_ids = getClientsIDs()
+    client_ids.each do |id|
+      @active_calls.push(calls.where(:id_client => id))
+    end
+  end
 
   def viewMyResellersCDR
     @my_cdr = []
     @client_CDR = []
     total_cdr = DB[:calls] #cache this so we don't have to query db inside loop
-    my_direct_clients = DB[:Resellers2].where(:idReseller => session[:current_reseller3_id])
-    reseller2s_ids = []
+    reseller2s_ids = getClientsIDs()
     reseller1s_ids = []
-    my_direct_clients.each do |c|
-      reseller2s_ids.push(c[:id])
-    end
 
     reseller2s_ids.each do |id|
      @temp = DB[:Resellers1].where(:idReseller => id)
@@ -237,6 +241,15 @@ class Reseller3sController < ApplicationController
       arg = "0" + arg
       return arg
     end
+  end
+
+  def getClientsIDs
+    reseller2s_ids = []
+    my_direct_clients = DB[:Resellers2].where(:idReseller => session[:current_reseller3_id])
+    my_direct_clients.each do |c|
+      reseller2s_ids.push(c[:id])
+    end
+    return reseller2s_ids
   end
 
 end

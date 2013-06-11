@@ -4,6 +4,18 @@ require 'rest_client'
 class Reseller1sController < ApplicationController  
 
   def index
+    @total_profit = 0
+    @my_clients = DB[:clientsshared].where(:id_reseller => session[:current_reseller1_id])
+    @calls = []
+    @my_clients.each do |client|
+      @calls.push(DB[:calls].where(:id_client => client[:id_client]))
+    end
+    @calls.each do |call|
+      call.each do |c|
+        @total_profit += (c[:cost] - c[:costD])
+      end
+    end
+    #puts prefix_match("1234", "123456")
 
     @url = "https://209.200.231.9/vsr3/reseller.api"
     @login = "#{session[:current_reseller1_login]}"
@@ -159,15 +171,22 @@ class Reseller1sController < ApplicationController
     @my_cdr = []
     total_cdr = DB[:calls] #cache this so we don't have to query db inside loop
     my_clients = DB[:clientsshared].where(:id_reseller => session[:current_reseller1_id])
-    client_ids = []
-    my_clients.each do |c|
-      client_ids.push(c[:id_client])
-    end
+    client_ids = getClientsIDs()
     client_ids.each do |id|
       @my_cdr.push(total_cdr.where(:id_client => id))
     end
   
   end
+
+  def viewActiveCalls
+    @active_calls = []
+    calls = DB[:currentcalls] #cache this so we don't have to query db inside loop
+    client_ids = getClientsIDs()
+    client_ids.each do |id|
+      @active_calls.push(calls.where(:id_client => id))
+    end
+  end
+
 
   def addPayment
 
@@ -229,6 +248,28 @@ class Reseller1sController < ApplicationController
       arg = "0" + arg
       return arg
     end
+  end
+
+  def prefix_match (prefix, number)
+    i = 1
+    temp = ""
+    while i < number.size
+      temp = number[0..number.size-i]
+      if prefix == temp
+        return true
+      end
+      i += 1
+    end
+    return false
+  end
+
+  def getClientsIDs
+    my_clients = DB[:clientsshared].where(:id_reseller => session[:current_reseller1_id])
+    client_ids = []
+    my_clients.each do |c|
+      client_ids.push(c[:id_client])
+    end
+    return client_ids
   end
 
 end
