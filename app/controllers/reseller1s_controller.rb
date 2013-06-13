@@ -195,7 +195,7 @@ class Reseller1sController < ApplicationController
       @active_calls.push(calls.where(:id_client => id))
     end
     puts "CALLLSSSSSS"
-    puts @active_calls
+    puts @active_calls[0].first
   end
 
 
