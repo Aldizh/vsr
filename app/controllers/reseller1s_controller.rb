@@ -183,7 +183,6 @@ class Reseller1sController < ApplicationController
     client_ids.each do |id|
       @my_cdr.push(total_cdr.where(:id_client => id))
     end
-  
   end
 
   def viewActiveCalls
@@ -245,6 +244,19 @@ class Reseller1sController < ApplicationController
     redirect_to "/reseller1s/viewMyClients"
 
     
+  end
+
+  def viewSelected
+    @cdr = []
+    first_letter = params[:first_letter]
+    puts first_letter
+    puts Regexp.quote(first_letter).is_a?(String)
+    total_cdr = DB[:calls].filter(:caller_id => /^(#{Regexp.quote(first_letter)}|#{Regexp.quote(first_letter.downcase)})/)
+    my_clients = DB[:clientsshared].where(:id_reseller => session[:current_reseller1_id])
+    client_ids = getClientsIDs()
+    client_ids.each do |id|
+      @cdr.push(total_cdr.where(:id_client => id))
+    end
   end
 
   def show
