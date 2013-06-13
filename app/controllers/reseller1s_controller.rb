@@ -190,9 +190,13 @@ class Reseller1sController < ApplicationController
     @active_calls = []
     calls = DB[:currentcalls] #cache this so we don't have to query db inside loop
     client_ids = getClientsIDs()
+    puts "IDS"
+    puts client_ids
     client_ids.each do |id|
       @active_calls.push(calls.where(:id_client => id))
     end
+    puts "CALLLSSSSSS"
+    puts @active_calls
   end
 
 
