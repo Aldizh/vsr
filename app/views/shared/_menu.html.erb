@@ -11,9 +11,10 @@
     <table class="menu">
       <tr>
         <td><%= link_to "Home", "/reseller3s/" %></td>
-        <td><%= link_to "My Agents", "/reseller3s/viewMyResellers" %></td>
-        <td><%= link_to "View Clients CDR", "/reseller3s/viewMyResellersCDR" %></td>
-        <td><%= link_to "View Active Calls", "/reseller3s/viewActiveCalls" %></td>
+        <td><%= link_to "Agents", "/reseller3s/viewMyResellers" %></td>
+        <td><%= link_to "CDR", "/reseller3s/viewMyResellersCDR" %></td>
+        <td><%= link_to "Active Calls", "/reseller3s/viewActiveCalls" %></td>
+        <td><%= link_to "My Tariff", "/reseller3s/viewMyTariff" %></td>
       </tr>
     </table>
 <% elsif session[:current_reseller2_id] %>
@@ -21,9 +22,10 @@
     <table class="menu">
       <tr>
         <td><%= link_to "Home", "/reseller2s/" %></td>
-        <td><%= link_to "My Agents", "/reseller2s/viewMyResellers" %></td>
-        <td><%= link_to "View Clients CDR", "/reseller2s/viewMyResellersCDR" %></td>
-        <td><%= link_to "View Active Calls", "/reseller2s/viewActiveCalls" %></td>
+        <td><%= link_to "Agents", "/reseller2s/viewMyResellers" %></td>
+        <td><%= link_to "CDR", "/reseller2s/viewMyResellersCDR" %></td>
+        <td><%= link_to "Active Calls", "/reseller2s/viewActiveCalls" %></td>
+        <td><%= link_to "My Tariff", "/reseller2s/viewMyTariff" %></td>
       </tr>
     </table>
 <% elsif session[:current_reseller1_id] %>
@@ -31,10 +33,22 @@
     <table class="menu">
       <tr>
         <td><%= link_to "Home", "/reseller1s/" %></td>
-        <td><%= link_to "My Clients", "/reseller1s/viewMyClients" %></td>
-        <td><%= link_to "View My CDR", "/reseller1s/viewMyClientsCDR" %></td>
-        <td><%= link_to "View Active Calls", "/reseller1s/viewActiveCalls" %></td>
+        <td><%= link_to "Clients", "/reseller1s/viewMyClients" %></td>
+        <td><%= link_to "CDR", "/reseller1s/viewMyClientsCDR" %></td>
+        <td><%= link_to "Active Calls", "/reseller1s/viewActiveCalls" %></td>
+        <td><%= link_to "My Tariff", "/reseller1s/viewMyTariff" %></td>
+
       </tr>
     </table>
+<% elsif session[:current_client_id] %>
+  <span class="about_you">You are logged in as <strong><%= session[:current_client_login] %></strong></span>
+    <table class="menu">
+      <tr>
+        <td><%= link_to "Home", "/clients/" %></td>
+        <td><%= link_to "View My Tariff", "/clients/viewMyTariff" %></td>
+      </tr>
+    </table>
+
+
 
 <% end %>

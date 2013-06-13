@@ -189,9 +189,13 @@ class Reseller1sController < ApplicationController
     @active_calls = []
     calls = DB[:currentcalls] #cache this so we don't have to query db inside loop
     client_ids = getClientsIDs()
+    puts "IDS"
+    puts client_ids
     client_ids.each do |id|
       @active_calls.push(calls.where(:id_client => id))
     end
+    puts "CALLLSSSSSS"
+    puts @active_calls
   end
 
 
@@ -241,8 +245,31 @@ class Reseller1sController < ApplicationController
       flash[:notice_payment] = "Payment added successfully!"
     end
 
-    redirect_to "/reseller1s/viewMyClients"
+    redirect_to "/reseller1s/viewMyClients"    
+  end
 
+  def viewMyTariff
+    @result = DB[:resellers1].where(:id => session[:current_reseller1_id])
+    id_tariff = -1
+    @result.each do |c|
+      id_tariff = c[:id_tariff]
+    end
+    @tariff_list = DB[:tariffs].where(:id_tariff => id_tariff)
+  end
+
+  def viewClientsTariff
+    id_client = params[:id_client]
+
+    puts "IDDDDDD"
+    puts id_client    
+
+    @result = DB[:clientsshared].where(:id_client => id_client)
+    id_tariff = -1
+    @result.each do |c|
+      id_tariff = c[:id_tariff]
+    end
+    @tariff_list = DB[:tariffs].where(:id_tariff => id_tariff)
+    #puts @tariff_list
     
   end
 
