@@ -260,26 +260,19 @@ class Reseller1sController < ApplicationController
   def viewClientsTariff
     id_client = params[:id_client]
 
-    puts "IDDDDDD"
-    puts id_client    
-
     @result = DB[:clientsshared].where(:id_client => id_client)
     id_tariff = -1
     @result.each do |c|
       id_tariff = c[:id_tariff]
     end
     @tariff_list = DB[:tariffs].where(:id_tariff => id_tariff)
-    #puts @tariff_list
     
   end
 
   def viewSelected
     @cdr = []
     first_letter = params[:first_letter]
-    puts first_letter
-    puts Regexp.quote(first_letter).is_a?(String)
     total_cdr = DB[:calls].filter(:caller_id => /^(#{Regexp.quote(first_letter)}|#{Regexp.quote(first_letter.downcase)})/)
-    my_clients = DB[:clientsshared].where(:id_reseller => session[:current_reseller1_id])
     client_ids = getClientsIDs()
     client_ids.each do |id|
       @cdr.push(total_cdr.where(:id_client => id))

@@ -150,7 +150,6 @@ class Reseller2sController < ApplicationController
 
   def viewMyResellers
     @myResellers = DB[:resellers1].where(:idReseller => session[:current_reseller2_id])
-    res = params[:resellers2]
     respond_to do |format|
       format.html
         format.json { render json: @myResellers }
@@ -243,8 +242,17 @@ class Reseller2sController < ApplicationController
       id_tariff = c[:id_tariff]
     end
     @tariff_list = DB[:tariffs].where(:id_tariff => id_tariff)
-    #puts @tariff_list
     
+  end
+
+  def viewSelected
+    @cdr = []
+    first_letter = params[:first_letter]
+    total_cdr = DB[:calls].filter(:caller_id => /^(#{Regexp.quote(first_letter)}|#{Regexp.quote(first_letter.downcase)})/)
+    client_ids = getClientsIDs()
+    client_ids.each do |id|
+      @cdr.push(total_cdr.where(:id_reseller => id))
+    end
   end
 
   def show

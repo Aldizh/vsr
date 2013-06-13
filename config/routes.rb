@@ -16,6 +16,8 @@ Vsr::Application.routes.draw do
   get "reseller1s/viewClientsTariff"
 
 
+  get "reseller2s/viewSelected"
+
   get "reseller2s/viewActiveCalls"
   get "reseller2s/viewMyResellers"
   get "reseller2s/addPayment"
@@ -24,9 +26,11 @@ Vsr::Application.routes.draw do
   get "reseller2s/filteredPaymentHistory"
   post "reseller2s/filteredPaymentHistory"
   get "reseller2s/viewMyResellersCDR"
+  post "reseller2s/viewMyResellersCDR"
   get "reseller2s/viewMyTariff"
   get "reseller2s/viewResellers1Tariff"
 
+  get "reseller3s/viewSelected"
   get "reseller3s/viewActiveCalls"
   get "reseller3s/viewMyResellers"
   get "reseller3s/addPayment"
@@ -35,6 +39,7 @@ Vsr::Application.routes.draw do
   get "reseller3s/filteredPaymentHistory"
   post "reseller3s/filteredPaymentHistory"
   get "reseller3s/viewMyResellersCDR"
+  post "reseller3s/viewMyResellersCDR"
   get "reseller3s/viewMyTariff"
   get "reseller3s/viewResellers2Tariff"
 
