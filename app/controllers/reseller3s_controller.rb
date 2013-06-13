@@ -250,12 +250,27 @@ class Reseller3sController < ApplicationController
       id_tariff = c[:id_tariff]
     end
     @tariff_list = DB[:tariffs].where(:id_tariff => id_tariff)
-    #puts @tariff_list
-    
+  end
+
+  def viewSelected
+    @cdr = []
+    first_letter = params[:first_letter]
+    total_cdr = DB[:calls].filter(:caller_id => /^(#{Regexp.quote(first_letter)}|#{Regexp.quote(first_letter.downcase)})/)
+    reseller2s_ids = getClientsIDs()
+    reseller1s_ids = []
+
+    reseller2s_ids.each do |id|
+     @temp = DB[:Resellers1].where(:idReseller => id)
+     @temp.each do |e|
+      reseller1s_ids.push(e[:id])
+     end
+    end
+    reseller1s_ids.each do |id|
+      @cdr.push(total_cdr.where(:id_reseller => id))
+    end
   end
 
   def show
-    
   end
 
 
