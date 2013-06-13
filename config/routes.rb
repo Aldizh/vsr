@@ -1,5 +1,7 @@
 Vsr::Application.routes.draw do
 
+  get"clients/viewMyTariff"
+
   get "reseller1s/viewActiveCalls"
   get "reseller1s/viewMyClients"
   get "reseller1s/addPayment"
