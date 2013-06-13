@@ -225,6 +225,15 @@ class Reseller2sController < ApplicationController
     
   end
 
+  def viewMyTariff
+    @result = DB[:resellers2].where(:id => session[:current_reseller2_id])
+    id_tariff = -1
+    @result.each do |c|
+      id_tariff = c[:id_tariff]
+    end
+    @tariff_list = DB[:tariffs].where(:id_tariff => id_tariff)
+  end
+
   def show
     
   end
