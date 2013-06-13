@@ -31,7 +31,8 @@
       <th> login </th>
       <th> password </td>
       <th> Balance </td>
-      <th> </td>
+      <th> </th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -41,7 +42,8 @@
       <td><%= r[:login] %></td>
       <td><%= r[:password] %></td>
       <td><%= r[:callsLimit] %></td>
-      <td><%= link_to "View Payment History", :login => r[:login], :action => "payment_history" %></td>
+      <td><%= link_to "Payment History", :login => r[:login], :action => "payment_history" %></td>
+      <td><%= link_to "Tariff", :id_agent => r[:id], :action => "viewResellers1Tariff" %></td>
     </tr>
   <% end %>
   </tbody>

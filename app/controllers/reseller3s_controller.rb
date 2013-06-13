@@ -241,6 +241,19 @@ class Reseller3sController < ApplicationController
     @tariff_list = DB[:tariffs].where(:id_tariff => id_tariff)
   end
 
+  def viewResellers2Tariff
+    id_agent = params[:id_agent] 
+
+    @result = DB[:resellers2].where(:id => id_agent)
+    id_tariff = -1
+    @result.each do |c|
+      id_tariff = c[:id_tariff]
+    end
+    @tariff_list = DB[:tariffs].where(:id_tariff => id_tariff)
+    #puts @tariff_list
+    
+  end
+
   def show
     
   end
