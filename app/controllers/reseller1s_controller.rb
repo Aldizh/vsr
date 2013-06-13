@@ -107,14 +107,21 @@ class Reseller1sController < ApplicationController
 
     from_date_day = date["from_date(3i)"]
     from_date_day = addLeadingZero(from_date_day)
+    puts from_date_day
 
     from_date_month = date["from_date(2i)"]
     from_date_month = addLeadingZero(from_date_month)
+    puts from_date_month
 
     from_date_year = date["from_date(1i)"]
+    puts from_date_year
 
     to_date_day = date["to_date(3i)"]
+    puts "hwjhfbejbf"
+    puts to_date_day
     to_date_day = addLeadingZero(to_date_day)
+    puts "hwjhfbejbf"
+    puts to_date_day
 
     to_date_month = date["to_date(2i)"]
     to_date_month = addLeadingZero(to_date_month)
@@ -156,6 +163,7 @@ class Reseller1sController < ApplicationController
       :headers => { :accept => :json, :content_type => :json}).execute
 
     @result = ActiveSupport::JSON.decode(@response)
+    puts @result
     
   end
 
@@ -241,13 +249,6 @@ class Reseller1sController < ApplicationController
 
   def show
     
-  end
-
-  def addLeadingZero (arg)
-    if arg.to_i < 10
-      arg = "0" + arg
-      return arg
-    end
   end
 
   def prefix_match (prefix, number)

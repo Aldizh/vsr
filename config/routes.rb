@@ -1,40 +1,33 @@
 Vsr::Application.routes.draw do
 
   get "reseller1s/viewActiveCalls"
-  post "reseller1s/viewActiveCalls"
   get "reseller1s/viewMyClients"
-  post "reseller1s/viewMyClients"
   get "reseller1s/addPayment"
   post "reseller1s/addPayment"
   get "reseller1s/payment_history"
-  post "reseller1s/payment_history"
   get "reseller1s/filteredPaymentHistory"
   post "reseller1s/filteredPaymentHistory"
   get "reseller1s/viewMyClientsCDR"
 
   get "reseller2s/viewActiveCalls"
-  post "reseller2s/viewActiveCalls"
   get "reseller2s/viewMyResellers"
-  post "reseller2s/viewMyResellers"
   get "reseller2s/addPayment"
   post "reseller2s/addPayment"
   get "reseller2s/payment_history"
-  post "reseller2s/payment_history"
   get "reseller2s/filteredPaymentHistory"
   post "reseller2s/filteredPaymentHistory"
   get "reseller2s/viewMyResellersCDR"
 
   get "reseller3s/viewActiveCalls"
-  post "reseller3s/viewActiveCalls"
   get "reseller3s/viewMyResellers"
-  post "reseller3s/viewMyResellers"
   get "reseller3s/addPayment"
   post "reseller3s/addPayment"
   get "reseller3s/payment_history"
-  post "reseller3s/payment_history"
   get "reseller3s/filteredPaymentHistory"
   post "reseller3s/filteredPaymentHistory"
   get "reseller3s/viewMyResellersCDR"
+
+  get "users/viewMyResellers"
 
   get "sessions/new"
   
@@ -48,6 +41,7 @@ Vsr::Application.routes.draw do
   resources :reseller1s
   resources :reseller2s
   resources :reseller3s
+  resources :users
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

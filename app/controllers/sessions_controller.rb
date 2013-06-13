@@ -1,5 +1,8 @@
 class SessionsController < ApplicationController
   def new
+    if session[:current_user_id]
+      redirect_to '/users'
+    end
     if session[:current_reseller3_id]
       redirect_to '/reseller3s'
     end
@@ -15,11 +18,20 @@ class SessionsController < ApplicationController
   end
 
   def create
+    user = User.authenticate(params[:login], params[:password])
     reseller3 = Reseller3.authenticate(params[:login], params[:password])
     reseller2 = Reseller2.authenticate(params[:login], params[:password])
     reseller1 = Reseller1.authenticate(params[:login], params[:password])
     client = Client.authenticate(params[:login], params[:password])
-    if reseller3
+    
+    if user
+      session[:current_user_id] = user[:id_user]
+      session[:current_user_login] = user[:login]
+      session[:password] = user[:password]
+      flash[:notice] = "You are successfuly logged in!"
+      redirect_to '/users'
+
+    elsif reseller3
       session[:current_reseller3_id] = reseller3[:id]
       session[:current_reseller3_login] = reseller3[:login]
       session[:password] = reseller3[:password]

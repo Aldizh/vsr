@@ -1,0 +1,7 @@
+<% if session[:current_user_id] %>
+  <h3>Welcome!</h3>
+  <p> Welcome dear user!</p>
+<% else %>
+  <%= flash[:error] = "You must be logged in to view this page" %><br><br>
+  <span class="login_link"><%= link_to "Login", "/sessions/new" %></span>
+<% end %>

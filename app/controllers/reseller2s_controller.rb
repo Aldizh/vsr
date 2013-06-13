@@ -229,12 +229,6 @@ class Reseller2sController < ApplicationController
     
   end
   
-  def addLeadingZero (arg)
-    if arg.to_i < 10
-      arg = "0" + arg
-      return arg
-    end
-  end
 
   def getClientsIDs
     my_direct_clients = DB[:Resellers1].where(:idReseller => session[:current_reseller2_id])

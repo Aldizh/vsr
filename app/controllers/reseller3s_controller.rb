@@ -236,12 +236,6 @@ class Reseller3sController < ApplicationController
     
   end
 
-  def addLeadingZero (arg)
-    if arg.to_i < 10
-      arg = "0" + arg
-      return arg
-    end
-  end
 
   def getClientsIDs
     reseller2s_ids = []

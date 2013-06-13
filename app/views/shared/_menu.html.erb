@@ -1,4 +1,12 @@
-<% if session[:current_reseller3_id] %>
+<% if session[:current_user_id] %>
+  <span class="about_you">You are logged in as <strong><%= session[:current_user_login] %></strong></span>
+    <table class="menu">
+      <tr>
+        <td><%= link_to "Home", "/users/" %></td>
+        <td><%= link_to "My Agents", "/users/viewMyResellers" %></td>
+      </tr>
+    </table>
+<% elsif session[:current_reseller3_id] %>
   <span class="about_you">You are logged in as <strong><%= session[:current_reseller3_login] %></strong></span>
     <table class="menu">
       <tr>
