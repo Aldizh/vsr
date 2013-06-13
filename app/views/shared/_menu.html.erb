@@ -36,5 +36,15 @@
         <td><%= link_to "View Active Calls", "/reseller1s/viewActiveCalls" %></td>
       </tr>
     </table>
+<% elsif session[:current_client_id] %>
+  <span class="about_you">You are logged in as <strong><%= session[:current_client_login] %></strong></span>
+    <table class="menu">
+      <tr>
+        <td><%= link_to "Home", "/clients/" %></td>
+        <td><%= link_to "View My Tariff", "/clients/viewMyTariff" %></td>
+      </tr>
+    </table>
+
+
 
 <% end %>
