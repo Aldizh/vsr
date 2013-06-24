@@ -4,18 +4,31 @@ require 'rest_client'
 class Reseller1sController < ApplicationController  
 
   def index
-    @total_profit = 0
-    @my_clients = DB[:clientsshared].where(:id_reseller => session[:current_reseller1_id])
+    @total_cost = 0
+    @total_revenue = 0
     @calls = []
+    @my_clients = DB[:clientsshared].where(:id_reseller => session[:current_reseller1_id])
     @my_clients.each do |client|
-      @calls.push(DB[:calls].where(:id_client => client[:id_client]))
+      @calls.push(DB[:calls_costs].where(:id_client => client[:id_client]))
     end
     @calls.each do |call|
-      call.each do |c|
-        @total_profit += (c[:cost] - c[:costD])
+      duration = call.first[:duration]
+
+      @client_tariffs = DB[:tariffs].where(:id_tariff => call.first[:id_tariff], :prefix => call.first[:tariff_prefix])
+      @client_tariffs.each do |tariff|
+        @total_revenue += (duration*tariff[:voice_rate])
       end
+       
+      @current = DB[:resellers1].where(:id => session[:current_reseller1_id])
+      @parent = DB[:resellers2].where(:id => @current.first[:idReseller])
+      @reseller_tariffs = DB[:tariffs].where(:id_tariff => @parent.first[:id_tariff], :prefix => call.first[:tariff_prefix])
+      @reseller_tariffs.each do |tariff|
+        @total_cost += (duration*tariff[:voice_rate])
+      end
+
     end
-    #puts prefix_match("1234", "123456")
+    puts @total_revenue
+    puts @total_cost
 
     @url = "https://209.200.231.9/vsr3/reseller.api"
     @login = "#{session[:current_reseller1_login]}"
@@ -303,6 +316,17 @@ class Reseller1sController < ApplicationController
       client_ids.push(c[:id_client])
     end
     return client_ids
+  end
+
+  def cheapest_route(prefix, cost)
+    string_prefix = prefix.to_s
+    @min_cost = 1000000000
+    puts @string_prefix
+    @cost_hash[string_prefix] = cost
+    if @cost_hash[string_prefix] < @min_cost
+      @min_cost = @cost_hash[string_prefix]
+    end
+    return @min_cost
   end
 
 end

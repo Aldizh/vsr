@@ -44,6 +44,8 @@ Vsr::Application.routes.draw do
   get "reseller3s/viewResellers2Tariff"
 
   get "users/viewMyResellers"
+  get "users/addPayment"
+  post "users/addPayment"
 
   get "sessions/new"
   

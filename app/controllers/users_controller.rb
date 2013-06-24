@@ -36,8 +36,26 @@ class UsersController < ApplicationController
     end
   end
 
+  def addPayment
+
+    temp_payment = params[:payment_amount]
+    payment_note = params[:payment_note]
+    payment = temp_payment.to_f #changed payment to float
+    temp_hash = params[:resellers3]
+    @myResellers = DB[:resellers3]
+    @id = DB[:resellers3].where(:login => temp_hash["login"]).first[:id]
+    @actual_value = DB[:resellers3].where(:id => @id).first[:callsLimit]
+    DB[:resellerspayments].where(:id_reseller => @id).insert(:money => 1, :id_reseller => @id, :data => Time.now(), :type => 1, :description => "Test insertion", :actual_value => @actual_value)
+    DB[:resellers3].where(:id => @id).update(:callsLimit => :callsLimit + payment)
+    flash[:notice] = "Payment successfully added!"
+    redirect_to "/reseller3s/viewMyResellers"
+
+    
+  end
+
   def show
     
   end
+
 
 end
