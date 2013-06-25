@@ -5,6 +5,45 @@ class Reseller2sController < ApplicationController
 
   def index
 
+    @total_cost = 0
+    @total_revenue = 0
+    @calls = []
+    @my_clients = DB[:clientsshared].where(:id_reseller => session[:current_reseller2_id])
+    @my_clients.each do |client|
+      @calls.push(DB[:calls_costs].where(:id_client => client[:id_client]))
+    end
+    @calls.each do |call|
+      if call.first
+        duration = call.first[:duration]
+
+        @client_tariffs = DB[:tariffs].where(:id_tariff => call.first[:id_tariff], :prefix => call.first[:tariff_prefix])
+        @client_tariffs.each do |tariff|
+          puts cheapestRoute(tariff[:prefix])
+          puts tariff[:voice_rate]
+          if (tariff[:minimal_value] == 6 and tariff[:resolution] == 6) 
+            @total_revenue += (duration*tariff[:voice_rate]/36)
+            #@total_revenue += (duration*cheapestRoute(tariff[:prefix])/36)
+          else
+            @total_revenue += (duration*tariff[:voice_rate]/60)
+            #@total_revenue += (duration*cheapestRoute(tariff[:prefix])/60)
+          end
+        end
+         
+        @current = DB[:resellers2].where(:id => session[:current_reseller2_id])
+        @parent = DB[:resellers3].where(:id => @current.first[:idReseller])
+        @reseller_tariffs = DB[:tariffs].where(:id_tariff => @parent.first[:id_tariff], :prefix => call.first[:tariff_prefix])
+        @reseller_tariffs.each do |tariff|
+          if (tariff[:minimal_value] == 6 and tariff[:resolution] == 6) 
+            #@total_cost += (duration*tariff[:voice_rate]/36)
+            @total_cost += (duration*cheapestRoute(tariff[:prefix])/36)
+          else
+            #@total_cost += (duration*tariff[:voice_rate]/60)
+            @total_cost += (duration*cheapestRoute(tariff[:prefix])/60)
+          end
+        end
+      end
+
+    end
     @url = "https://209.200.231.9/vsr3/reseller.api"
     @login = "#{session[:current_reseller2_login]}"
     @password = "#{session[:password]}"
@@ -16,16 +55,7 @@ class Reseller2sController < ApplicationController
       "params" => {}
     }.to_json
 
-    
-    @response = RestClient::Request.new(
-      :method => :post,
-      :payload => @data,
-      :url => @url,
-      :user => @login,
-      :password => @password,
-      :headers => { :accept => :json, :content_type => :json}).execute
-
-    @result = ActiveSupport::JSON.decode(@response)  
+    @result = API_request(@login, @password, @url, @data)
 
   end
 
@@ -39,10 +69,8 @@ class Reseller2sController < ApplicationController
     session[:client_login] = client_login
 
     today = Time.new
-    date = (today.to_s).split(" ")
-    date_to = date[0]
-    date_comps = date_to.split("-")
-    year = date_comps[0]
+    date_to = (today.to_s).split(" ")[0]
+    year = today.year.to_s
 
     @data = {
     "jsonrpc" => "2.0",
@@ -67,17 +95,7 @@ class Reseller2sController < ApplicationController
     }.to_json
 
     
-    @response = RestClient::Request.new(
-      :method => :post,
-      :payload => @data,
-      :url => @url,
-      :user => @login,
-      :password => @password,
-      :headers => { :accept => :json, :content_type => :json}).execute
-
-    @result = ActiveSupport::JSON.decode(@response)  
-
-
+    @result = API_request(@login, @password, @url, @data)
 
   end
 
@@ -94,19 +112,15 @@ class Reseller2sController < ApplicationController
     # addLeadingZero is a helper method to add a leading zero for single digit
     # day or month so that we pass the right date formats to the api method - getClientPaymentsHistory
 
-    from_date_day = date["from_date(3i)"]
-    from_date_day = addLeadingZero(from_date_day)
+    from_date_day = date["from_date(3i)"].rjust(2, '0')
 
-    from_date_month = date["from_date(2i)"]
-    from_date_month = addLeadingZero(from_date_month)
+    from_date_month = date["from_date(2i)"].rjust(2, '0')
 
     from_date_year = date["from_date(1i)"]
 
-    to_date_day = date["to_date(3i)"]
-    to_date_day = addLeadingZero(to_date_day)
+    to_date_day = date["to_date(3i)"].rjust(2, '0')
 
-    to_date_month = date["to_date(2i)"]
-    to_date_month = addLeadingZero(to_date_month)
+    to_date_month = date["to_date(2i)"].rjust(2, '0')
 
     to_date_year = date["to_date(1i)"]
 
@@ -135,16 +149,7 @@ class Reseller2sController < ApplicationController
       }
     }.to_json
 
-    
-    @response = RestClient::Request.new(
-      :method => :post,
-      :payload => @data,
-      :url => @url,
-      :user => @login,
-      :password => @password,
-      :headers => { :accept => :json, :content_type => :json}).execute
-
-    @result = ActiveSupport::JSON.decode(@response)
+    @result = API_request(@login, @password, @url, @data)
     
   end    
 
@@ -203,15 +208,7 @@ class Reseller2sController < ApplicationController
         }
     }.to_json
 
-    @response = RestClient::Request.new(
-      :method => :post,
-      :payload => @data,
-      :url => @url,
-      :user => @login,
-      :password => @password,
-      :headers => { :accept => :json, :content_type => :json}).execute
-
-    @result = ActiveSupport::JSON.decode(@response) 
+    @result = API_request(@login, @password, @url, @data)
 
 
     if @result["error"] 
@@ -226,10 +223,7 @@ class Reseller2sController < ApplicationController
 
   def viewMyTariff
     @result = DB[:resellers2].where(:id => session[:current_reseller2_id])
-    id_tariff = -1
-    @result.each do |c|
-      id_tariff = c[:id_tariff]
-    end
+    id_tariff = @result.first[:id_tariff]
     @tariff_list = DB[:tariffs].where(:id_tariff => id_tariff)
   end
 
@@ -237,12 +231,8 @@ class Reseller2sController < ApplicationController
     id_agent = params[:id_agent] 
 
     @result = DB[:resellers1].where(:id => id_agent)
-    id_tariff = -1
-    @result.each do |c|
-      id_tariff = c[:id_tariff]
-    end
+    if_tariff = @result.first[:id_tariff]
     @tariff_list = DB[:tariffs].where(:id_tariff => id_tariff)
-    
   end
 
   def viewSelected
@@ -255,8 +245,17 @@ class Reseller2sController < ApplicationController
     end
   end
 
+  def viewSelectedTariff
+    @tariff_list = []
+    first_letter = params[:first_letter]
+    total_tariff = DB[:tariffs].filter(:description => /^(#{Regexp.quote(first_letter)}|#{Regexp.quote(first_letter.downcase)})/)
+    clients = DB[:resellers1].where(:idReseller => session[:current_reseller2_id])
+    clients.each do |client|
+      @tariff_list.push(total_tariff.where(:id_tariff => client[:id_tariff]))
+    end
+  end
+
   def show
-    
   end
   
 

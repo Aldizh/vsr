@@ -17,10 +17,14 @@ class Reseller1sController < ApplicationController
 
         @client_tariffs = DB[:tariffs].where(:id_tariff => call.first[:id_tariff], :prefix => call.first[:tariff_prefix])
         @client_tariffs.each do |tariff|
+          puts cheapestRoute(tariff[:prefix])
+          puts tariff[:voice_rate]
           if (tariff[:minimal_value] == 6 and tariff[:resolution] == 6) 
             @total_revenue += (duration*tariff[:voice_rate]/36)
+            #@total_revenue += (duration*cheapestRoute(tariff[:prefix])/36)
           else
-            @total_revenue += (duration*tariff[:voice_rate]/690)
+            @total_revenue += (duration*tariff[:voice_rate]/60)
+            #@total_revenue += (duration*cheapestRoute(tariff[:prefix])/60)
           end
         end
          
@@ -29,9 +33,11 @@ class Reseller1sController < ApplicationController
         @reseller_tariffs = DB[:tariffs].where(:id_tariff => @parent.first[:id_tariff], :prefix => call.first[:tariff_prefix])
         @reseller_tariffs.each do |tariff|
           if (tariff[:minimal_value] == 6 and tariff[:resolution] == 6) 
-            @total_cost += (duration*tariff[:voice_rate]/36)
+            #@total_cost += (duration*tariff[:voice_rate]/36)
+            @total_cost += (duration*cheapestRoute(tariff[:prefix])/36)
           else
-            @total_cost += (duration*tariff[:voice_rate]/690)
+            #@total_cost += (duration*tariff[:voice_rate]/60)
+            @total_cost += (duration*cheapestRoute(tariff[:prefix])/60)
           end
         end
       end
@@ -49,16 +55,7 @@ class Reseller1sController < ApplicationController
       "params" => {}
     }.to_json
 
-    
-    @response = RestClient::Request.new(
-      :method => :post,
-      :payload => @data,
-      :url => @url,
-      :user => @login,
-      :password => @password,
-      :headers => { :accept => :json, :content_type => :json}).execute
-
-    @result = ActiveSupport::JSON.decode(@response)  
+    @result = API_request(@login, @password, @url, @data)
 
   end
 
@@ -74,10 +71,8 @@ class Reseller1sController < ApplicationController
     session[:client_login] = client_login
     
     today = Time.new
-    date = (today.to_s).split(" ")
-    date_to = date[0]
-    date_comps = date_to.split("-")
-    year = date_comps[0]
+    date_to = (today.to_s).split(" ")[0]
+    year = today.year.to_s
 
     @data = {
     "jsonrpc" => "2.0",
@@ -101,16 +96,7 @@ class Reseller1sController < ApplicationController
       }
     }.to_json
 
-    
-    @response = RestClient::Request.new(
-      :method => :post,
-      :payload => @data,
-      :url => @url,
-      :user => @login,
-      :password => @password,
-      :headers => { :accept => :json, :content_type => :json}).execute
-
-    @result = ActiveSupport::JSON.decode(@response) 
+    @result = API_request(@login, @password, @url, @data)
 
   end
 
@@ -126,27 +112,21 @@ class Reseller1sController < ApplicationController
     # addLeadingZero is a helper method to add a leading zero for single digit
     # day or month so that we pass the right date formats to the api method - getClientPaymentsHistory
 
-    from_date_day = date["from_date(3i)"]
-    from_date_day = addLeadingZero(from_date_day)
+    from_date_day = date["from_date(3i)"].rjust(2, '0')
     puts from_date_day
 
-    from_date_month = date["from_date(2i)"]
-    from_date_month = addLeadingZero(from_date_month)
+    from_date_month = date["from_date(2i)"].rjust(2, '0')
     puts from_date_month
 
     from_date_year = date["from_date(1i)"]
     puts from_date_year
 
-    to_date_day = date["to_date(3i)"]
-    puts "hwjhfbejbf"
-    puts to_date_day
-    to_date_day = addLeadingZero(to_date_day)
+    to_date_day = date["to_date(3i)"].rjust(2, '0')
     puts "hwjhfbejbf"
     puts to_date_day
 
-    to_date_month = date["to_date(2i)"]
-    to_date_month = addLeadingZero(to_date_month)
 
+    to_date_month = date["to_date(2i)"].rjust(2, '0')
     to_date_year = date["to_date(1i)"]
 
     date_from = "#{from_date_year}-#{from_date_month}-#{from_date_day}"
@@ -174,17 +154,8 @@ class Reseller1sController < ApplicationController
       }
     }.to_json
 
-    
-    @response = RestClient::Request.new(
-      :method => :post,
-      :payload => @data,
-      :url => @url,
-      :user => @login,
-      :password => @password,
-      :headers => { :accept => :json, :content_type => :json}).execute
 
-    @result = ActiveSupport::JSON.decode(@response)
-    puts @result
+    @result = API_request(@login, @password, @url, @data)
     
   end
 
@@ -213,7 +184,6 @@ class Reseller1sController < ApplicationController
     client_ids.each do |id|
       @active_calls.push(calls.where(:id_client => id))
     end
-    puts @active_calls[0].first
   end
 
 
@@ -225,11 +195,9 @@ class Reseller1sController < ApplicationController
     temp_hash = params[:resellers1]
     login = temp_hash["login"] rescue nil
 
-
     @url = "https://209.200.231.9/vsr3/reseller.api"
     @login = "#{session[:current_reseller1_login]}"
     @password = "#{session[:password]}"
-
 
     @data = { 
       "jsonrpc" => "2.0", 
@@ -246,16 +214,7 @@ class Reseller1sController < ApplicationController
         }
     }.to_json
 
-    @response = RestClient::Request.new(
-      :method => :post,
-      :payload => @data,
-      :url => @url,
-      :user => @login,
-      :password => @password,
-      :headers => { :accept => :json, :content_type => :json}).execute
-
-    @result = ActiveSupport::JSON.decode(@response) 
-
+    @result = API_request(@login, @password, @url, @data)
 
     if @result["error"] 
       flash[:error_payment] = "Payment did not go through. Please try again!"
@@ -268,23 +227,15 @@ class Reseller1sController < ApplicationController
 
   def viewMyTariff
     @result = DB[:resellers1].where(:id => session[:current_reseller1_id])
-    id_tariff = -1
-    @result.each do |c|
-      id_tariff = c[:id_tariff]
-    end
+    id_tariff = @result.first[:id_tariff]
     @tariff_list = DB[:tariffs].where(:id_tariff => id_tariff)
+
   end
 
   def viewClientsTariff
-    id_client = params[:id_client]
-
-    @result = DB[:clientsshared].where(:id_client => id_client)
-    id_tariff = -1
-    @result.each do |c|
-      id_tariff = c[:id_tariff]
-    end
+    @result = DB[:clientsshared].where(:id_client => params[:id_client])
+    id_tariff = @result.first[:id_tariff]
     @tariff_list = DB[:tariffs].where(:id_tariff => id_tariff)
-    
   end
 
   def viewSelected
@@ -297,8 +248,17 @@ class Reseller1sController < ApplicationController
     end
   end
 
+  def viewSelectedTariff
+    @tariff_list = []
+    first_letter = params[:first_letter]
+    total_tariff = DB[:tariffs].filter(:description => /^(#{Regexp.quote(first_letter)}|#{Regexp.quote(first_letter.downcase)})/)
+    clients = DB[:clientsshared].where(:id_reseller => session[:current_reseller1_id])
+    clients.each do |client|
+      @tariff_list.push(total_tariff.where(:id_tariff => client[:id_tariff]))
+    end
+  end
+
   def show
-    
   end
 
   def prefix_match (prefix, number)
@@ -323,15 +283,28 @@ class Reseller1sController < ApplicationController
     return client_ids
   end
 
-  def cheapest_route(prefix, cost)
-    string_prefix = prefix.to_s
-    @min_cost = 1000000000
-    puts @string_prefix
-    @cost_hash[string_prefix] = cost
-    if @cost_hash[string_prefix] < @min_cost
-      @min_cost = @cost_hash[string_prefix]
+  #use this method to calculate the cheapest cost call
+  def cheapestRoute(prefix)
+    # returns voice_rate of cheapest prefix (including all subprefixes)
+    return getAllPrefixRates(prefix).min_by {|k, v| v}[1]
+  end
+
+  def getAllPrefixRates(prefix)
+    # returns a hash of every subprefix of prefix and rates, key=subprefix, value=voice_rate of subprefix (if it exists)
+    prefixes = Hash.new
+    (1..(prefix.length)).each do |i|
+      subprefix = prefix[0, i]
+      subprefix_cost = getPrefixCost(subprefix)
+      if not subprefix_cost.nil?
+        prefixes[subprefix] = subprefix_cost
+      end
     end
-    return @min_cost
+    return prefixes
+  end
+
+  def getPrefixCost(subprefix)
+    # returns voice_rate of prefix if it exists in tariffs database, else nil
+    return DB[:tariffs].where(:prefix => subprefix).first[:voice_rate]
   end
 
 end

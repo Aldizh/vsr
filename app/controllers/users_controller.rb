@@ -16,16 +16,7 @@ class UsersController < ApplicationController
       "params" => {}
     }.to_json
 
-    
-    @response = RestClient::Request.new(
-      :method => :post,
-      :payload => @data,
-      :url => @url,
-      :user => @login,
-      :password => @password,
-      :headers => { :accept => :json, :content_type => :json}).execute
-
-    @result = ActiveSupport::JSON.decode(@response)  
+    @result = API_request(@login, @password, @url, @data)
   end
   
   def viewMyResellers
@@ -50,11 +41,9 @@ class UsersController < ApplicationController
     flash[:notice] = "Payment successfully added!"
     redirect_to "/reseller3s/viewMyResellers"
 
-    
   end
 
   def show
-    
   end
 
 

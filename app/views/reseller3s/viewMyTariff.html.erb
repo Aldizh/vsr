@@ -1,3 +1,8 @@
+<% ('A'..'Z').each do |char| %>
+    <%= link_to char, :first_letter => char, :action => 'viewSelectedTariff'%>
+<% end %>
+<strong> Select by country! </strong>
+<%= button_to "All", :action => 'viewMyTariff'%>
 <table class="tariff_list">
   	  <thead>
   		<th>Prefix</th>

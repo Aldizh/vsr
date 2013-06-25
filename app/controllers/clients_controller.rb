@@ -10,10 +10,7 @@ class ClientsController < ApplicationController
   
   def viewMyTariff
   	@result = DB[:clientsshared].where(:id_client => session[:current_client_id])
-  	id_tariff = -1
-    @result.each do |c|
-      id_tariff = c[:id_tariff]
-    end
+  	id_tariff = @result.first[:id_tariff]
   	@tariff_list = DB[:tariffs].where(:id_tariff => id_tariff)
   end
 
