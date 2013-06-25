@@ -12,23 +12,31 @@ class Reseller1sController < ApplicationController
       @calls.push(DB[:calls_costs].where(:id_client => client[:id_client]))
     end
     @calls.each do |call|
-      duration = call.first[:duration]
+      if call.first
+        duration = call.first[:duration]
 
-      @client_tariffs = DB[:tariffs].where(:id_tariff => call.first[:id_tariff], :prefix => call.first[:tariff_prefix])
-      @client_tariffs.each do |tariff|
-        @total_revenue += (duration*tariff[:voice_rate])
-      end
-       
-      @current = DB[:resellers1].where(:id => session[:current_reseller1_id])
-      @parent = DB[:resellers2].where(:id => @current.first[:idReseller])
-      @reseller_tariffs = DB[:tariffs].where(:id_tariff => @parent.first[:id_tariff], :prefix => call.first[:tariff_prefix])
-      @reseller_tariffs.each do |tariff|
-        @total_cost += (duration*tariff[:voice_rate])
+        @client_tariffs = DB[:tariffs].where(:id_tariff => call.first[:id_tariff], :prefix => call.first[:tariff_prefix])
+        @client_tariffs.each do |tariff|
+          if (tariff[:minimal_value] == 6 and tariff[:resolution] == 6) 
+            @total_revenue += (duration*tariff[:voice_rate]/36)
+          else
+            @total_revenue += (duration*tariff[:voice_rate]/690)
+          end
+        end
+         
+        @current = DB[:resellers1].where(:id => session[:current_reseller1_id])
+        @parent = DB[:resellers2].where(:id => @current.first[:idReseller])
+        @reseller_tariffs = DB[:tariffs].where(:id_tariff => @parent.first[:id_tariff], :prefix => call.first[:tariff_prefix])
+        @reseller_tariffs.each do |tariff|
+          if (tariff[:minimal_value] == 6 and tariff[:resolution] == 6) 
+            @total_cost += (duration*tariff[:voice_rate]/36)
+          else
+            @total_cost += (duration*tariff[:voice_rate]/690)
+          end
+        end
       end
 
     end
-    puts @total_revenue
-    puts @total_cost
 
     @url = "https://209.200.231.9/vsr3/reseller.api"
     @login = "#{session[:current_reseller1_login]}"
@@ -202,12 +210,9 @@ class Reseller1sController < ApplicationController
     @active_calls = []
     calls = DB[:currentcalls] #cache this so we don't have to query db inside loop
     client_ids = getClientsIDs()
-    puts "IDS"
-    puts client_ids
     client_ids.each do |id|
       @active_calls.push(calls.where(:id_client => id))
     end
-    puts "CALLLSSSSSS"
     puts @active_calls[0].first
   end
 
