@@ -17,8 +17,6 @@ class Reseller1sController < ApplicationController
 
         @client_tariffs = DB[:tariffs].where(:id_tariff => call.first[:id_tariff], :prefix => call.first[:tariff_prefix])
         @client_tariffs.each do |tariff|
-          puts cheapestRoute(tariff[:prefix])
-          puts tariff[:voice_rate]
           if (tariff[:minimal_value] == 6 and tariff[:resolution] == 6) 
             @total_revenue += (duration*tariff[:voice_rate]/36)
             #@total_revenue += (duration*cheapestRoute(tariff[:prefix])/36)
@@ -33,8 +31,8 @@ class Reseller1sController < ApplicationController
         @reseller_tariffs = DB[:tariffs].where(:id_tariff => @parent.first[:id_tariff], :prefix => call.first[:tariff_prefix])
         @reseller_tariffs.each do |tariff|
           if (tariff[:minimal_value] == 6 and tariff[:resolution] == 6) 
-            @total_cost += (duration*tariff[:voice_rate]/36)
-            #@total_cost += (duration*cheapestRoute(tariff[:prefix])/36)
+            #@total_cost += (duration*tariff[:voice_rate]/36)
+            @total_cost += (duration*cheapestRoute(tariff[:prefix])/36)
           else
             @total_cost += (duration*tariff[:voice_rate]/60)
             #@total_cost += (duration*cheapestRoute(tariff[:prefix])/60)
@@ -512,28 +510,7 @@ class Reseller1sController < ApplicationController
   end
 
   #use this method to calculate the cheapest cost call
-  def cheapestRoute(prefix)
-    # returns voice_rate of cheapest prefix (including all subprefixes)
-    return getAllPrefixRates(prefix).min_by {|k, v| v}[1]
-  end
-
-  def getAllPrefixRates(prefix)
-    # returns a hash of every subprefix of prefix and rates, key=subprefix, value=voice_rate of subprefix (if it exists)
-    prefixes = Hash.new
-    (1..(prefix.length)).each do |i|
-      subprefix = prefix[0, i]
-      subprefix_cost = getPrefixCost(subprefix)
-      if not subprefix_cost.nil?
-        prefixes[subprefix] = subprefix_cost
-      end
-    end
-    return prefixes
-  end
-
-  def getPrefixCost(subprefix)
-    # returns voice_rate of prefix if it exists in tariffs database, else nil
-    return DB[:tariffs].where(:prefix => subprefix).first[:voice_rate]
-  end
+  
 
   def isValidLogin(login)
     if login.length < 4
