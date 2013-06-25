@@ -1,5 +1,9 @@
 Vsr::Application.routes.draw do
 
+  get "reseller1s/addClient"
+  get "reseller1s/addClientSubmit"
+  post "reseller1s/addClientSubmit"
+  get "reseller1s/testMethod"
   get "reseller1s/viewSelectedTariff"
   get "reseller1s/viewSelected"
   get "reseller1s/viewMyTariff"

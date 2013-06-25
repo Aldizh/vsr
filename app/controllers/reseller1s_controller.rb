@@ -225,6 +225,234 @@ class Reseller1sController < ApplicationController
     redirect_to "/reseller1s/viewMyClients"    
   end
 
+  def addClient
+
+    @url = "https://209.200.231.9/vsr3/reseller.api"
+    @login = "#{session[:current_reseller1_login]}"
+    @password = "#{session[:password]}"
+
+    ####### PREFIX SD
+    @data_tarrif = {
+      "jsonrpc" => "2.0",
+      "id" => 1,
+      "method" => "arrayOfTariffs",
+      "params" => {}
+      }.to_json
+
+    @response_tariff = RestClient::Request.new(
+      :method => :post,
+      :payload => @data_tarrif,
+      :url => @url,
+      :user => @login,
+      :password => @password,
+      :headers => { :accept => :json, :content_type => :json}).execute
+
+    @result_tariff = ActiveSupport::JSON.decode(@response_tariff)
+    
+  end
+
+  # in addClientSubmit, you will come across these similar looking api method - arrayOfPrefixesXX.
+  # These are crucial for clients in retreiving the Prefixs that their R1 uses.
+  
+  def addClientSubmit
+    @url = "https://209.200.231.9/vsr3/reseller.api"
+    @login = "#{session[:current_reseller1_login]}"
+    @password = "#{session[:password]}"
+
+    @client_login = params[:login]
+    @client_password = params[:password]
+    @client_pin = params[:pin]
+    @client_calls_limit = params[:calls_limit]
+    temp_hash = params[:client]
+    @tariff = temp_hash["tariff"] rescue nil
+
+    session[:client_login] = @client_login
+    session[:client_pin] = @client_pin
+    session[:client_calls_limit] = @client_calls_limit
+
+    if isValidLogin(@client_login)
+      if isValidPassword(@client_password)
+
+        ####### PREFIX SD
+        @data_sd = {
+          "jsonrpc" => "2.0",
+          "id" => 1,
+          "method" => "arrayOfPrefixesSD",
+          "params" => {}
+          }.to_json
+
+        @response_sd = RestClient::Request.new(
+          :method => :post,
+          :payload => @data_sd,
+          :url => @url,
+          :user => @login,
+          :password => @password,
+          :headers => { :accept => :json, :content_type => :json}).execute
+
+        @result_sd = ActiveSupport::JSON.decode(@response_sd)
+
+        ###### PREFIX ST
+
+        @data_st = {
+          "jsonrpc" => "2.0",
+          "id" => 1,
+          "method" => "arrayOfPrefixesST",
+          "params" => {}
+          }.to_json
+
+        @response_st = RestClient::Request.new(
+          :method => :post,
+          :payload => @data_st,
+          :url => @url,
+          :user => @login,
+          :password => @password,
+          :headers => { :accept => :json, :content_type => :json}).execute
+
+        @result_st = ActiveSupport::JSON.decode(@response_st)
+
+        ####### PREFIX DP
+
+        @data_dp = {
+          "jsonrpc" => "2.0",
+          "id" => 1,
+          "method" => "arrayOfPrefixesDP",
+          "params" => {}
+          }.to_json
+
+        @response_dp = RestClient::Request.new(
+          :method => :post,
+          :payload => @data_dp,
+          :url => @url,
+          :user => @login,
+          :password => @password,
+          :headers => { :accept => :json, :content_type => :json}).execute
+
+        @result_dp = ActiveSupport::JSON.decode(@response_dp)
+
+        ####### PREFIX TP
+
+        @data_tp = {
+          "jsonrpc" => "2.0",
+          "id" => 1,
+          "method" => "arrayOfPrefixesTP",
+          "params" => {}
+          }.to_json
+
+        @response_tp = RestClient::Request.new(
+          :method => :post,
+          :payload => @data_tp,
+          :url => @url,
+          :user => @login,
+          :password => @password,
+          :headers => { :accept => :json, :content_type => :json}).execute
+
+        @result_tp = ActiveSupport::JSON.decode(@response_tp)
+
+        ###### ADD RETAIL
+
+        @data = {
+          "jsonrpc" => "2.0",
+          "id" => 1,
+          "method" => "addRetail",
+          "params" => {
+            "client" => {
+              "login" => "#{@client_login}",
+              "password" => "#{@client_password}",
+              "pin" => "#{@client_pin}" ,
+              "active" => true,
+              "tariffName" => @tariff,
+              "callLimit" => @client_calls_limit,
+              "recognizeByANI" => false,
+              "generateRingBack" => false,
+              "connectImmediately" => false,
+              "waitForBlindTransferResult" => false,
+              "recordCalls" => false,
+              "tariffToANI" => false,
+              "tariffToDNIs" => false,
+              "useInterIntraTariffs" => false,
+              "getRateFromDesctination" => false,
+              "prefixes" => {
+                "SD" => @result_sd["result"][0],
+                "ST" => @result_st["result"][0],
+                "DP" => @result_dp["result"][0],
+                "TP" => @result_tp["result"][0],
+                },
+              }
+            }
+          }.to_json
+        
+        @response = RestClient::Request.new(
+          :method => :post,
+          :payload => @data,
+          :url => @url,
+          :user => @login,
+          :password => @password,
+          :headers => { :accept => :json, :content_type => :json}).execute
+
+        @result = ActiveSupport::JSON.decode(@response) 
+
+        if @result["error"] 
+          flash[:error_adding] = "Oops! Try again!"
+        else 
+          flash[:notice_added] = "Hurray! Added!"
+        end
+      else
+      flash[:error_adding] = "Password must be atleast 4 characters."
+      redirect_to "/reseller1s/addClient"
+      end
+    else
+      flash[:error_adding] = "Login must be atleast 4 characters."
+      redirect_to "/reseller1s/addClient"
+    end
+
+  end
+
+  # testMethod2 doesn't is simply to test if getRetails (returning list of clients for R1) works or not
+  # and YAY! it works! We should use this APU method instead of reading database for R1. We can do the same for R2 and R3.
+  # But for end users and users, we have to live with the DB Read. 
+
+  def testMethod2
+    @url = "https://209.200.231.9/vsr3/reseller.api"
+    @login = "#{session[:current_reseller1_login]}"
+    @password = "#{session[:password]}"
+
+    puts @login
+    puts @password
+
+    @data = {
+      "jsonrpc" => "2.0",
+      "id" => 1,
+      "method" => "getRetails",
+      "params" => {
+        "filter" => {
+          "login" => "",
+          "password" => "",
+          "tariffName" => "",
+          "remainingFundsFrom" => 0.0,
+          "remainingFundsTo" => 0.0,
+          "active" => true,
+          "ani" => "",
+      },
+          "paging" => {
+          "pageNumber" => 0,
+          "pageSize" => 10,
+          "descending" => false,
+          },
+        }
+      }.to_json
+    
+    @response = RestClient::Request.new(
+      :method => :post,
+      :payload => @data,
+      :url => @url,
+      :user => @login,
+      :password => @password,
+      :headers => { :accept => :json, :content_type => :json}).execute
+
+    @result = ActiveSupport::JSON.decode(@response) 
+  end
+
+
   def viewMyTariff
     @result = DB[:resellers1].where(:id => session[:current_reseller1_id])
     id_tariff = @result.first[:id_tariff]
@@ -307,4 +535,20 @@ class Reseller1sController < ApplicationController
     return DB[:tariffs].where(:prefix => subprefix).first[:voice_rate]
   end
 
+  def isValidLogin(login)
+    if login.length < 4
+      return false
+    else
+      return true
+    end
+  end
+
+  def isValidPassword(password)
+    if password.length < 4
+      return false
+    else
+      return true
+    end
+  end
+  
 end
