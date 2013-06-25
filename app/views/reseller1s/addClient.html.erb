@@ -4,7 +4,7 @@
 <% if flash[:notice_added] %>
   <div class="flash_notice"><%= flash[:notice_added] %></div>
 <% end %>
-<div class="common_form" id="add_client">
+<div class="add_client">
 <%= form_tag(:action => "addClientSubmit") do %>
   <%= label_tag "Login: " %>
   <%= text_field_tag 'login', session[:client_login] %><br>

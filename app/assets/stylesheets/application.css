@@ -126,16 +126,3 @@ table, th, td {
 .list a:hover {
 	text-decoration: underline;
 }
-
-#add_client input, select{
-	display: block;
-}
-.common_form {
-	width: 400px;
-	padding: 5px;
-	margin-top: 10px;
-}
-.common_form input, select {
-	margin-top: 10px;
-	padding: 3px;
-}
