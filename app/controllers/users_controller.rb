@@ -36,8 +36,12 @@ class UsersController < ApplicationController
     @myResellers = DB[:resellers3]
     @id = DB[:resellers3].where(:login => temp_hash["login"]).first[:id]
     @actual_value = DB[:resellers3].where(:id => @id).first[:callsLimit]
-    DB[:resellerspayments].where(:id_reseller => @id).insert(:money => 1, :id_reseller => @id, :data => Time.now(), :type => 1, :description => "Test insertion", :actual_value => @actual_value)
-    DB[:resellers3].where(:id => @id).update(:callsLimit => :callsLimit + payment)
+    payment_insertion = DB[:resellerspayments].where(:id_reseller => @id).prepare
+    payment_insertion.insert(:money => 1, :id_reseller => @id, :data => Time.now(), :type => 1, :description => "Test insertion", :actual_value => @actual_value)
+    
+    payment_update = DB[:resellers3].where(:id => @id).prepare
+    payment_update.update(:callsLimit => :callsLimit + payment)
+    
     flash[:notice] = "Payment successfully added!"
     redirect_to "/reseller3s/viewMyResellers"
 
