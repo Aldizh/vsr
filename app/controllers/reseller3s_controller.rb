@@ -4,30 +4,7 @@ require 'rest_client'
 class Reseller3sController < ApplicationController  
 
   def index
-    @total_cost = 0
-    @total_revenue = 0
-    @calls = []
-    @my_clients = DB[:resellers2].where(:idReseller => session[:current_reseller3_id])
-    @my_clients.each do |client|
-      @calls.push(DB[:calls_costs].where(:id_client => client[:id_client]))
-    end
-    @calls.each do |call|
-      if call.first
-        duration = call.first[:duration]
-
-        @client_tariffs = DB[:tariffs].where(:id_tariff => call.first[:id_tariff], :prefix => call.first[:tariff_prefix])
-        @client_tariffs.each do |tariff|
-          if (tariff[:minimal_value] == 6 and tariff[:resolution] == 6) 
-            @total_revenue += (duration*tariff[:voice_rate]/36)
-            #@total_revenue += (duration*cheapestRoute(tariff[:prefix])/36)
-          else
-            @total_revenue += (duration*tariff[:voice_rate]/60)
-            #@total_revenue += (duration*cheapestRoute(tariff[:prefix])/60)
-          end
-        end
-      end
-
-    end
+    
 
     @url = "https://209.200.231.9/vsr3/reseller.api"
     @login = "#{session[:current_reseller3_login]}"
@@ -90,24 +67,8 @@ class Reseller3sController < ApplicationController
     client_login = session[:client_login]
     date = params[:filteredPaymentHistory]
 
-
-    # addLeadingZero is a helper method to add a leading zero for single digit
-    # day or month so that we pass the right date formats to the api method - getClientPaymentsHistory
-
-    from_date_day = date["from_date(3i)"].rjust(2, '0')
-
-    from_date_month = date["from_date(2i)"].rjust(2, '0')
-
-    from_date_year = date["from_date(1i)"]
-
-    to_date_day = date["to_date(3i)"].rjust(2, '0')
-
-    to_date_month = date["to_date(2i)"].rjust(2, '0')
-
-    to_date_year = date["to_date(1i)"]
-
-    date_from = "#{from_date_year}-#{from_date_month}-#{from_date_day}"
-    date_to = "#{to_date_year}-#{to_date_month}-#{to_date_day}"
+    date_from = Time.new(date["from_date(1i)"], date["from_date(2i)"], date["from_date(3i)"]).strftime("%Y-%m-%d")
+    date_to = Time.new(date["to_date(1i)"], date["to_date(2i)"], date["to_date(3i)"]).strftime("%Y-%m-%d")
 
     @data = {
     "jsonrpc" => "2.0",

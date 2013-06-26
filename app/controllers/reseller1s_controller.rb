@@ -31,8 +31,8 @@ class Reseller1sController < ApplicationController
         @reseller_tariffs = DB[:tariffs].where(:id_tariff => @parent.first[:id_tariff], :prefix => call.first[:tariff_prefix])
         @reseller_tariffs.each do |tariff|
           if (tariff[:minimal_value] == 6 and tariff[:resolution] == 6) 
-            #@total_cost += (duration*tariff[:voice_rate]/36)
-            @total_cost += (duration*cheapestRoute(tariff[:prefix])/36)
+            @total_cost += (duration*tariff[:voice_rate]/36)
+            #@total_cost += (duration*cheapestRoute(tariff[:prefix])/36)
           else
             @total_cost += (duration*tariff[:voice_rate]/60)
             #@total_cost += (duration*cheapestRoute(tariff[:prefix])/60)
@@ -56,7 +56,6 @@ class Reseller1sController < ApplicationController
     @result = API_request(@login, @password, @url, @data)
 
   end
-
 
 
   def payment_history
@@ -106,29 +105,8 @@ class Reseller1sController < ApplicationController
 
     date = params[:filteredPaymentHistory]
     
-
-    # addLeadingZero is a helper method to add a leading zero for single digit
-    # day or month so that we pass the right date formats to the api method - getClientPaymentsHistory
-
-    from_date_day = date["from_date(3i)"].rjust(2, '0')
-    puts from_date_day
-
-    from_date_month = date["from_date(2i)"].rjust(2, '0')
-    puts from_date_month
-
-    from_date_year = date["from_date(1i)"]
-    puts from_date_year
-
-    to_date_day = date["to_date(3i)"].rjust(2, '0')
-    puts "hwjhfbejbf"
-    puts to_date_day
-
-
-    to_date_month = date["to_date(2i)"].rjust(2, '0')
-    to_date_year = date["to_date(1i)"]
-
-    date_from = "#{from_date_year}-#{from_date_month}-#{from_date_day}"
-    date_to = "#{to_date_year}-#{to_date_month}-#{to_date_day}"
+    date_from = Time.new(date["from_date(1i)"], date["from_date(2i)"], date["from_date(3i)"]).strftime("%Y-%m-%d")
+    date_to = Time.new(date["to_date(1i)"], date["to_date(2i)"], date["to_date(3i)"]).strftime("%Y-%m-%d")
 
     @data = {
     "jsonrpc" => "2.0",
