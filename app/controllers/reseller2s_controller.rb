@@ -133,6 +133,10 @@ class Reseller2sController < ApplicationController
     temp_hash = params[:resellers2]
     login = temp_hash["login"] rescue nil
 
+    if payment <= 0 
+      flash[:error_payment] = "Payment should be great than 0"
+      return redirect_to "/reseller2s/viewMyResellers"
+    end
 
     @url = "https://209.200.231.9/vsr3/reseller.api"
     @login = "#{session[:current_reseller2_login]}"

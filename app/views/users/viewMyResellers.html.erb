@@ -20,7 +20,7 @@
     <%= label_tag "Note:" %><br>
     <%= text_area_tag :payment_note, (params[:payment_note] or "") %>  
     <br><br>
-    <%= submit_tag "Add" %>
+    <%= submit_tag "Add", :confirm => 'Are you sure?' %>
   <% end %>
 </div>
 <h4>List of your agents ... </h4>
