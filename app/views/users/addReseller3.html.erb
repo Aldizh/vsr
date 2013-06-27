@@ -1,0 +1,26 @@
+<% if flash[:error_adding] %>
+  <div class="flash_error"><%= flash[:error_adding] %></div>
+<% end %>
+<% if flash[:notice_added] %>
+  <div class="flash_notice"><%= flash[:notice_added] %></div>
+<% end %>
+<div id="add_reseller3">
+  <% @id_tariffs = ["T1", "T2"] %>
+<%= form_tag(:action => "addReseller3Submit", :id => "add_reseller3") do %>
+  <br><br>
+  <%= label_tag "Login: " %><br>
+  <%= text_field_tag 'login', session[:client_login] %><br><br>
+  <%= label_tag "Password:" %><br>
+  <%= text_field_tag 'password' %><br><br>
+  <%= label_tag "Choose Tariff: " %><br>
+  <%#= select :client, :tariff, @result_tariff["result"].collect {|t| t} %>
+  <%= select :client, :tariff, @id_tariffs.collect {|t| t} %><br><br>
+  <%= label_tag "calls limit:" %><br>
+  <%= number_field_tag 'callsLimit' %><br><br>
+  <%= label_tag "clients limit:" %><br>
+  <%= number_field_tag 'clientsLimit' %><br><br>
+  <%= label_tag "Identifier:" %><br>
+  <%= text_field_tag 'identifier' %><br><br>
+  <%= submit_tag "Add", :class => "submit_button" %><br><br>
+<% end %>
+</div>

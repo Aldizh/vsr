@@ -46,17 +46,32 @@ class UsersController < ApplicationController
     redirect_to "/reseller3s/viewMyResellers"
   end
 
-  def addReseller
+  def addReseller3
+    # Read the DB[:tariffs] and pick those whose Reseller is empty string
+    # and save the Tariffs name in an array called @result_tariff
+
+    # go to table tariffreseller and give me the list of id_tariff whose resellerlevel is empty string
+    # and then pass it to the view for a drop down selection
+    # put the list of the id_tariffs in a variable named @id_tariffs
+
   end
-  def addResellerSubmit
+
+  def addReseller3Submit
+    #to begin with, we are passing only limited fields.
+
     @login = params[:login] #required
     @password = params[:password] #required
+    # consused?
     @type = params[:type] #required
+    #we will grap the id_tariff from the drop down list 
     @id_tariff = params[:id_tariff] #required
     @callsLimit = params[:callsLimit] #required
     @clientsLimit = params[:clientsLimit] #required
+    #tech_prefix bit confusing. It has four fields within itself, separated by a semicolon in the db table
     @tech_prefix = params[:tech_prefix] #required
     @identifier =   params[:identifier] #required
+    
+    # we will not pass the following for now
     @Fullname = params[:Fullname] #required
     @Address = params[:Address] #required
     @City = params[:City] #required
@@ -67,7 +82,8 @@ class UsersController < ApplicationController
     @TaxID = params[:TaxID] #required 
     @type2 = params[:type2] #required 
     @language = params[:language] #required
-    new_reseller = DB[:resellers3].prepare
+
+    new_reseller = DB[:resellers3]
     new_reseller.insert(:login => @login, :password => @password, :type => @tyoe, :id_tariff => @id_tariff, :callsLimit => @callsLimit,
                         :clientsLimit => @clientsLimit,  :tech_prefix => @tech_prefix, :identifier => @identifier, :Fullname => @Fullname,
                         :Address => @Address, :City => @City, :ZipCode => @ZipCode, :Country => @Country, :Phone => @Phone, :Email => @Email,
