@@ -1,0 +1,19 @@
+<h4>List of your agents ... </h4>
+<table class = "list">
+  <thead>
+    <tr>
+      <th> Tariff ID </th>
+      <th> Tariff Name </th>
+      <th>  </td>
+    </tr>
+  </thead>
+  <tbody>
+  <% @tariff_names.each do |t| %>
+    <tr>
+      <td><%= t[:id_tariff] %> </td>
+      <td><%= t[:description] %></td>
+      <td><%= link_to "Add Rates", :id_tariff => t[:id_tariff], :action => "addRatesToTariff" %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

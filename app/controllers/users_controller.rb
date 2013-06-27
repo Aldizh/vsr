@@ -94,6 +94,22 @@ class UsersController < ApplicationController
                         :TaxID => @TaxID, :type2 => @type2, :language => @language)
   end
 
+  def tariffs
+    @tariff_names = DB[:tariffsnames]
+    respond_to do |format|
+      format.html
+        format.json { render json: @tariff_names }
+    end
+  end
+
+  def addRatesToTariff
+    @id_tariff = params[:id_tariff]
+
+    puts "ID TARIFFFFFFFFF"
+    puts @id_tariff
+    
+  end
+
   def show
   end
 

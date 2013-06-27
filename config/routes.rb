@@ -55,8 +55,12 @@ Vsr::Application.routes.draw do
   get "users/addPayment"
   post "users/addPayment"
   get "users/addReseller3"
+  get "users/tariffs"
   get "users/addReseller3Submit"
   post "users/addReseller3Submit"
+  get "users/addRatesToTariff"
+  post "users/addRatesToTariff"
+  
   get "sessions/new"
   
 
