@@ -57,17 +57,22 @@ class UsersController < ApplicationController
     reseller_tariffs = DB[:tariffreseller]
     all_tariffs = DB[:tariffsnames]
     user_tariff_ids = []
-    all_tariffs.each do |tariff|
-      reseller_tariffs.each do |r_tariff|
-        if (tariff[:id_tariff] != r_tariff[:id_tariff] and not user_tariff_ids.include?(tariff[:id_tariff]))
-          user_tariff_ids.push(tariff[:id_tariff])
-        end
-      end
+    all_tariffs_array = []
+    reseller_tariffs_array = []
+
+    all_tariffs.each do |t|
+      all_tariffs_array.push(t[:id_tariff])
     end
+    reseller_tariffs.each do |t|
+      reseller_tariffs_array.push(t[:id_tariff])
+    end
+
+    user_tariff_ids = (all_tariffs_array - reseller_tariffs_array)
+    
     @tariff_names = []
     names = []
     user_tariff_ids.each do |id|
-      names.push(DB[:tariffsnames].where(:id_tariff => id))
+     names.push(DB[:tariffsnames].where(:id_tariff => id))
     end
     names.each do |n|
       @tariff_names.push(n.first[:description]) rescue nil
@@ -109,6 +114,7 @@ class UsersController < ApplicationController
   end
 
   def tariffs
+    # this is not yet complete....
     @tariff_names = DB[:tariffsnames]
     respond_to do |format|
       format.html
