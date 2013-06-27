@@ -14,7 +14,7 @@
   <%= text_field_tag 'password' %><br><br>
   <%= label_tag "Choose Tariff: " %><br>
   <%#= select :client, :tariff, @result_tariff["result"].collect {|t| t} %>
-  <%= select :client, :tariff, @id_tariffs.collect {|t| t} %><br><br>
+  <%= select :client, :tariff, @tariff_names.collect {|t| t} %><br><br>
   <%= label_tag "calls limit:" %><br>
   <%= number_field_tag 'callsLimit' %><br><br>
   <%= label_tag "clients limit:" %><br>

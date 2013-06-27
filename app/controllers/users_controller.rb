@@ -51,13 +51,27 @@ class UsersController < ApplicationController
   end
 
   def addReseller3
-    # Read the DB[:tariffs] and pick those whose Reseller is empty string
-    # and save the Tariffs name in an array called @result_tariff
-
     # go to table tariffreseller and give me the list of id_tariff whose resellerlevel is empty string
     # and then pass it to the view for a drop down selection
     # put the list of the id_tariffs in a variable named @id_tariffs
-
+    reseller_tariffs = DB[:tariffreseller]
+    all_tariffs = DB[:tariffsnames]
+    user_tariff_ids = []
+    all_tariffs.each do |tariff|
+      reseller_tariffs.each do |r_tariff|
+        if (tariff[:id_tariff] != r_tariff[:id_tariff] and not user_tariff_ids.include?(tariff[:id_tariff]))
+          user_tariff_ids.push(tariff[:id_tariff])
+        end
+      end
+    end
+    @tariff_names = []
+    names = []
+    user_tariff_ids.each do |id|
+      names.push(DB[:tariffsnames].where(:id_tariff => id))
+    end
+    names.each do |n|
+      @tariff_names.push(n.first[:description]) rescue nil
+    end
   end
 
   def addReseller3Submit
