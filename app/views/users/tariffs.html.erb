@@ -8,11 +8,11 @@
     </tr>
   </thead>
   <tbody>
-  <% @tariff_names.each do |t| %>
+  <% @tariffs.each do |t| %>
     <tr>
-      <td><%= t[:id_tariff] %> </td>
-      <td><%= t[:description] %></td>
-      <td><%= link_to "Add Rates", :id_tariff => t[:id_tariff], :action => "addRatesToTariff" %></td>
+      <td><%= t.first[:id_tariff] %> </td>
+      <td><%= t.first[:description] %></td>
+      <td><%= link_to "Add Rates", :id_tariff => t.first[:id_tariff], :action => "addRatesToTariff" %></td>
     </tr>
   <% end %>
   </tbody>

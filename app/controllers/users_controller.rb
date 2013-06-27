@@ -115,18 +115,32 @@ class UsersController < ApplicationController
 
   def tariffs
     # this is not yet complete....
-    @tariff_names = DB[:tariffsnames]
-    respond_to do |format|
-      format.html
-        format.json { render json: @tariff_names }
+    reseller_tariffs = DB[:tariffreseller]
+    all_tariffs = DB[:tariffsnames]
+    user_tariff_ids = []
+    all_tariffs_array = []
+    reseller_tariffs_array = []
+
+    all_tariffs.each do |t|
+      all_tariffs_array.push(t[:id_tariff])
+    end
+    reseller_tariffs.each do |t|
+      reseller_tariffs_array.push(t[:id_tariff])
+    end
+
+    user_tariff_ids = (all_tariffs_array - reseller_tariffs_array)
+    
+    @tariffs = []
+    user_tariff_ids.each do |id|
+     @tariffs.push(DB[:tariffsnames].where(:id_tariff => id))
     end
   end
 
   def addRatesToTariff
-    @id_tariff = params[:id_tariff]
+    @name = params[:tariff_name]
 
     puts "ID TARIFFFFFFFFF"
-    puts @id_tariff
+    puts @name
     
   end
 
