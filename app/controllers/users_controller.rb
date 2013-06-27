@@ -55,6 +55,29 @@ class UsersController < ApplicationController
     # and then pass it to the view for a drop down selection
     # put the list of the id_tariffs in a variable named @id_tariffs
     
+    reseller_tariffs = DB[:tariffreseller]
+    all_tariffs = DB[:tariffsnames]
+    user_tariff_ids = []
+    all_tariffs_array = []
+    reseller_tariffs_array = []
+
+    all_tariffs.each do |t|
+      all_tariffs_array.push(t[:id_tariff])
+    end
+    reseller_tariffs.each do |t|
+      reseller_tariffs_array.push(t[:id_tariff])
+    end
+
+    user_tariff_ids = (all_tariffs_array - reseller_tariffs_array)
+    
+    @tariff_names = []
+    names = []
+    user_tariff_ids.each do |id|
+     names.push(DB[:tariffsnames].where(:id_tariff => id))
+    end
+    names.each do |n|
+      @tariff_names.push(n.first[:description]) rescue nil
+    end
   end
 
   def addReseller3Submit
@@ -89,6 +112,21 @@ class UsersController < ApplicationController
                         :clientsLimit => @clientsLimit,  :tech_prefix => @tech_prefix, :identifier => @identifier, :Fullname => @Fullname,
                         :Address => @Address, :City => @City, :ZipCode => @ZipCode, :Country => @Country, :Phone => @Phone, :Email => @Email,
                         :TaxID => @TaxID, :type2 => @type2, :language => @language)
+  end
+
+  def tariffs
+    # this is not yet complete....
+    @tariff_names = DB[:tariffsnames]
+    respond_to do |format|
+      format.html
+        format.json { render json: @tariff_names }
+    end
+  end
+
+  def addRatesToTariff
+    @id_tariff = params[:id_tariff]
+
+    
   end
 
   def show
