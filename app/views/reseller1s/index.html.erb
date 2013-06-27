@@ -1,11 +1,10 @@
 <% if session[:current_reseller1_id] %>
   <h3>Welcome <%= @result["result"]["login"] rescue nil %>!</h3>
-  <p> Your Balance is $
-  	<%begin%><%= @result["result"]["balance"]%>
-  	<%rescue%>
-  	  0
-  	<%end%>
-  </p>
+  <%if @result["result"]["balance"] %>
+    <p> Your Balance is $<strong><%= @result["result"]["balance"]%> USD</strong></p>
+  <%else%> 
+    <p>Your Balance is $0.</p>
+  <%end%>
   <p> Your Profit is $<%= (@total_revenue - @total_cost).round(5) rescue nil%></p>
 <% else %>
   <%= flash[:error] = "You must be logged in to view this page" %>

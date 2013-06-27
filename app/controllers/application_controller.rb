@@ -38,4 +38,10 @@ class ApplicationController < ActionController::Base
     return DB[:tariffs].where(:prefix => subprefix).first[:voice_rate]
   end
   
+  def isMultiple(num)
+    if num%6 == 0
+      return true
+    else return false
+    end
+  end
 end

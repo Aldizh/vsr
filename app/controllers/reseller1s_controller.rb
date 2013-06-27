@@ -208,22 +208,14 @@ class Reseller1sController < ApplicationController
     @password = "#{session[:password]}"
 
     ####### PREFIX SD
-    @data_tarrif = {
+    @data_tariff = {
       "jsonrpc" => "2.0",
       "id" => 1,
       "method" => "arrayOfTariffs",
       "params" => {}
       }.to_json
 
-    @response_tariff = RestClient::Request.new(
-      :method => :post,
-      :payload => @data_tarrif,
-      :url => @url,
-      :user => @login,
-      :password => @password,
-      :headers => { :accept => :json, :content_type => :json}).execute
-
-    @result_tariff = ActiveSupport::JSON.decode(@response_tariff)
+    @result_tariff = API_request(@login, @password, @url, @data_tariff)
     
   end
 
@@ -314,15 +306,7 @@ class Reseller1sController < ApplicationController
           "params" => {}
           }.to_json
 
-        @response_tp = RestClient::Request.new(
-          :method => :post,
-          :payload => @data_tp,
-          :url => @url,
-          :user => @login,
-          :password => @password,
-          :headers => { :accept => :json, :content_type => :json}).execute
-
-        @result_tp = ActiveSupport::JSON.decode(@response_tp)
+        @result_tp = API_request(@login, @password, @url, @data_tp)
 
         ###### ADD RETAIL
 
@@ -356,16 +340,8 @@ class Reseller1sController < ApplicationController
               }
             }
           }.to_json
-        
-        @response = RestClient::Request.new(
-          :method => :post,
-          :payload => @data,
-          :url => @url,
-          :user => @login,
-          :password => @password,
-          :headers => { :accept => :json, :content_type => :json}).execute
 
-        @result = ActiveSupport::JSON.decode(@response) 
+        @result = API_request(@login, @password, @url, @data) 
 
         if @result["error"] 
           flash[:error_adding] = "Oops! Try again!"
