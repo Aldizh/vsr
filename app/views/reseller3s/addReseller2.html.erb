@@ -4,15 +4,15 @@
 <% if flash[:notice_added] %>
   <div class="flash_notice"><%= flash[:notice_added] %></div>
 <% end %>
-<div id="add_reseller3">
-<%= form_tag(:action => "addReseller3Submit", :id => "add_reseller3") do %>
+<div id="add_reseller2">
+<%= form_tag(:action => "addReseller2Submit", :id => "add_reseller2") do %>
   <br><br>
   <%= label_tag "Login: " %><br>
   <%= text_field_tag 'login', session[:client_login] %><br><br>
   <%= label_tag "Password:" %><br>
   <%= text_field_tag 'password' %><br><br>
   <%= label_tag "Choose Tariff: " %><br>
-  <%= select :reseller3, :description, @tariff_names.collect {|t| t} %><br><br>
+  <%= select :reseller2, :description, @result["result"].collect {|t| t} %><br><br>
   <%= label_tag "calls limit:" %><br>
   <%= number_field_tag 'callsLimit' %><br><br>
   <%= label_tag "clients limit:" %><br>
@@ -29,6 +29,8 @@
   <%= text_field_tag 'City', ""%><br><br>
   <%= label_tag "Address:(Optional)" %><br>
   <%= text_field_tag 'Address', ""%><br><br>
+  <%= label_tag "Zip Code:" %><br>
+  <%= text_field_tag 'ZipCode', ""%><br><br>
   <%= label_tag "Country:(Optional)" %><br>
   <%= text_field_tag 'Country', ""%><br><br>
   <%= label_tag "Phone:(Optional)" %><br>
