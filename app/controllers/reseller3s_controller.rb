@@ -223,12 +223,19 @@ class Reseller3sController < ApplicationController
     @type2 = params[:type2] #required 
     @language = params[:language] 
 
-    new_reseller = DB[:resellers2]
-    new_reseller.insert(:login => @login, :password => @password, :type => @tyoe, :id_tariff => @id_tariff, :callsLimit => @callsLimit,
+    begin
+      new_reseller = DB[:resellers2]
+      new_reseller.insert(:login => @login, :password => @password, :type => @tyoe, :id_tariff => @id_tariff, :callsLimit => @callsLimit,
                         :clientsLimit => @clientsLimit,  :tech_prefix => @tech_prefix, :identifier => @identifier, :Fullname => @Fullname,
                         :Address => @Address, :City => @City, :ZipCode => @ZipCode, :Country => @Country, :Phone => @Phone, :Email => @Email,
                         :TaxID => @TaxID, :type2 => @type2, :language => @language, :type => @type, :idReseller => session[:current_reseller3_id])
-    
+      
+      flash[:notice] ="HURRAY! ADDED successfully!"
+      redirect_to "/reseller3s/viewMyResellers"
+    rescue
+      flash[:error] ="OOPS! Try again!"
+      redirect_to "/reseller3s/addReseller2"
+    end    
   end
 
   def viewMyTariff

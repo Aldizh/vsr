@@ -35,6 +35,9 @@ Vsr::Application.routes.draw do
   get "reseller2s/viewMyTariff"
   post "reseller2s/viewMyTariff"
   get "reseller2s/viewResellers1Tariff"
+  get "reseller2s/addReseller1"
+  get "reseller2s/addReseller1Submit"
+  post "reseller2s/addReseller1Submit"
 
   get "reseller3s/viewSelectedTariff"
   get "reseller3s/viewSelected"
