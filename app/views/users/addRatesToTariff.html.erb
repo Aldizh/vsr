@@ -1,0 +1,24 @@
+<div id="edit_tariff">
+<%= form_tag(:action => "addRatesToTariffSubmit", :id => "editTariffSubmit") do %>
+  <br><br>
+  <table class="tariff_list">
+  	  <thead>
+  		<th>Prefix</th>
+  		<th>Description</th>
+  	  <th>Rate</th>
+  	  </thead>
+  	  <tbody>
+  	  <% @tariffs.first(@index).each do |t| %>
+  	  	<tr>
+          <td><%= number_field_tag 'prefix', t[:prefix] %></td>
+  	  		<td><%= text_field_tag 'description', t[:description] %></td>
+  	  		<td><%= text_field_tag 'voice_rate', t[:voice_rate] %></td>
+  	  	</tr>
+  	  <% end %>
+  	  </tbody>
+  </table>
+  <%= submit_tag "Add", :class => "submit_button" %><br><br>
+<% end %>
+</div>
+
+    <!--%= link_to "next", :index => @index + 20, :tariff => @tariffs.first, :action => "addRatesToTariff"%>

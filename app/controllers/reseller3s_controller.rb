@@ -143,7 +143,6 @@ class Reseller3sController < ApplicationController
     
     if payment <= 0 
       flash[:error_payment] = "Payment should be great than 0"
-      return redirect_to "/reseller3s/viewMyResellers"
     end
 
     @url = "https://209.200.231.9/vsr3/reseller.api"

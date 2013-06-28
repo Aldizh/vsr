@@ -23,13 +23,12 @@ class UsersController < ApplicationController
     temp_hash = params[:resellers3]
     if payment <= 0 
       flash[:error_payment] = "Payment should be great than 0"
-      return redirect_to "/users/viewMyResellers"
     end
     @myResellers = DB[:resellers3]
     @id = DB[:resellers3].where(:login => temp_hash["login"]).first[:id]
     @actual_value = DB[:resellers3].where(:id => @id).first[:callsLimit]
     payment_insertion = DB[:resellerspayments].where(:id_reseller => @id)
-    payment_insertion.insert(:money => :money+payment, :id_reseller => @id, :data => Time.now(), :type => 1, :description => "", :actual_value => @actual_value, :resellerlevel => 3)
+    payment_insertion.insert(:money => payment, :id_reseller => @id, :data => Time.now(), :type => 1, :description => "", :actual_value => @actual_value, :resellerlevel => 3)
     
     payment_update = DB[:resellers3].where(:id => @id)
     payment_update.update(:callsLimit => :callsLimit + payment)
@@ -126,6 +125,7 @@ class UsersController < ApplicationController
   end
 
   def addRatesToTariff
+    @tariffs = []
     @tariff_id = params[:tariff][:id_tariff]
     @tariffs = DB[:tariffs].where(:id_tariff => @tariff_id)
     @index = params[:index] || 20
