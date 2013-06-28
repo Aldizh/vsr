@@ -54,6 +54,7 @@ class UsersController < ApplicationController
     # go to table tariffreseller and give me the list of id_tariff whose resellerlevel is empty string
     # and then pass it to the view for a drop down selection
     # put the list of the id_tariffs in a variable named @id_tariffs
+    
     reseller_tariffs = DB[:tariffreseller]
     all_tariffs = DB[:tariffsnames]
     user_tariff_ids = []
@@ -87,10 +88,10 @@ class UsersController < ApplicationController
     # consused?
     @type = params[:type] #required
     #we will grap the id_tariff from the drop down list 
-    @id_tariff = params[:id_tariff] #required
+    temp_hash = params[:reseller3]
+    @id_tariff = DB[:tariffsnames].where(:description => temp_hash["description"]).first[:id_tariff] rescue nil
     @callsLimit = params[:callsLimit] #required
     @clientsLimit = params[:clientsLimit] #required
-    #tech_prefix bit confusing. It has four fields within itself, separated by a semicolon in the db table
     @tech_prefix = params[:tech_prefix] #required
     @identifier =   params[:identifier] #required
     
@@ -110,7 +111,7 @@ class UsersController < ApplicationController
     new_reseller.insert(:login => @login, :password => @password, :type => @tyoe, :id_tariff => @id_tariff, :callsLimit => @callsLimit,
                         :clientsLimit => @clientsLimit,  :tech_prefix => @tech_prefix, :identifier => @identifier, :Fullname => @Fullname,
                         :Address => @Address, :City => @City, :ZipCode => @ZipCode, :Country => @Country, :Phone => @Phone, :Email => @Email,
-                        :TaxID => @TaxID, :type2 => @type2, :language => @language)
+                        :TaxID => @TaxID, :type2 => @type2, :language => @language, :type => @type)
   end
 
   def tariffs
@@ -137,11 +138,7 @@ class UsersController < ApplicationController
   end
 
   def addRatesToTariff
-    @name = params[:id_tariff]
-
-    puts "ID TARIFFFFFFFFF"
-    puts @name
-    
+    @name = params[:id_tariff]    
   end
 
   def show
