@@ -4,15 +4,15 @@
 <% if flash[:notice_added] %>
   <div class="flash_notice"><%= flash[:notice_added] %></div>
 <% end %>
-<div id="add_reseller2">
-<%= form_tag(:action => "addReseller2Submit") do %>
+<div id="add_reseller1">
+<%= form_tag(:action => "addReseller1Submit") do %>
   <br><br>
   <%= label_tag "Login: " %><br>
   <%= text_field_tag 'login', session[:client_login] %><br><br>
   <%= label_tag "Password:" %><br>
   <%= text_field_tag 'password' %><br><br>
   <%= label_tag "Choose Tariff: " %><br>
-  <%= select :reseller2, :description, @result["result"].collect {|t| t} %><br><br>
+  <%= select :reseller1, :description, @result["result"].collect {|t| t} %><br><br>
   <%= label_tag "calls limit:" %><br>
   <%= number_field_tag 'callsLimit' %><br><br>
   <%= label_tag "clients limit:" %><br>

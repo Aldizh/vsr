@@ -171,6 +171,65 @@ class Reseller2sController < ApplicationController
     
   end
 
+  def addReseller1
+    @url = "https://209.200.231.9/vsr3/reseller.api"
+    @login = "#{session[:current_reseller2_login]}"
+    @password = "#{session[:password]}"
+
+    @data = {
+      "jsonrpc" => "2.0",
+      "id" => 1,
+      "method" => "arrayOfTariffs",
+      "params" => {}
+      }.to_json
+
+      @result = API_request(@login, @password, @url, @data)
+    
+  end
+
+  def addReseller1Submit
+
+    @login = params[:login] #required
+    @password = params[:password] #required
+    # consused?
+    @type = params[:type] #required
+    #we will grap the id_tariff from the drop down list 
+    temp_hash = params[:reseller1]
+    @id_tariff = DB[:tariffsnames].where(:description => temp_hash["description"]).first[:id_tariff] rescue nil
+    if @id_tariff == nil     
+      @id_tariff = DB[:resellers2].where(:id => session[:current_reseller2_id]).first[:id_tariff]
+    end
+    @callsLimit = params[:callsLimit] #required
+    @clientsLimit = params[:clientsLimit] #required
+    @tech_prefix = params[:tech_prefix] #required
+    @identifier =   params[:identifier] #required
+    
+    @Fullname = params[:Fullname] 
+    @Address = params[:Address] 
+    @City = params[:City] 
+    @ZipCode = params[:ZipCode] #required
+    @Country = params[:Country] 
+    @Phone = params[:Phone] 
+    @Email = params[:Email] 
+    @TaxID = params[:TaxID]  
+    @type2 = params[:type2] #required 
+    @language = params[:language] 
+
+    begin
+      new_reseller = DB[:resellers1]
+      new_reseller.insert(:login => @login, :password => @password, :type => @tyoe, :id_tariff => @id_tariff, :callsLimit => @callsLimit,
+                        :clientsLimit => @clientsLimit,  :tech_prefix => @tech_prefix, :identifier => @identifier, :Fullname => @Fullname,
+                        :Address => @Address, :City => @City, :ZipCode => @ZipCode, :Country => @Country, :Phone => @Phone, :Email => @Email,
+                        :TaxID => @TaxID, :type2 => @type2, :language => @language, :type => @type, :idReseller => session[:current_reseller2_id])
+      
+      flash[:notice] ="HURRAY! ADDED successfully!"
+      redirect_to "/reseller2s/viewMyResellers"
+    rescue
+      flash[:error] ="OOPS! Try again!"
+      redirect_to "/reseller2s/addReseller1"
+    end    
+  end
+
   def viewMyTariff
     @result = DB[:resellers2].where(:id => session[:current_reseller2_id])
     id_tariff = @result.first[:id_tariff]

@@ -5,7 +5,7 @@
   <div class="flash_notice"><%= flash[:notice_added] %></div>
 <% end %>
 <div id="add_reseller3">
-<%= form_tag(:action => "addReseller3Submit", :id => "add_reseller3") do %>
+<%= form_tag(:action => "addReseller3Submit") do %>
   <br><br>
   <%= label_tag "Login: " %><br>
   <%= text_field_tag 'login', session[:client_login] %><br><br>
