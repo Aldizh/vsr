@@ -92,21 +92,20 @@ class UsersController < ApplicationController
     @id_tariff = DB[:tariffsnames].where(:description => temp_hash["description"]).first[:id_tariff] rescue nil
     @callsLimit = params[:callsLimit] #required
     @clientsLimit = params[:clientsLimit] #required
-    #tech_prefix bit confusing. It has four fields within itself, separated by a semicolon in the db table
     @tech_prefix = params[:tech_prefix] #required
     @identifier =   params[:identifier] #required
     
     # we will not pass the following for now
-    @Fullname = ""#params[:Fullname] #required
-    @Address = ""#params[:Address] #required
-    @City =""# params[:City] #required
-    @ZipCode = ""#params[:ZipCode] #required
-    @Country = ""#params[:Country] #required
-    @Phone = ""#params[:Phone] #required
-    @Email = ""#params[:Email] #required
-    @TaxID = ""#params[:TaxID] #required 
-    @type2 = 6786#params[:type2] #required 
-    @language = ""#params[:language] #required
+    @Fullname = params[:Fullname] #required
+    @Address = params[:Address] #required
+    @City = params[:City] #required
+    @ZipCode = params[:ZipCode] #required
+    @Country = params[:Country] #required
+    @Phone = params[:Phone] #required
+    @Email = params[:Email] #required
+    @TaxID = params[:TaxID] #required 
+    @type2 = params[:type2] #required 
+    @language = params[:language] #required
 
     new_reseller = DB[:resellers3]
     new_reseller.insert(:login => @login, :password => @password, :type => @tyoe, :id_tariff => @id_tariff, :callsLimit => @callsLimit,
