@@ -137,7 +137,7 @@ class UsersController < ApplicationController
   end
 
   def addRatesToTariff
-    @name = params[:tariff_name]
+    @name = params[:id_tariff]
 
     puts "ID TARIFFFFFFFFF"
     puts @name
