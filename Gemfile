@@ -8,7 +8,6 @@ gem 'rails', '3.2.12'
 gem 'mysql2'
 gem "sequel", "~> 3.47.0"
 gem "rest-client", "~>1.6.7"
-
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do

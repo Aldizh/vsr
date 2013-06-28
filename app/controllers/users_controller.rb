@@ -41,7 +41,7 @@ class UsersController < ApplicationController
     @id = DB[:resellers3].where(:login => temp_hash["login"]).first[:id]
     @actual_value = DB[:resellers3].where(:id => @id).first[:callsLimit]
     payment_insertion = DB[:resellerspayments].where(:id_reseller => @id)
-    payment_insertion.insert(:money => 1, :id_reseller => @id, :data => Time.now(), :type => 1, :description => "", :actual_value => @actual_value)
+    payment_insertion.insert(:money => money+payment, :id_reseller => @id, :data => Time.now(), :type => 1, :description => "", :actual_value => @actual_value, :resellerlevel => 3)
     
     payment_update = DB[:resellers3].where(:id => @id)
     payment_update.update(:callsLimit => :callsLimit + payment)
@@ -140,6 +140,7 @@ class UsersController < ApplicationController
   def addRatesToTariff
     @tariff_id = params[:tariff][:id_tariff]
     @tariffs = DB[:tariffs].where(:id_tariff => @tariff_id)
+    @index = params[:index] || 20
   end
 
   def show
