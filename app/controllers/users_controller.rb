@@ -138,7 +138,8 @@ class UsersController < ApplicationController
   end
 
   def addRatesToTariff
-    @name = params[:id_tariff]    
+    @tariff_id = params[:tariff][:id_tariff]
+    @tariffs = DB[:tariffs].where(:id_tariff => @tariff_id)
   end
 
   def show
