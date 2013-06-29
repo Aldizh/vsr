@@ -206,21 +206,23 @@ class Reseller3sController < ApplicationController
     if @id_tariff == nil     
       @id_tariff = DB[:resellers3].where(:id => session[:current_reseller3_id]).first[:id_tariff]
     end
+    puts "IDDDDD"
+    puts @id_tariff
     @callsLimit = params[:callsLimit] #required
     @clientsLimit = params[:clientsLimit] #required
     @tech_prefix = params[:tech_prefix] #required
     @identifier =   params[:identifier] #required
     
-    @Fullname = params[:Fullname] 
-    @Address = params[:Address] 
-    @City = params[:City] 
-    @ZipCode = params[:ZipCode] #required
-    @Country = params[:Country] 
-    @Phone = params[:Phone] 
-    @Email = params[:Email] 
-    @TaxID = params[:TaxID]  
-    @type2 = params[:type2] #required 
-    @language = params[:language] 
+    @Fullname = params[:Fullname] || ""#required
+    @Address = params[:Address] || "" #required
+    @City = params[:City] || ""#required
+    @ZipCode = params[:ZipCode] || "" #required
+    @Country = params[:Country] || "" #required
+    @Phone = params[:Phone] || ""#required
+    @Email = params[:Email] || ""#required
+    @TaxID = params[:TaxID] #required 
+    @type2 = params[:type2] || 0#required 
+    @language = params[:language] || ""#required
 
     begin
       new_reseller = DB[:resellers2]

@@ -83,16 +83,16 @@ class UsersController < ApplicationController
     @identifier =   params[:identifier] #required
     
     # we will not pass the following for now
-    @Fullname = params[:Fullname] #required
-    @Address = params[:Address] #required
-    @City = params[:City] #required
-    @ZipCode = params[:ZipCode] #required
-    @Country = params[:Country] #required
-    @Phone = params[:Phone] #required
-    @Email = params[:Email] #required
+    @Fullname = params[:Fullname] || ""#required
+    @Address = params[:Address] || "" #required
+    @City = params[:City] || ""#required
+    @ZipCode = params[:ZipCode] || "" #required
+    @Country = params[:Country] || "" #required
+    @Phone = params[:Phone] || ""#required
+    @Email = params[:Email] || ""#required
     @TaxID = params[:TaxID] #required 
-    @type2 = params[:type2] #required 
-    @language = params[:language] #required
+    @type2 = params[:type2] || 0#required 
+    @language = params[:language] || ""#required
 
     new_reseller = DB[:resellers3]
     new_reseller.insert(:login => @login, :password => @password, :type => @tyoe, :id_tariff => @id_tariff, :callsLimit => @callsLimit,
