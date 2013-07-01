@@ -199,18 +199,16 @@ class Reseller3sController < ApplicationController
     @login = params[:login] #required
     @password = params[:password] #required
     # consused?
-    @type = params[:type] #required
+    #@type = params[:type] #required
     #we will grap the id_tariff from the drop down list 
     temp_hash = params[:reseller2]
     @id_tariff = DB[:tariffsnames].where(:description => temp_hash["description"]).first[:id_tariff] rescue nil
     if @id_tariff == nil     
       @id_tariff = DB[:resellers3].where(:id => session[:current_reseller3_id]).first[:id_tariff]
     end
-    puts "IDDDDD"
-    puts @id_tariff
     @callsLimit = params[:callsLimit] #required
     @clientsLimit = params[:clientsLimit] #required
-    @tech_prefix = params[:tech_prefix] #required
+    #@tech_prefix = params[:tech_prefix] #required
     @identifier =   params[:identifier] #required
     
     @Fullname = params[:Fullname] || ""#required
@@ -221,15 +219,17 @@ class Reseller3sController < ApplicationController
     @Phone = params[:Phone] || ""#required
     @Email = params[:Email] || ""#required
     @TaxID = params[:TaxID] #required 
-    @type2 = params[:type2] || 0#required 
+    #@type2 = params[:type2] || 0#required 
     @language = params[:language] || ""#required
+
+    @tech_prefix = DB[:resellers3].where(:id => session[:current_reseller3_id]).first[:tech_prefix]
 
     begin
       new_reseller = DB[:resellers2]
       new_reseller.insert(:login => @login, :password => @password, :type => @tyoe, :id_tariff => @id_tariff, :callsLimit => @callsLimit,
                         :clientsLimit => @clientsLimit,  :tech_prefix => @tech_prefix, :identifier => @identifier, :Fullname => @Fullname,
                         :Address => @Address, :City => @City, :ZipCode => @ZipCode, :Country => @Country, :Phone => @Phone, :Email => @Email,
-                        :TaxID => @TaxID, :type2 => @type2, :language => @language, :type => @type, :idReseller => session[:current_reseller3_id])
+                        :TaxID => "", :type2 => 0, :language => @language, :type => 49601, :idReseller => session[:current_reseller3_id])
       
       flash[:notice] ="HURRAY! ADDED successfully!"
       redirect_to "/reseller3s/viewMyResellers"
