@@ -19,18 +19,19 @@ class Reseller3sController < ApplicationController
       end
     end
     
-    @reseller_calls = []
-    @my_resellers = DB[:resellers2].where(:idReseller => session[:current_reseller3_id])
-    @my_resellers.each do |reseller|
-      @reseller_calls.push(DB[:calls].where(:id_reseller => reseller[:id]))
+    @reseller2_calls = []
+    @my_resellers2 = DB[:resellers2].where(:idReseller => session[:current_reseller3_id])
+    @my_resellers2.each do |reseller|
+      @reseller2_calls.push(DB[:calls].where(:id_reseller => reseller[:id]))
     end
 
-    @reseller_calls.each do |calls|
+    @reseller2_calls.each do |calls|
       calls.each do |call|
-        @total_revenue += (call[:costR2]) 
-        @total_cost += (call[:costR3])
+        @total_revenue += (call[:costR1]) 
+        @total_cost += (call[:costR2])
       end
     end
+
 
     @url = "https://209.200.231.9/vsr3/reseller.api"
     @login = "#{session[:current_reseller3_login]}"
