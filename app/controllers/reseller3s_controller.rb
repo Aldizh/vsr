@@ -206,8 +206,6 @@ class Reseller3sController < ApplicationController
     if @id_tariff == nil     
       @id_tariff = DB[:resellers3].where(:id => session[:current_reseller3_id]).first[:id_tariff]
     end
-    puts "IDDDDD"
-    puts @id_tariff
     @callsLimit = params[:callsLimit] #required
     @clientsLimit = params[:clientsLimit] #required
     @tech_prefix = params[:tech_prefix] #required

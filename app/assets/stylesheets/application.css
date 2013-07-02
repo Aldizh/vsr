@@ -46,6 +46,13 @@ a {
 	background: #CC0606;
 	margin-left: 5px;
 }
+.next_link a {
+	color: #0000FF;
+	margin-top: 5px;
+}
+.save_link a {
+	background: #00FFFF
+}
 .login_link a {
 	background: green;
 }

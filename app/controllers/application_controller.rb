@@ -44,6 +44,4 @@ class ApplicationController < ActionController::Base
     else return false
     end
   end
-  @index = 20
-
 end

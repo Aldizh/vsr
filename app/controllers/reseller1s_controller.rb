@@ -21,20 +21,20 @@ class Reseller1sController < ApplicationController
             @total_revenue += (duration*tariff[:voice_rate]/36)
             #@total_revenue += (duration*cheapestRoute(tariff[:prefix])/36)
           else
-            @total_revenue += (duration*tariff[:voice_rate]/60)
+            @total_revenue += (duration*tariff[:voice_rate])
             #@total_revenue += (duration*cheapestRoute(tariff[:prefix])/60)
           end
         end
          
         @current = DB[:resellers1].where(:id => session[:current_reseller1_id])
         @parent = DB[:resellers2].where(:id => @current.first[:idReseller])
-        @reseller_tariffs = DB[:tariffs].where(:id_tariff => @parent.first[:id_tariff], :prefix => call.first[:tariff_prefix])
+        @reseller_tariffs = DB[:tariffs].where(:id_tariff => @current.first[:id_tariff], :prefix => call.first[:tariff_prefix])
         @reseller_tariffs.each do |tariff|
           if (tariff[:minimal_value] == 6 and tariff[:resolution] == 6) 
             @total_cost += (duration*tariff[:voice_rate]/36)
             #@total_cost += (duration*cheapestRoute(tariff[:prefix])/36)
           else
-            @total_cost += (duration*tariff[:voice_rate]/60)
+            @total_cost += (duration*tariff[:voice_rate])
             #@total_cost += (duration*cheapestRoute(tariff[:prefix])/60)
           end
         end

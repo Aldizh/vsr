@@ -67,6 +67,8 @@ Vsr::Application.routes.draw do
   post "users/addReseller3Submit"
   get "users/addRatesToTariff"
   post "users/addRatesToTariff"
+  get "users/addRatesToTariff1"
+  post "users/addRatesToTariff1"
   get "users/addRatesToTariffSubmit"
   post "users/addRatesToTariffSubmit"
   

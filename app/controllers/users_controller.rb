@@ -125,10 +125,26 @@ class UsersController < ApplicationController
   end
 
   def addRatesToTariff
-    @tariffs = []
     @tariff_id = params[:tariff][:id_tariff]
     @tariffs = DB[:tariffs].where(:id_tariff => @tariff_id)
-    @index = params[:index] || 20
+    session[:common_index] = 0
+    session[:common_index1] = 20
+  end
+
+  def addRatesToTariff1
+    session[:common_index] += 20
+    session[:common_index1] += 20
+    @tariff_id = params[:tariff][:id_tariff]
+    @prior =  session[:common_index] + params[:tariff][:id_tariffs_key].to_i
+    @latter = session[:common_index1] + params[:tariff][:id_tariffs_key].to_i
+    @temp_id = params[:tariff][:id_tariffs_key].to_i + 20
+    @tariffs = DB[:tariffs].where(:id_tariff => @tariff_id, :id_tariffs_key => @prior.to_i..@latter.to_i)
+    
+  end
+
+  def addRatesToTariffSubmit
+    @tariff = DB[:tariffs].where(:id_tariffs_key => params[:t_id])
+    @tariff.update(:voice_rate => params[:voice_rate], :description => params[:description], :rate_addition => params[:rate_addition], :rate_multiplier => params[:rate_multiplier], :grace_period => params[:grace_period])
   end
 
   def show
