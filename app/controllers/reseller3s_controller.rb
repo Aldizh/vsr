@@ -5,6 +5,24 @@ class Reseller3sController < ApplicationController
 
   def index
     
+    @total_cost = 0
+    @total_revenue = 0
+    @calls = []
+    @my_clients = DB[:clientsshared].where(:id_reseller => session[:current_reseller3_id])
+    @my_clients.each do |client|
+      @calls.push(DB[:calls].where(:id_client => client[:id_client]))
+    end
+    @my_resellers = DB[:resellers2].where(:idReseller => session[:current_reseller3_id])
+    @my_resellers.each do |reseller|
+      @calls.push(DB[:calls].where(:id_reseller => reseller[:id]))
+    end
+
+    @calls.each do |calls|
+      calls.each do |call|
+        @total_revenue += (call[:costR2]) 
+        @total_cost += (call[:costR3])
+      end
+    end
 
     @url = "https://209.200.231.9/vsr3/reseller.api"
     @login = "#{session[:current_reseller3_login]}"
@@ -198,9 +216,6 @@ class Reseller3sController < ApplicationController
 
     @login = params[:login] #required
     @password = params[:password] #required
-    # consused?
-    #@type = params[:type] #required
-    #we will grap the id_tariff from the drop down list 
     temp_hash = params[:reseller2]
     @id_tariff = DB[:tariffsnames].where(:description => temp_hash["description"]).first[:id_tariff] rescue nil
     if @id_tariff == nil     
@@ -208,9 +223,7 @@ class Reseller3sController < ApplicationController
     end
     @callsLimit = params[:callsLimit] #required
     @clientsLimit = params[:clientsLimit] #required
-    #@tech_prefix = params[:tech_prefix] #required
     @identifier =   params[:identifier] #required
-    
     @Fullname = params[:Fullname] || ""#required
     @Address = params[:Address] || "" #required
     @City = params[:City] || ""#required
@@ -219,9 +232,7 @@ class Reseller3sController < ApplicationController
     @Phone = params[:Phone] || ""#required
     @Email = params[:Email] || ""#required
     @TaxID = params[:TaxID] #required 
-    #@type2 = params[:type2] || 0#required 
     @language = params[:language] || ""#required
-
     @tech_prefix = DB[:resellers3].where(:id => session[:current_reseller3_id]).first[:tech_prefix]
 
     begin

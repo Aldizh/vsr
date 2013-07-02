@@ -9,37 +9,14 @@ class Reseller1sController < ApplicationController
     @calls = []
     @my_clients = DB[:clientsshared].where(:id_reseller => session[:current_reseller1_id])
     @my_clients.each do |client|
-      @calls.push(DB[:calls_costs].where(:id_client => client[:id_client]))
+      @calls.push(DB[:calls].where(:id_client => client[:id_client]))
     end
-    @calls.each do |call|
-      if call.first
-        duration = call.first[:duration]
-
-        @client_tariffs = DB[:tariffs].where(:id_tariff => call.first[:id_tariff], :prefix => call.first[:tariff_prefix])
-        @client_tariffs.each do |tariff|
-          if (tariff[:minimal_value] == 6 and tariff[:resolution] == 6) 
-            @total_revenue += (duration*tariff[:voice_rate]/36)
-            #@total_revenue += (duration*cheapestRoute(tariff[:prefix])/36)
-          else
-            @total_revenue += (duration*tariff[:voice_rate])
-            #@total_revenue += (duration*cheapestRoute(tariff[:prefix])/60)
-          end
-        end
-         
-        @current = DB[:resellers1].where(:id => session[:current_reseller1_id])
-        @parent = DB[:resellers2].where(:id => @current.first[:idReseller])
-        @reseller_tariffs = DB[:tariffs].where(:id_tariff => @current.first[:id_tariff], :prefix => call.first[:tariff_prefix])
-        @reseller_tariffs.each do |tariff|
-          if (tariff[:minimal_value] == 6 and tariff[:resolution] == 6) 
-            @total_cost += (duration*tariff[:voice_rate]/36)
-            #@total_cost += (duration*cheapestRoute(tariff[:prefix])/36)
-          else
-            @total_cost += (duration*tariff[:voice_rate])
-            #@total_cost += (duration*cheapestRoute(tariff[:prefix])/60)
-          end
-        end
+    
+    @calls.each do |calls|
+      calls.each do |call|
+       @total_revenue += (call[:cost]) 
+       @total_cost += (call[:costR1])
       end
-
     end
 
     @url = "https://209.200.231.9/vsr3/reseller.api"

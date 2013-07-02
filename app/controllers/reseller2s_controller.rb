@@ -5,7 +5,25 @@ class Reseller2sController < ApplicationController
 
   def index
 
-    
+    @total_cost = 0
+    @total_revenue = 0
+    @calls = []
+    @my_clients = DB[:clientsshared].where(:id_reseller => session[:current_reseller2_id])
+    @my_clients.each do |client|
+      @calls.push(DB[:calls].where(:id_client => client[:id_client]))
+    end
+    @my_resellers = DB[:resellers1].where(:idReseller => session[:current_reseller2_id])
+    @my_resellers.each do |reseller|
+      @calls.push(DB[:calls].where(:id_reseller => reseller[:id]))
+    end
+
+    @calls.each do |calls|
+      calls.each do |call|
+       @total_revenue += (call[:costR1]) 
+       @total_cost += (call[:costR2])
+      end
+    end
+
     @url = "https://209.200.231.9/vsr3/reseller.api"
     @login = "#{session[:current_reseller2_login]}"
     @password = "#{session[:password]}"
@@ -190,8 +208,6 @@ class Reseller2sController < ApplicationController
 
     @login = params[:login] #required
     @password = params[:password] #required
-    #@type = params[:type] #required
-    #we will grap the id_tariff from the drop down list 
     temp_hash = params[:reseller1]
     @id_tariff = DB[:tariffsnames].where(:description => temp_hash["description"]).first[:id_tariff] rescue nil
     if @id_tariff == nil     
@@ -199,7 +215,6 @@ class Reseller2sController < ApplicationController
     end
     @callsLimit = params[:callsLimit] #required
     @clientsLimit = params[:clientsLimit] #required
-    #@tech_prefix = params[:tech_prefix] #required
     @identifier =   params[:identifier] #required
     
     @Fullname = params[:Fullname] || ""#required
@@ -209,8 +224,6 @@ class Reseller2sController < ApplicationController
     @Country = params[:Country] || "" #required
     @Phone = params[:Phone] || ""#required
     @Email = params[:Email] || ""#required
-    #@TaxID = params[:TaxID] #required 
-    #@type2 = params[:type2] || 0#required 
     @language = params[:language] || ""#required
 
     @tech_prefix = DB[:resellers2].where(:id => session[:current_reseller2_id]).first[:tech_prefix]

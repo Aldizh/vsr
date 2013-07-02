@@ -72,17 +72,11 @@ class UsersController < ApplicationController
 
     @login = params[:login] #required
     @password = params[:password] #required
-    # consused?
-    #@type = params[:type] #required
-    #we will grap the id_tariff from the drop down list 
     temp_hash = params[:reseller3]
     @id_tariff = DB[:tariffsnames].where(:description => temp_hash["description"]).first[:id_tariff] rescue nil
     @callsLimit = params[:callsLimit] #required
     @clientsLimit = params[:clientsLimit] #required
-    #@tech_prefix = params[:tech_prefix] #required
     @identifier =   params[:identifier] #required
-    
-    # we will not pass the following for now
     @Fullname = params[:Fullname] || ""#required
     @Address = params[:Address] || "" #required
     @City = params[:City] || ""#required
@@ -91,7 +85,6 @@ class UsersController < ApplicationController
     @Phone = params[:Phone] || ""#required
     @Email = params[:Email] || ""#required
     @TaxID = params[:TaxID] #required 
-    #@type2 = params[:type2] || 0#required 
     @language = params[:language] || ""#required
 
     @tech_prefix = DB[:resellers3].where(:id => 3).first[:tech_prefix]
