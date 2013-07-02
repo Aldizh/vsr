@@ -7,20 +7,28 @@ class Reseller2sController < ApplicationController
 
     @total_cost = 0
     @total_revenue = 0
-    @calls = []
+    @client_calls = []
     @my_clients = DB[:clientsshared].where(:id_reseller => session[:current_reseller2_id])
     @my_clients.each do |client|
-      @calls.push(DB[:calls].where(:id_client => client[:id_client]))
+      @client_calls.push(DB[:calls].where(:id_client => client[:id_client]))
     end
+    @client_calls.each do |calls|
+      calls.each do |call|
+        @total_revenue += (call[:cost]) 
+        @total_cost += (call[:costR2])
+      end
+    end
+    
+    @reseller_calls = []
     @my_resellers = DB[:resellers1].where(:idReseller => session[:current_reseller2_id])
     @my_resellers.each do |reseller|
-      @calls.push(DB[:calls].where(:id_reseller => reseller[:id]))
+      @reseller_calls.push(DB[:calls].where(:id_reseller => reseller[:id]))
     end
 
-    @calls.each do |calls|
+    @reseller_calls.each do |calls|
       calls.each do |call|
-       @total_revenue += (call[:costR1]) 
-       @total_cost += (call[:costR2])
+        @total_revenue += (call[:costR1]) 
+        @total_cost += (call[:costR2])
       end
     end
 
