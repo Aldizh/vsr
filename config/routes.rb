@@ -69,6 +69,10 @@ Vsr::Application.routes.draw do
   post "users/addRatesToTariff"
   get "users/addRatesToTariffSubmit"
   post "users/addRatesToTariffSubmit"
+  get "users/createTariff"
+  get "users/createTariffSubmit"
+  post "users/createTariffSubmit"
+
   
   get "sessions/new"
   
