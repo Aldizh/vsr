@@ -18,6 +18,7 @@
         <td><%= link_to "Active Calls", "/reseller3s/viewActiveCalls" %></td>
         <td><%= link_to "My Tariff", "/reseller3s/viewMyTariff" %></td>
         <td><%= link_to "Add Reseller2", "/reseller3s/addReseller2" %></td>
+        <td><%= link_to "Agent's Tariffs", "/reseller3s/agentsTariffs" %></td>        
       </tr>
     </table>
 <% elsif session[:current_reseller2_id] %>
@@ -30,6 +31,7 @@
         <td><%= link_to "Active Calls", "/reseller2s/viewActiveCalls" %></td>
         <td><%= link_to "My Tariff", "/reseller2s/viewMyTariff" %></td>
         <td><%= link_to "Add Reseller1", "/reseller2s/addReseller1" %></td>
+        <td><%= link_to "Agent's Tariffs", "/reseller2s/agentsTariffs" %></td>        
       </tr>
     </table>
 <% elsif session[:current_reseller1_id] %>
@@ -42,7 +44,7 @@
         <td><%= link_to "Active Calls", "/reseller1s/viewActiveCalls" %></td>
         <td><%= link_to "My Tariff", "/reseller1s/viewMyTariff" %></td>
         <td><%= link_to "Add Clients", "/reseller1s/addClient" %></td>
-
+        <td><%= link_to "Agent's Tariffs", "/reseller1s/agentsTariffs" %></td>        
       </tr>
     </table>
 <% elsif session[:current_client_id] %>

@@ -166,20 +166,23 @@ class UsersController < ApplicationController
     cost_threshold_resolution = params[:cost_threshold_resolution].to_f  
     cost_threshold = params[:cost_threshold].to_f    
 
+    begin
+      DB[:tariffsnames].insert(:description => description, :minimal_time => minimal_time, :resolution => resolution,  
+        :rate_multiplier => rate_multiplier, :rate_addition => rate_addition, :surcharge_time => surcharge_time,
+        :surcharge_amount => surcharge_amount, :type => type, :rate_multiplier => rate_multiplier, :rate_addition => rate_addition,
+        :id_currency => id_currency, :time_to_start => time_to_start, :base_tariff_id => base_tariff_id, 
+        :cost_threshold_resolution => cost_threshold_resolution, :cost_threshold => cost_threshold)
 
-
-    puts "TARIFF DETAILSSSS"
-    puts time_to_start.class
-    puts time_to_start
-
-    DB[:tariffsnames].insert(:description => description, :minimal_time => minimal_time, :resolution => resolution,  
-      :rate_multiplier => rate_multiplier, :rate_addition => rate_addition, :surcharge_time => surcharge_time,
-      :surcharge_amount => surcharge_amount, :type => type, :rate_multiplier => rate_multiplier, :rate_addition => rate_addition,
-      :id_currency => id_currency, :time_to_start => time_to_start, :base_tariff_id => base_tariff_id, 
-      :cost_threshold_resolution => cost_threshold_resolution, :cost_threshold => cost_threshold)
+      flash[:notice_added] = "Tariff successfully created!"
+      redirect_to "/users/tariffs"
+    rescue
+      flash[:error_adding] = "Tariff could not created! Try again! or contact the administrator."
+      redirect_to "/users/createTariff"
+    end
 
       
   end
+
   def show
   end
 
