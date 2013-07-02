@@ -19,6 +19,12 @@ Vsr::Application.routes.draw do
   post "reseller1s/viewMyClientsCDR"
   get "reseller1s/viewMyTariff"
   get "reseller1s/viewClientsTariff"
+  get "reseller1s/agentsTariffs"
+  get "reseller1s/viewEditTariffRates"
+  post "reselle12s/viewEditTariffRates"
+  get "reseller1s/createTariff"
+  get "reseller1s/createTariffSubmit"
+  post "reseller1s/createTariffSubmit"
 
   get "reseller2s/viewSelectedTariff"
   get "reseller2s/viewSelected"
@@ -38,6 +44,12 @@ Vsr::Application.routes.draw do
   get "reseller2s/addReseller1"
   get "reseller2s/addReseller1Submit"
   post "reseller2s/addReseller1Submit"
+  get "reseller2s/agentsTariffs"
+  get "reseller2s/viewEditTariffRates"
+  post "reseller2s/viewEditTariffRates"
+  get "reseller2s/createTariff"
+  get "reseller2s/createTariffSubmit"
+  post "reseller2s/createTariffSubmit"
 
   get "reseller3s/viewSelectedTariff"
   get "reseller3s/viewSelected"
@@ -56,6 +68,13 @@ Vsr::Application.routes.draw do
   get "reseller3s/addReseller2"
   get "reseller3s/addReseller2Submit"
   post "reseller3s/addReseller2Submit"
+  get "reseller3s/agentsTariffs"
+  get "reseller3s/viewEditTariffRates"
+  post "reseller3s/viewEditTariffRates"
+  get "reseller3s/createTariff"
+  get "reseller3s/createTariffSubmit"
+  post "reseller3s/createTariffSubmit"
+  
 
 
   get "users/viewMyResellers"

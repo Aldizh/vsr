@@ -300,6 +300,69 @@ class Reseller3sController < ApplicationController
     end
   end
 
+  def agentsTariffs
+    reseller_tariffs = DB[:tariffreseller].where(:id_reseller => session[:current_reseller3_id])
+    id_tariff_array = []
+
+    reseller_tariffs.each do |rt|
+      id_tariff_array.push(rt[:id_tariff])
+    end
+
+    @my_agents_tariffs = []
+    id_tariff_array.each do |id|
+     @my_agents_tariffs.push(DB[:tariffsnames].where(:id_tariff => id))
+    end
+  end
+
+  def viewEditTariffRates
+    # Aldi please implement this method and other methods needed for this method. 
+    # I think viewEditTariffRates is a better name for this method than addRatesToTariff
+    # since through this method what we doing is bascally view and edit tariff rates
+    
+  end
+
+  def createTariff
+    
+  end
+
+  def createTariffSubmit
+
+    identifier = DB[:resellers3].where(:id => session[:current_reseller3_id]).first[:identifier]
+    description = identifier + ":" + params[:description].capitalize
+    minimal_time = params[:minimal_time].to_i
+    resolution = params[:resolution].to_i
+    surcharge_time = params[:surcharge_time].to_i 
+    surcharge_amount = params[:surcharge_amount].to_f 
+    type = params[:type].to_i
+    rate_multiplier = params[:rate_multiplier].to_f
+    rate_addition = params[:rate_addition].to_f 
+    id_currency = params[:id_currency].to_i
+    time_to_start = Time.new(*params[:time_to_start].to_hash.values).strftime("%Y-%m-%d %H:%M:%S")
+    base_tariff_id = params[:base_tariff_id].to_i
+    cost_threshold_resolution = params[:cost_threshold_resolution].to_f  
+    cost_threshold = params[:cost_threshold].to_f    
+
+    begin
+      DB[:tariffsnames].insert(:description => description, :minimal_time => minimal_time, :resolution => resolution,  
+        :rate_multiplier => rate_multiplier, :rate_addition => rate_addition, :surcharge_time => surcharge_time,
+        :surcharge_amount => surcharge_amount, :type => type, :rate_multiplier => rate_multiplier, :rate_addition => rate_addition,
+        :id_currency => id_currency, :time_to_start => time_to_start, :base_tariff_id => base_tariff_id, 
+        :cost_threshold_resolution => cost_threshold_resolution, :cost_threshold => cost_threshold)
+
+      @id_tariff = DB[:tariffsnames].where(:description => description).first[:id_tariff]
+
+      DB[:tariffreseller].insert(:id_tariff => @id_tariff, :id_reseller => session[:current_reseller3_id], :resellerlevel => 3)
+
+      flash[:notice_added] = "Tariff successfully created!"
+      redirect_to "/reseller3s/agentsTariffs"
+    rescue
+      flash[:error_adding] = "Tariff could not created! Try again! or contact the administrator."
+      redirect_to "/reseller3s/createTariff"
+    end
+
+      
+  end
+
   def show
   end
 
