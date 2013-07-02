@@ -73,13 +73,13 @@ class UsersController < ApplicationController
     @login = params[:login] #required
     @password = params[:password] #required
     # consused?
-    @type = params[:type] #required
+    #@type = params[:type] #required
     #we will grap the id_tariff from the drop down list 
     temp_hash = params[:reseller3]
     @id_tariff = DB[:tariffsnames].where(:description => temp_hash["description"]).first[:id_tariff] rescue nil
     @callsLimit = params[:callsLimit] #required
     @clientsLimit = params[:clientsLimit] #required
-    @tech_prefix = params[:tech_prefix] #required
+    #@tech_prefix = params[:tech_prefix] #required
     @identifier =   params[:identifier] #required
     
     # we will not pass the following for now
@@ -91,14 +91,21 @@ class UsersController < ApplicationController
     @Phone = params[:Phone] || ""#required
     @Email = params[:Email] || ""#required
     @TaxID = params[:TaxID] #required 
-    @type2 = params[:type2] || 0#required 
+    #@type2 = params[:type2] || 0#required 
     @language = params[:language] || ""#required
 
-    new_reseller = DB[:resellers3]
-    new_reseller.insert(:login => @login, :password => @password, :type => @tyoe, :id_tariff => @id_tariff, :callsLimit => @callsLimit,
-                        :clientsLimit => @clientsLimit,  :tech_prefix => @tech_prefix, :identifier => @identifier, :Fullname => @Fullname,
-                        :Address => @Address, :City => @City, :ZipCode => @ZipCode, :Country => @Country, :Phone => @Phone, :Email => @Email,
-                        :TaxID => @TaxID, :type2 => @type2, :language => @language, :type => @type)
+    @tech_prefix = DB[:resellers3].where(:id => 3).first[:tech_prefix]
+
+    begin 
+      new_reseller = DB[:resellers3]
+      new_reseller.insert(:login => @login, :password => @password, :id_tariff => @id_tariff, :callsLimit => @callsLimit,
+                          :clientsLimit => @clientsLimit,  :tech_prefix => @tech_prefix, :identifier => @identifier, :Fullname => @Fullname,
+                          :Address => @Address, :City => @City, :ZipCode => @ZipCode, :Country => @Country, :Phone => @Phone, :Email => @Email,
+                          :TaxID => "", :type2 => 0, :language => @language, :type => 49601)
+    rescue
+      flash[:error_adding] ="OOPS! Try again!"
+      redirect_to "/users/createTariff"
+    end
   end
 
   def tariffs
@@ -147,6 +154,39 @@ class UsersController < ApplicationController
     @tariff.update(:voice_rate => params[:voice_rate], :description => params[:description], :rate_addition => params[:rate_addition], :rate_multiplier => params[:rate_multiplier], :grace_period => params[:grace_period])
   end
 
+  def createTariff
+    
+  end
+
+  def createTariffSubmit
+    description = params[:description].capitalize
+    minimal_time = params[:minimal_time].to_i
+    resolution = params[:resolution].to_i
+    surcharge_time = params[:surcharge_time].to_i 
+    surcharge_amount = params[:surcharge_amount].to_f 
+    type = params[:type].to_i
+    rate_multiplier = params[:rate_multiplier].to_f
+    rate_addition = params[:rate_addition].to_f 
+    id_currency = params[:id_currency].to_i
+    time_to_start = Time.new(*params[:time_to_start].to_hash.values).strftime("%Y-%m-%d %H:%M:%S")
+    base_tariff_id = params[:base_tariff_id].to_i
+    cost_threshold_resolution = params[:cost_threshold_resolution].to_f  
+    cost_threshold = params[:cost_threshold].to_f    
+
+
+
+    puts "TARIFF DETAILSSSS"
+    puts time_to_start.class
+    puts time_to_start
+
+    DB[:tariffsnames].insert(:description => description, :minimal_time => minimal_time, :resolution => resolution,  
+      :rate_multiplier => rate_multiplier, :rate_addition => rate_addition, :surcharge_time => surcharge_time,
+      :surcharge_amount => surcharge_amount, :type => type, :rate_multiplier => rate_multiplier, :rate_addition => rate_addition,
+      :id_currency => id_currency, :time_to_start => time_to_start, :base_tariff_id => base_tariff_id, 
+      :cost_threshold_resolution => cost_threshold_resolution, :cost_threshold => cost_threshold)
+
+      
+  end
   def show
   end
 
