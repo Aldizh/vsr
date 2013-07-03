@@ -1,6 +1,8 @@
 <% if session[:current_user_id] %>
-  <h3>Welcome!</h3>
-  <p> Welcome dear user!</p>
+  <h3>Welcome <%= session[:current_user_login] %>!</h3>
+  <p> You are logged in as a USER for this application. In this application, you can
+  	create Reseller3s, create new tariff names, add new tariffs to the tariff
+  	names, edit existing tariffs and add credits to your Reseller3s.</p>
 <% else %>
   <%= flash[:error] = "You must be logged in to view this page" %><br><br>
   <span class="login_link"><%= link_to "Login", "/sessions/new" %></span>

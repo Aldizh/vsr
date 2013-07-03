@@ -34,6 +34,14 @@ a {
 	text-decoration: none;
 	color: #000000;
 }
+.create_tariff_link {
+	padding: 5px;
+	border: 1px solid black;
+	margin-top: 30px;
+}
+.create_tariff_link a:hover{
+	color: red;
+}
 .login_panel {
 	background-color: #CCCCCC;
 	display: table-cell;
@@ -100,6 +108,9 @@ a {
 }
 .flash_notice {
 	color: green;
+}
+.menu {
+	margin-bottom: 20px;
 }
 .menu td {
 	background-color: #2163AE;
