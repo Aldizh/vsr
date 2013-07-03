@@ -1,0 +1,36 @@
+<div id="edit_tariff">
+  <%= form_tag(:action => "addNewTariffSubmit", :id => "create_tariff") do %>
+  <br><br>
+  <%= label_tag "Description:" %><br>
+  <%= text_field_tag 'description', @tariffs.first[:description] %><br><br>
+  <%= label_tag "Minimal Time: " %><br>
+  <%= number_field_tag 'minimal_time', @tariffs.first[:minimal_time] %><br><br>
+  <%= label_tag "Resolution: " %><br>
+  <%= number_field_tag 'resolution', @tariffs.first[:resolution] %><br><br>
+  <%= label_tag "Surcharge Time: " %><br>
+  <%= number_field_tag 'surcharge_time', @tariffs.first[:surcharge_time] || 0 %><br><br>
+  <%= label_tag "Surcharge Amount: " %><br>
+  <%= number_field_tag 'surcharge_amount', @tariffs.first[:surcharge_amount] || 0.0000 %><br><br>
+  <%= label_tag "Prefix: " %><br>
+  <%= number_field_tag 'prefix', @tariffs.first[:prefix] %><br><br>
+  <%= label_tag "Voice Rate: " %><br>
+  <%= number_field_tag 'voice_rate', @tariffs.first[:voice_rate]%><br><br>
+  <%= label_tag "Rate Multiplier: " %><br>
+  <%= number_field_tag 'rate_multiplier', @tariffs.first[:rate_multiplier] || -1 %><br><br>
+  <%= label_tag "Rate Addition: " %><br>
+  <%= number_field_tag 'rate_addition', @tariffs.first[:rate_addition] || -1 %><br><br>
+  <%= label_tag "From day: " %><br>
+  <%= number_field_tag 'from_day', @tariffs.first[:from_day] %><br><br>
+  <%= label_tag "To day: " %><br>
+  <%= number_field_tag 'to_day', @tariffs.first[:to_day] %><br><br>
+   <%= label_tag "From hour: " %><br>
+  <%= number_field_tag 'from_hour', @tariffs.first[:from_hour] %><br><br>
+  <%= label_tag "To hour: " %><br>
+  <%= number_field_tag 'to_hour', @tariffs.first[:to_hour] %><br><br>
+  <%= label_tag "Grace period: " %><br>
+  <%= number_field_tag 'grace_period', @tariffs.first[:grace_period]%><br><br>
+  <%= label_tag "Free seconds: " %><br>
+  <%= text_field_tag 'free_seconds', @tariffs.first[:free_seconds]%><br><br>
+  <%= submit_tag "Add", :class => "submit_button" %><br><br>
+<% end %>
+</div>

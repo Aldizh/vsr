@@ -1,0 +1,32 @@
+<div id="edit_tariff">
+<%= form_tag(:action => "addNewTariff", :id => "editTariffSubmit") do %>
+  <br><br>
+  <table class="tariff_list">
+  	  <thead>
+      <th>Name </th>
+  		<th>Prefix</th>
+  		<th>Description</th>
+  	  <th>Rate</th>
+      <th>Increase by</th>
+      <th>Multiply by</th>
+      <th>Grace Period</th>
+  	  </thead>
+  	  <tbody>
+     <span class="next_link"><%= link_to "Next ->", :tariff => @tariffs.first, :action => "viewTariff1"%></span>
+  	  <% @tariffs.first(20).each do |t| %>
+  	  	<tr>
+          <td><%= text_field_tag 'name', @name, :disabled => true %></td>
+          <td><%= number_field_tag 'prefix', t[:prefix], :disabled => true %></td>
+  	  		<td><%= text_field_tag 'description', t[:description], :disabled => true %></td>
+  	  		<td><%= text_field_tag 'voice_rate', t[:voice_rate], :disabled => true %></td>
+          <td><%= text_field_tag 'rate_addition', t[:rate_addition], :disabled => true %></td>
+          <td><%= text_field_tag 'rate_multiplier', t[:rate_multiplier], :disabled => true %></td>
+          <td><%= text_field_tag 'grace_period', t[:grace_period], :disabled => true %></td>
+          <td><span class="save_link"><%= link_to 'Edit', :t_id => t[:id_tariffs_key], :action => "editTariff" %> </span></td>
+  	  	</tr>
+  	  <% end %>
+  	  </tbody>
+  </table>
+  <%= submit_tag "Add", :class => "submit_button" %><br><br>
+<% end %>
+</div>
