@@ -16,8 +16,7 @@
     <tr>
       <td><%= t.first[:id_tariff] %> </td>
       <td><%= t.first[:description] %></td>
-
-      <td><%= link_to "View or Edit Tariff", :tariff => t.first, :action => "viewEditTariffRates" %></td>
+      <td><%= link_to "View or Edit Tariff", :tariff => t.first, :action => "viewTariff" %></td>
     </tr>
   <% end %>
   </tbody>

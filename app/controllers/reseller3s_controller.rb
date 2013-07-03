@@ -27,8 +27,8 @@ class Reseller3sController < ApplicationController
 
     @reseller2_calls.each do |calls|
       calls.each do |call|
-        @total_revenue += (call[:costR1]) 
-        @total_cost += (call[:costR2])
+        @total_revenue += (call[:costR2]) 
+        @total_cost += (call[:costR3])
       end
     end
 
@@ -302,24 +302,99 @@ class Reseller3sController < ApplicationController
   end
 
   def agentsTariffs
-    reseller_tariffs = DB[:tariffreseller].where(:id_reseller => session[:current_reseller3_id])
-    id_tariff_array = []
+    @my_agents_tariffs = getAgentTariffs()
+  end
 
-    reseller_tariffs.each do |rt|
-      id_tariff_array.push(rt[:id_tariff])
-    end
+  def viewTariff
+    @tariff_id = params[:tariff][:id_tariff]
+    @name = DB[:tariffsnames].where(:id_tariff => @tariff_id).first[:description]
+    @tariffs = DB[:tariffs].where(:id_tariff => @tariff_id)
+    session[:tariff_id] = @tariff_id
+    session[:name] = @name
+    session[:common_index] = 0
+    session[:common_index1] = 20
+  end
 
-    @my_agents_tariffs = []
-    id_tariff_array.each do |id|
-     @my_agents_tariffs.push(DB[:tariffsnames].where(:id_tariff => id))
+  def viewTariff1
+    session[:common_index] += 20
+    session[:common_index1] += 20
+    @tariff_id = params[:tariff][:id_tariff]
+    @name = session[:name]
+    @prior =  session[:common_index] + params[:tariff][:id_tariffs_key].to_i
+    @latter = session[:common_index1] + params[:tariff][:id_tariffs_key].to_i
+    @temp_id = params[:tariff][:id_tariffs_key].to_i + 20
+    @tariffs = DB[:tariffs].where(:id_tariff => @tariff_id, :id_tariffs_key => @prior.to_i..@latter.to_i)
+  end
+
+  def editTariff
+    session[:id_tariffs_key] = params[:t_id]
+    @tariffs = DB[:tariffs].where(:id_tariffs_key => params[:t_id])
+  end
+
+  def editTariffSubmit
+    description = params[:description].capitalize
+    minimal_time = params[:minimal_time].to_i
+    resolution = params[:resolution].to_i
+    surcharge_time = params[:surcharge_time].to_i 
+    surcharge_amount = params[:surcharge_amount].to_f 
+    prefix = params[:prefix].to_i
+    voice_rate = params[:voice_rate].to_f
+    rate_multiplier = params[:rate_multiplier].to_f
+    rate_addition = params[:rate_addition].to_f 
+    from_day = params[:from_day].to_i
+    to_day = params[:to_day].to_i
+    from_hour = params[:from_hour].to_i
+    to_hour = params[:to_hour].to_i
+    grace_period = params[:grace_period].to_i
+    free_seconds = params[:free_seconds].to_s
+    @tariffs = DB[:tariffs].where(:id_tariffs_key => session[:id_tariffs_key])
+    begin
+      @tariffs.update(:description => description, :minimal_time => minimal_time, :resolution => resolution,
+        :surcharge_time => surcharge_time, :surcharge_amount => surcharge_amount, :prefix => prefix, :voice_rate => voice_rate,
+        :rate_multiplier => rate_multiplier, :rate_addition => rate_addition, :from_day => from_day, :to_day => to_day,
+        :from_hour => from_hour, :to_hour => to_hour, :grace_period => grace_period, :free_seconds => free_seconds)
+      flash[:notice] = "Tariff successfully updated"
+      redirect_to "/reseller3s/viewMyTariff"
+    rescue
+      flash[:error] = "Tariff could not be updated! Try again! or contact the administrator."
+      redirect_to "/reseller3s/editTariff"
     end
   end
 
-  def viewEditTariffRates
-    # Aldi please implement this method and other methods needed for this method. 
-    # I think viewEditTariffRates is a better name for this method than addRatesToTariff
-    # since through this method what we doing is bascally view and edit tariff rates
-    
+  def addNewTariff
+    #just getting a sample tariff to prefill the form
+    agent_tariff_id = getAgentTariffs()
+    @tariff_id = agent_tariff_id[0].first[:id_tariff]
+    @tariffs = DB[:tariffs].where(:id_tariff => @tariff_id)
+  end
+
+  def addNewTariffSubmit
+    description = params[:description].capitalize
+    minimal_time = params[:minimal_time].to_i
+    resolution = params[:resolution].to_i
+    surcharge_time = params[:surcharge_time].to_i 
+    surcharge_amount = params[:surcharge_amount].to_f 
+    prefix = params[:prefix].to_i
+    voice_rate = params[:voice_rate].to_f
+    rate_multiplier = params[:rate_multiplier].to_f
+    rate_addition = params[:rate_addition].to_f 
+    from_day = params[:from_day].to_i
+    to_day = params[:to_day].to_i
+    from_hour = params[:from_hour].to_i
+    to_hour = params[:to_hour].to_i
+    grace_period = params[:grace_period].to_i
+    free_seconds = params[:free_seconds].to_s
+    begin
+      DB[:tariffs].insert(:id_tariff => session[:tariff_id], :description => description, :minimal_time => minimal_time, :resolution => resolution,
+        :surcharge_time => surcharge_time, :surcharge_amount => surcharge_amount, :prefix => prefix, :voice_rate => voice_rate,
+        :rate_multiplier => rate_multiplier, :rate_addition => rate_addition, :from_day => from_day, :to_day => to_day,
+        :from_hour => from_hour, :to_hour => to_hour, :grace_period => grace_period, :free_seconds => free_seconds)
+      flash[:notice] = "Tariff successfully added"
+      redirect_to "/reseller3s/viewMyTariff"
+    rescue
+      flash[:error] = "Tariff could not be added! Try again! or contact the administrator."
+      redirect_to "/reseller3s/addNewTariff"
+    end
   end
 
   def createTariff
@@ -359,14 +434,11 @@ class Reseller3sController < ApplicationController
     rescue
       flash[:error_adding] = "Tariff could not created! Try again! or contact the administrator."
       redirect_to "/reseller3s/createTariff"
-    end
-
-      
+    end    
   end
 
   def show
   end
-
 
   def getClientsIDs
     reseller2s_ids = []
@@ -377,4 +449,18 @@ class Reseller3sController < ApplicationController
     return reseller2s_ids
   end
 
+  def getAgentTariffs
+    my_agents_tariffs = []
+    reseller_tariffs = DB[:tariffreseller].where(:id_reseller => session[:current_reseller3_id])
+    id_tariff_array = []
+
+    reseller_tariffs.each do |rt|
+      id_tariff_array.push(rt[:id_tariff])
+    end
+
+    id_tariff_array.each do |id|
+     my_agents_tariffs.push(DB[:tariffsnames].where(:id_tariff => id))
+    end
+    return my_agents_tariffs
+  end
 end

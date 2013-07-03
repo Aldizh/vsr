@@ -8,11 +8,11 @@
 <%= form_tag(:action => "createTariffSubmit", :id => "create_tariff") do %>
   <br><br>
   <%= label_tag "Description:" %><br>
-  <%= text_field_tag 'description', session[:description] %><br><br>
+  <%= text_field_tag 'description', session[:description] || 1%><br><br>
   <%= label_tag "Minimal Time: " %><br>
-  <%= number_field_tag 'minimal_time', session[:minimal_time] %><br><br>
+  <%= number_field_tag 'minimal_time', session[:minimal_time] || 1%><br><br>
   <%= label_tag "Resolution: " %><br>
-  <%= number_field_tag 'resolution', session[:resolution] %><br><br>
+  <%= number_field_tag 'resolution', session[:resolution] || 1%><br><br>
   <%= label_tag "Surcharge Time: " %><br>
   <%= number_field_tag 'surcharge_time', session[:surcharge_time] || 0 %><br><br>
   <%= label_tag "Surcharge Amount: " %><br>
