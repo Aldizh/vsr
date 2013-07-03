@@ -1,7 +1,7 @@
 <% if flash[:notice_added] %>
   <div class="flash_notice"><%= flash[:notice_added] %></div>
 <% end %>
-<%= link_to "Create New Tariff", :action => "createTariff", :id => "alink" %>
+<span class="create_tariff_link"><%= link_to "Create New Tariff", :action => "createTariff", :id => "alink" %></span>
 <h4>List of tariffs for your agents ... </h4>
 <table class = "list">
   <thead>
