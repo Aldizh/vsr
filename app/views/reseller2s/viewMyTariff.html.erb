@@ -1,21 +1,28 @@
-<% ('A'..'Z').each do |char| %>
-    <%= link_to char, :first_letter => char, :action => 'viewSelectedTariff'%>
+ <% if session[:current_reseller2_id] %>
+ 
+  <% ('A'..'Z').each do |char| %>
+      <%= link_to char, :first_letter => char, :action => 'viewSelectedTariff'%>
+  <% end %>
+  <strong> Select by country! </strong>
+  <%= button_to "All", :action => 'viewMyTariff'%>
+  <table class="tariff_list">
+    	  <thead>
+    		<th>Prefix</th>
+    		<th>Country</th>
+    	    <th>Rate</th>
+    	  </thead>
+    	  <tbody>
+    	  	<% @tariff_list.each do |t| %>
+    	  	<tr>
+            <td><%= t[:prefix] %></td>
+    	  		<td><%= t[:description] %></td>
+    	  		<td><%= t[:voice_rate] %></td>
+    	  	</tr>
+    	  	<% end %>
+    	  </tbody>
+  </table>
+
+<% else %>
+  <%= flash[:error] = "You must be logged in to view this page" %><br><br>
+  <span class="login_link"><%= link_to "Login", "/sessions/new" %></span>
 <% end %>
-<strong> Select by country! </strong>
-<%= button_to "All", :action => 'viewMyTariff'%>
-<table class="tariff_list">
-  	  <thead>
-  		<th>Prefix</th>
-  		<th>Country</th>
-  	    <th>Rate</th>
-  	  </thead>
-  	  <tbody>
-  	  	<% @tariff_list.each do |t| %>
-  	  	<tr>
-          <td><%= t[:prefix] %></td>
-  	  		<td><%= t[:description] %></td>
-  	  		<td><%= t[:voice_rate] %></td>
-  	  	</tr>
-  	  	<% end %>
-  	  </tbody>
-</table>

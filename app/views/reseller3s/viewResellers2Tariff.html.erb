@@ -1,17 +1,23 @@
-<p>You are viewing your agents tariff</p>
-<table class="tariff_list">
-  	  <thead>
-  		<th>Prefix</th>
-  		<th>Country</th>
-  	    <th>Rate</th>
-  	  </thead>
-  	  <tbody>
-  	  	<% @tariff_list.each do |t| %>
-  	  	<tr>
-          <td><%= t[:prefix] %></td>
-  	  		<td><%= t[:description] %></td>
-  	  		<td><%= t[:voice_rate] %></td>
-  	  	</tr>
-  	  	<% end %>
-  	  </tbody>
-</table>
+<% if session[:current_reseller3_id] %>  
+  <p>You are viewing your agents tariff</p>
+  <table class="tariff_list">
+    	  <thead>
+    		<th>Prefix</th>
+    		<th>Country</th>
+    	    <th>Rate</th>
+    	  </thead>
+    	  <tbody>
+    	  	<% @tariff_list.each do |t| %>
+    	  	<tr>
+            <td><%= t[:prefix] %></td>
+    	  		<td><%= t[:description] %></td>
+    	  		<td><%= t[:voice_rate] %></td>
+    	  	</tr>
+    	  	<% end %>
+    	  </tbody>
+  </table>
+
+<% else %>
+  <%= flash[:error] = "You must be logged in to view this page" %><br><br>
+  <span class="login_link"><%= link_to "Login", "/sessions/new" %></span>
+<% end %>

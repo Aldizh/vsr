@@ -1,3 +1,4 @@
+<% if session[:current_reseller1_id] %> 
 <% ('A'..'Z').each do |char| %>
     <%= link_to char, :first_letter => char, :action => 'viewSelectedTariff'%>
 <% end %>
@@ -20,3 +21,7 @@
 
   	  </tbody>
 </table>
+<% else %>
+  <%= flash[:error] = "You must be logged in to view this page" %><br><br>
+  <span class="login_link"><%= link_to "Login", "/sessions/new" %></span>
+<% end %>

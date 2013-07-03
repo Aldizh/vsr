@@ -1,34 +1,41 @@
-<p>Note: Caller ID is not necessarily the same as Login ID. </p>
-<% ('A'..'Z').each do |char| %>
-    <%= link_to char, :first_letter => char, :action => 'viewSelected'%>
-<% end %>
-<%= button_to "All", :action => 'viewMyResellersCDR'%>
-<table class = "list">
-  <thead>
-    <tr>
-      <th> caller id </th>
-      <th> cost (in USD) </th>
-      <th> start time </th>
-      <th> end time</th>
-      <th> duration </th>
-      <th> Call to: </th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @cdr.each do |r| %>
-      <% r.each do |c| %>
-        <% number = c[:called_number] %>
-        <% number.slice!("time") %>
-        <tr>
-        <td> <%= c[:caller_id] %></td>
-        <td> <%= c[:cost] %></td>
-        <td> <%= c[:call_start] %></td>
-        <td> <%= c[:call_end] %> </td>
-        <td> <%= c[:duration] %> s </td>
-        <td> <%= number %> </td>
-      <%end%>
-    </tr>
+<% if session[:current_reseller2_id] %>
+
+  <p>Note: Caller ID is not necessarily the same as Login ID. </p>
+  <% ('A'..'Z').each do |char| %>
+      <%= link_to char, :first_letter => char, :action => 'viewSelected'%>
   <% end %>
-  </tr>
-  </tbody>
-</table>
+  <%= button_to "All", :action => 'viewMyResellersCDR'%>
+  <table class = "list">
+    <thead>
+      <tr>
+        <th> caller id </th>
+        <th> cost (in USD) </th>
+        <th> start time </th>
+        <th> end time</th>
+        <th> duration </th>
+        <th> Call to: </th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @cdr.each do |r| %>
+        <% r.each do |c| %>
+          <% number = c[:called_number] %>
+          <% number.slice!("time") %>
+          <tr>
+          <td> <%= c[:caller_id] %></td>
+          <td> <%= c[:cost] %></td>
+          <td> <%= c[:call_start] %></td>
+          <td> <%= c[:call_end] %> </td>
+          <td> <%= c[:duration] %> s </td>
+          <td> <%= number %> </td>
+        <%end%>
+      </tr>
+    <% end %>
+    </tr>
+    </tbody>
+  </table>
+
+<% else %>
+  <%= flash[:error] = "You must be logged in to view this page" %><br><br>
+  <span class="login_link"><%= link_to "Login", "/sessions/new" %></span>
+<% end %>

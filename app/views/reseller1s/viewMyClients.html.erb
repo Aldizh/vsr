@@ -1,51 +1,54 @@
 <% if session[:current_reseller1_id] %>
-<div class="add_payment">
-  <h3> Add payment for your agents </h3>
-  <% if flash[:error_payment] %>
-    <div class="flash_error"><%= flash[:error_payment] %></div>
-  <% end %>
-  <% if flash[:notice_payment] %>
-    <div class="flash_notice"><%= flash[:notice_payment] %></div>
-  <% end %>
-  <% myClients_name = [] %>
-  <% @myClients.each do |r| %>
-    <% myClients_name.push(r[:login]) %>
-  <% end %>
-  <%= form_tag :action => 'addPayment' do %>
-    <%= label_tag "Client's Login: " %>
-    <%= select :resellers1, :login, myClients_name.collect {|r_name| r_name} %>
-    <%= label_tag "Amount:" %>
-    <%= text_field_tag :payment_amount, (params[:payment_amount] or "0.00") %>  
-    <br><br>
-    <%= label_tag "Note:" %><br>
-    <%= text_area_tag :payment_note, (params[:payment_note] or "") %>  
-    <br><br>
-    <%= submit_tag "Add", :confirm => 'Are you sure?' %>
-  <% end %>
-</div>
-<h4>List of your clients ... </h4>
-<table class = "list">
-  <thead>
-    <tr>
-      <th> id </th>
-      <th> login </th>
-      <th> password </th>
-      <th> Balance </th>
-      <th> </th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-  <% @myClients.each do |r| %>
-    <tr>
-      <td><%= r[:id_client] %> </td>
-      <td><%= r[:login] %></td>
-      <td><%= r[:password] %></td>
-      <td><%= r[:account_state] %></td>
-      <td><%= link_to "Payment History", :login => r[:login], :action => "payment_history" %></td>
-      <td><%= link_to "Tariff", :id_client => r[:id_client], :action => "viewClientsTariff" %></td>
-    </tr>
-  <% end %>
-  </tbody>
-</table>
+  <div class="add_payment">
+    <h3> Add payment for your agents </h3>
+    <% if flash[:error_payment] %>
+      <div class="flash_error"><%= flash[:error_payment] %></div>
+    <% end %>
+    <% if flash[:notice_payment] %>
+      <div class="flash_notice"><%= flash[:notice_payment] %></div>
+    <% end %>
+    <% myClients_name = [] %>
+    <% @myClients.each do |r| %>
+      <% myClients_name.push(r[:login]) %>
+    <% end %>
+    <%= form_tag :action => 'addPayment' do %>
+      <%= label_tag "Client's Login: " %>
+      <%= select :resellers1, :login, myClients_name.collect {|r_name| r_name} %>
+      <%= label_tag "Amount:" %>
+      <%= text_field_tag :payment_amount, (params[:payment_amount] or "0.00") %>  
+      <br><br>
+      <%= label_tag "Note:" %><br>
+      <%= text_area_tag :payment_note, (params[:payment_note] or "") %>  
+      <br><br>
+      <%= submit_tag "Add", :confirm => 'Are you sure?' %>
+    <% end %>
+  </div>
+  <h4>List of your clients ... </h4>
+  <table class = "list">
+    <thead>
+      <tr>
+        <th> id </th>
+        <th> login </th>
+        <th> password </th>
+        <th> Balance </th>
+        <th> </th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @myClients.each do |r| %>
+      <tr>
+        <td><%= r[:id_client] %> </td>
+        <td><%= r[:login] %></td>
+        <td><%= r[:password] %></td>
+        <td><%= r[:account_state] %></td>
+        <td><%= link_to "Payment History", :login => r[:login], :action => "payment_history" %></td>
+        <td><%= link_to "Tariff", :id_client => r[:id_client], :action => "viewClientsTariff" %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <%= flash[:error] = "You must be logged in to view this page" %><br><br>
+  <span class="login_link"><%= link_to "Login", "/sessions/new" %></span>
 <% end %>

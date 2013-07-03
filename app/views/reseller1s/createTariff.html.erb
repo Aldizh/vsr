@@ -1,3 +1,5 @@
+<% if session[:current_reseller1_id] %> 
+
 <% if flash[:error_adding] %>
   <div class="flash_error"><%= flash[:error_adding] %></div>
 <% end %>
@@ -36,4 +38,8 @@
   <%= submit_tag "Add", :class => "submit_button" %><br><br>
 <% end %>
 </div>
+<% else %>
+  <%= flash[:error] = "You must be logged in to view this page" %><br><br>
+  <span class="login_link"><%= link_to "Login", "/sessions/new" %></span>
+<% end %>
 

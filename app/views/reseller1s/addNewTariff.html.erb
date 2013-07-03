@@ -1,3 +1,5 @@
+<% if session[:current_reseller1_id] %> 
+
 <div id="edit_tariff">
   <%= form_tag(:action => "addNewTariffSubmit", :id => "create_tariff") do %>
   <br><br>
@@ -34,3 +36,8 @@
   <%= submit_tag "Add", :class => "submit_button" %><br><br>
 <% end %>
 </div>
+
+<% else %>
+  <%= flash[:error] = "You must be logged in to view this page" %><br><br>
+  <span class="login_link"><%= link_to "Login", "/sessions/new" %></span>
+<% end %>

@@ -7,13 +7,6 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-
-<% if flash[:error] %>
-  <div class="flash_error"><%= flash[:error] %></div>
-<% end %>
-<% if flash[:notice] %>
-  <div class="flash_notice"><%= flash[:notice] %></div>
-<% end %>
 <h1>VSR</h1>
 <% if session[:current_reseller3_id] || session[:current_reseller2_id] || session[:current_reseller1_id] || session[:current_client_id] || session[:current_user_id] %>
   <span class="logout_link"><%= link_to "Log out", '/sessions/destroy', :class => 'logout_link' %></span>

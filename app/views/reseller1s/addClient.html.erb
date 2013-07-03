@@ -1,22 +1,27 @@
-<% if flash[:error_adding] %>
-  <div class="flash_error"><%= flash[:error_adding] %></div>
+<% if session[:current_reseller1_id] %> 
+  <% if flash[:error_adding] %>
+    <div class="flash_error"><%= flash[:error_adding] %></div>
+  <% end %>
+  <% if flash[:notice_added] %>
+    <div class="flash_notice"><%= flash[:notice_added] %></div>
+  <% end %>
+  <div id="add_client">
+  <%= form_tag(:action => "addClientSubmit", :id => "add_client") do %>
+    <br><br>
+    <%= label_tag "Login: " %><br>
+    <%= text_field_tag 'login', session[:client_login] %><br><br>
+    <%= label_tag "Password:" %><br>
+    <%= text_field_tag 'password' %><br><br>
+    <%= label_tag "PIN: " %><br>
+    <%= text_field_tag 'pin', session[:client_pin] %><br><br>
+    <%= label_tag "Calls Limit: " %><br>
+    <%= number_field_tag 'calls_limit', session[:client_calls_limit] %><br><br>
+    <%= label_tag "Choose Tariff: " %><br>
+    <%= select :client, :tariff, @result_tariff["result"].collect {|t| t} %><br><br>
+    <%= submit_tag "Add", :class => "submit_button" %><br><br>
+  <% end %>
+  </div>
+<% else %>
+  <%= flash[:error] = "You must be logged in to view this page" %><br><br>
+  <span class="login_link"><%= link_to "Login", "/sessions/new" %></span>
 <% end %>
-<% if flash[:notice_added] %>
-  <div class="flash_notice"><%= flash[:notice_added] %></div>
-<% end %>
-<div id="add_client">
-<%= form_tag(:action => "addClientSubmit", :id => "add_client") do %>
-  <br><br>
-  <%= label_tag "Login: " %><br>
-  <%= text_field_tag 'login', session[:client_login] %><br><br>
-  <%= label_tag "Password:" %><br>
-  <%= text_field_tag 'password' %><br><br>
-  <%= label_tag "PIN: " %><br>
-  <%= text_field_tag 'pin', session[:client_pin] %><br><br>
-  <%= label_tag "Calls Limit: " %><br>
-  <%= number_field_tag 'calls_limit', session[:client_calls_limit] %><br><br>
-  <%= label_tag "Choose Tariff: " %><br>
-  <%= select :client, :tariff, @result_tariff["result"].collect {|t| t} %><br><br>
-  <%= submit_tag "Add", :class => "submit_button" %><br><br>
-<% end %>
-</div>
