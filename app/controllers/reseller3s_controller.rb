@@ -260,9 +260,9 @@ class Reseller3sController < ApplicationController
   end
 
   def viewMyTariff
-    @result = DB[:resellers3].where(:id => session[:current_reseller3_id])
-    id_tariff = @result.first[:id_tariff]
-    @tariff_list = DB[:tariffs].where(:id_tariff => id_tariff)
+    @result = DB[:resellers3].where(:id => session[:current_reseller3_id]) rescue nil
+    id_tariff = @result.first[:id_tariff] rescue nil
+    @tariff_list = DB[:tariffs].where(:id_tariff => id_tariff) rescue nil
   end
 
   def viewResellers2Tariff

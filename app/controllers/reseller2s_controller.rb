@@ -252,16 +252,16 @@ class Reseller2sController < ApplicationController
   end
 
   def viewMyTariff
-    @result = DB[:resellers2].where(:id => session[:current_reseller2_id])
-    id_tariff = @result.first[:id_tariff]
-    @tariff_list = DB[:tariffs].where(:id_tariff => id_tariff)
+    @result = DB[:resellers2].where(:id => session[:current_reseller2_id]) rescue nil
+    id_tariff = @result.first[:id_tariff] rescue nil
+    @tariff_list = DB[:tariffs].where(:id_tariff => id_tariff) rescue nil
   end
 
   def viewResellers1Tariff
     id_agent = params[:id_agent] 
 
     @result = DB[:resellers1].where(:id => id_agent)
-    if_tariff = @result.first[:id_tariff]
+    id_tariff = @result.first[:id_tariff]
     @tariff_list = DB[:tariffs].where(:id_tariff => id_tariff)
   end
 

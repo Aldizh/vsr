@@ -1,27 +1,33 @@
-<% var = @result["result"]%>
-<h3> Payment History </h3>
-<p>Important: To include a particular day's record, make sure to select the following day.</p>
-<%= form_tag :action => 'filteredPaymentHistory' do %>
-   <%= label_tag "From: " %>
-    <%= date_select("filteredPaymentHistory", "from_date", :default => {:day => 1, :month => 1}, :order => [:day, :month, :year]) %>
-    <%= label_tag "To: " %>
-    <%= date_select("filteredPaymentHistory", "to_date", :default => 1.day.from_now ,:order => [:day, :month, :year])%>
-    <%= submit_tag "Filter" %>
-  <% end %>
-  	<table class="payment_history">
-      <thead>
-      <th>Date</th>
-      <th>Amount</th>
-        <th>Note</th>
-      </thead>
-      <tbody>
-        <% var["records"].each do |e| %>
-        <tr>
-          <% date_components = e["date"].split('T') %>
-          <td><%= date_components[0] %></td>
-          <td><%= e["amount"] %></td>
-          <td><%= e["description"] %></td>
-        </tr>
-        <% end %>
-      </tbody>
-</table>
+<% if session[:current_reseller2_id] %>
+  <% var = @result["result"]%>
+  <h3> Payment History </h3>
+  <p>Important: To include a particular day's record, make sure to select the following day.</p>
+  <%= form_tag :action => 'filteredPaymentHistory' do %>
+     <%= label_tag "From: " %>
+      <%= date_select("filteredPaymentHistory", "from_date", :default => {:day => 1, :month => 1}, :order => [:day, :month, :year]) %>
+      <%= label_tag "To: " %>
+      <%= date_select("filteredPaymentHistory", "to_date", :default => 1.day.from_now ,:order => [:day, :month, :year])%>
+      <%= submit_tag "Filter" %>
+    <% end %>
+    	<table class="payment_history">
+        <thead>
+        <th>Date</th>
+        <th>Amount</th>
+          <th>Note</th>
+        </thead>
+        <tbody>
+          <% var["records"].each do |e| %>
+          <tr>
+            <% date_components = e["date"].split('T') %>
+            <td><%= date_components[0] %></td>
+            <td><%= e["amount"] %></td>
+            <td><%= e["description"] %></td>
+          </tr>
+          <% end %>
+        </tbody>
+  </table>
+
+<% else %>
+  <%= flash[:error] = "You must be logged in to view this page" %><br><br>
+  <span class="login_link"><%= link_to "Login", "/sessions/new" %></span>
+<% end %>

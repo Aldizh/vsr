@@ -1,24 +1,30 @@
-<% if flash[:notice_added] %>
-  <div class="flash_notice"><%= flash[:notice_added] %></div>
-<% end %>
-<span class="create_tariff_link"><%= link_to "Create New Tariff", :action => "createTariff", :id => "alink" %></span>
-<h4>List of tariffs for your agents ... </h4>
-<table class = "list">
-  <thead>
-    <tr>
-      <th> Tariff ID </th>
-      <th> Tariff Name </th>
-      <th>  </td>
-    </tr>
-  </thead>
-  <tbody>
-  <% @my_agents_tariffs.each do |t| %>
-    <tr>
-      <td><%= t.first[:id_tariff] %> </td>
-      <td><%= t.first[:description] %></td>
+<% if session[:current_reseller2_id] %>
 
-      <td><%= link_to "View or Edit Tariff", :tariff => t.first, :action => "viewTariff" %></td>
-    </tr>
+  <% if flash[:notice_added] %>
+    <div class="flash_notice"><%= flash[:notice_added] %></div>
   <% end %>
-  </tbody>
-</table>
+  <span class="create_tariff_link"><%= link_to "Create New Tariff", :action => "createTariff", :id => "alink" %></span>
+  <h4>List of tariffs for your agents ... </h4>
+  <table class = "list">
+    <thead>
+      <tr>
+        <th> Tariff ID </th>
+        <th> Tariff Name </th>
+        <th>  </td>
+      </tr>
+    </thead>
+    <tbody>
+    <% @my_agents_tariffs.each do |t| %>
+      <tr>
+        <td><%= t.first[:id_tariff] %> </td>
+        <td><%= t.first[:description] %></td>
+
+        <td><%= link_to "View or Edit Tariff", :tariff => t.first, :action => "viewTariff" %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <%= flash[:error] = "You must be logged in to view this page" %><br><br>
+  <span class="login_link"><%= link_to "Login", "/sessions/new" %></span>
+<% end %>

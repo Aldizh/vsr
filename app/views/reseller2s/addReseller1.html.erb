@@ -1,48 +1,55 @@
-<% if flash[:error_adding] %>
-  <div class="flash_error"><%= flash[:error_adding] %></div>
+ <% if session[:current_reseller2_id] %>
+
+  <% if flash[:error_adding] %>
+    <div class="flash_error"><%= flash[:error_adding] %></div>
+  <% end %>
+  <% if flash[:notice_added] %>
+    <div class="flash_notice"><%= flash[:notice_added] %></div>
+  <% end %>
+  <div id="add_reseller1">
+  <%= form_tag(:action => "addReseller1Submit") do %>
+    <br><br>
+    <%= label_tag "Login: " %><br>
+    <%= text_field_tag 'login', session[:client_login] %><br><br>
+    <%= label_tag "Password:" %><br>
+    <%= text_field_tag 'password' %><br><br>
+    <%= label_tag "Choose Tariff: " %><br>
+    <%= select :reseller1, :description, @result["result"].collect {|t| t} %><br><br>
+    <%= label_tag "calls limit:" %><br>
+    <%= number_field_tag 'callsLimit' %><br><br>
+    <%= label_tag "clients limit:" %><br>
+    <%= number_field_tag 'clientsLimit' %><br><br>
+    <%= label_tag "Identifier:" %><br>
+    <%= text_field_tag 'identifier' %><br><br>
+    <%#= label_tag "Type:(Should be integer)" %>
+    <%#= text_field_tag 'type' %>
+    <%#= label_tag "Tech prefix:" %>
+    <%#= text_field_tag 'tech_prefix'%>
+    <%= label_tag "Fullname:(Optional)" %><br>
+    <%= text_field_tag 'Fullname', ""%><br><br>
+    <%= label_tag "City:(Optional)" %><br>
+    <%= text_field_tag 'City', ""%><br><br>
+    <%= label_tag "Address:(Optional)" %><br>
+    <%= text_field_tag 'Address', ""%><br><br>
+    <%= label_tag "Zip Code:" %><br>
+    <%= text_field_tag 'ZipCode', ""%><br><br>
+    <%= label_tag "Country:(Optional)" %><br>
+    <%= text_field_tag 'Country', ""%><br><br>
+    <%= label_tag "Phone:(Optional)" %><br>
+    <%= text_field_tag 'Phone', ""%><br><br>
+    <%= label_tag "Email:(Optional)" %><br>
+    <%= text_field_tag 'Email', ""%><br><br>
+    <%#= label_tag "TaxID:" %>
+    <%#= text_field_tag 'TaxID', ""%>
+    <%#= label_tag "type2:" %>
+    <%#= text_field_tag 'type2', 8767%>
+    <%= label_tag "language:(Optional)" %><br>
+    <%= text_field_tag 'language', ""%><br><br>
+    <%= submit_tag "Add", :class => "submit_button" %><br><br>
+  <% end %>
+  </div>
+
+<% else %>
+  <%= flash[:error] = "You must be logged in to view this page" %><br><br>
+  <span class="login_link"><%= link_to "Login", "/sessions/new" %></span>
 <% end %>
-<% if flash[:notice_added] %>
-  <div class="flash_notice"><%= flash[:notice_added] %></div>
-<% end %>
-<div id="add_reseller1">
-<%= form_tag(:action => "addReseller1Submit") do %>
-  <br><br>
-  <%= label_tag "Login: " %><br>
-  <%= text_field_tag 'login', session[:client_login] %><br><br>
-  <%= label_tag "Password:" %><br>
-  <%= text_field_tag 'password' %><br><br>
-  <%= label_tag "Choose Tariff: " %><br>
-  <%= select :reseller1, :description, @result["result"].collect {|t| t} %><br><br>
-  <%= label_tag "calls limit:" %><br>
-  <%= number_field_tag 'callsLimit' %><br><br>
-  <%= label_tag "clients limit:" %><br>
-  <%= number_field_tag 'clientsLimit' %><br><br>
-  <%= label_tag "Identifier:" %><br>
-  <%= text_field_tag 'identifier' %><br><br>
-  <%#= label_tag "Type:(Should be integer)" %>
-  <%#= text_field_tag 'type' %>
-  <%#= label_tag "Tech prefix:" %>
-  <%#= text_field_tag 'tech_prefix'%>
-  <%= label_tag "Fullname:(Optional)" %><br>
-  <%= text_field_tag 'Fullname', ""%><br><br>
-  <%= label_tag "City:(Optional)" %><br>
-  <%= text_field_tag 'City', ""%><br><br>
-  <%= label_tag "Address:(Optional)" %><br>
-  <%= text_field_tag 'Address', ""%><br><br>
-  <%= label_tag "Zip Code:" %><br>
-  <%= text_field_tag 'ZipCode', ""%><br><br>
-  <%= label_tag "Country:(Optional)" %><br>
-  <%= text_field_tag 'Country', ""%><br><br>
-  <%= label_tag "Phone:(Optional)" %><br>
-  <%= text_field_tag 'Phone', ""%><br><br>
-  <%= label_tag "Email:(Optional)" %><br>
-  <%= text_field_tag 'Email', ""%><br><br>
-  <%#= label_tag "TaxID:" %>
-  <%#= text_field_tag 'TaxID', ""%>
-  <%#= label_tag "type2:" %>
-  <%#= text_field_tag 'type2', 8767%>
-  <%= label_tag "language:(Optional)" %><br>
-  <%= text_field_tag 'language', ""%><br><br>
-  <%= submit_tag "Add", :class => "submit_button" %><br><br>
-<% end %>
-</div>

@@ -1,24 +1,29 @@
-<% if @active_calls[0].first.nil?%></br>
-  <strong><%= "Sorry, No active Calls at the moment!" %></strong>
-<%else%>
-  <table class = "list">
-  <thead>
-    <tr>
-      <th> Dialed Number </th>
-      <th> Start time </th>
-      <th> State </th>
-    </tr>
-  </thead>
-  <tbody>
-  <% @active_calls.each do |t| %>
-    <% t.each do |ac| %>
+<% if session[:current_reseller1_id] %>
+  <% if @active_calls[0].first.nil?%></br>
+    <strong><%= "Sorry, No active Calls at the moment!" %></strong>
+  <%else%>
+    <table class = "list">
+    <thead>
       <tr>
-        <td><%= ac[:dialed_number] %> </td>
-        <td><%= ac[:call_start] %> </td>
-        <td><%= ac[:state] %> </td>
+        <th> Dialed Number </th>
+        <th> Start time </th>
+        <th> State </th>
       </tr>
+    </thead>
+    <tbody>
+    <% @active_calls.each do |t| %>
+      <% t.each do |ac| %>
+        <tr>
+          <td><%= ac[:dialed_number] %> </td>
+          <td><%= ac[:call_start] %> </td>
+          <td><%= ac[:state] %> </td>
+        </tr>
+      <% end %>
     <% end %>
+    </tbody>
+    </table>
   <% end %>
-  </tbody>
-  </table>
+<% else %>
+  <%= flash[:error] = "You must be logged in to view this page" %><br><br>
+  <span class="login_link"><%= link_to "Login", "/sessions/new" %></span>
 <% end %>
