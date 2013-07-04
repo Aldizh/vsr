@@ -36,7 +36,6 @@ a {
 }
 .create_tariff_link {
 	padding: 5px;
-	border: 1px solid black;
 	margin-top: 30px;
 }
 .create_tariff_link a:hover{

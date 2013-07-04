@@ -482,7 +482,7 @@ class Reseller1sController < ApplicationController
     #just getting a sample tariff to prefill the form
     agent_tariff_id = getAgentTariffs()
     @tariff_id = agent_tariff_id[0].first[:id_tariff]
-    @tariffs = DB[:tariffs].where(:id_tariff => @tariff_id)
+    @tariffs = DB[:tariffs].where(:id_tariff => @tariff_id)     
   end
 
   def addNewTariffSubmit
@@ -515,11 +515,72 @@ class Reseller1sController < ApplicationController
   end
 
   def createTariff
-    
+  end
+
+  def createTariffFromBase
+    @result = DB[:resellers1].where(:id => session[:current_reseller1_id])
+    id_tariff = @result.first[:id_tariff]
+    @tariff_name = DB[:tariffsnames].where(:id_tariff => id_tariff).first[:description]
+  end
+  
+  def createTariffFromBaseSubmit
+    @result = DB[:resellers1].where(:id => session[:current_reseller1_id])
+    id_tariff = @result.first[:id_tariff]
+    @tariff = DB[:tariffsnames].where(:id_tariff => id_tariff).first
+    rate_multiplier = params[:rate_multiplier].to_f
+    identifier = params[:identifier]
+    description = identifier + ":" + params[:description].capitalize
+    begin
+      DB[:tariffsnames].insert(:description => description, :minimal_time => @tariff[:minimal_time], :resolution => @tariff[:resolution],  
+        :rate_multiplier => @tariff[:rate_multiplier], :rate_addition => @tariff[:rate_addition], :surcharge_time => @tariff[:surcharge_time],
+        :surcharge_amount => @tariff[:surcharge_amount], :type => @tariff[:type], :rate_multiplier => rate_multiplier, :rate_addition => @tariff[:rate_addition],
+        :id_currency => @tariff[:id_currency], :time_to_start => @tariff[:time_to_start], :base_tariff_id => @tariff[:base_tariff_id],
+        :cost_threshold_resolution => @tariff[:cost_threshold_resolution], :cost_threshold => @tariff[:cost_threshold])
+
+      @id_tariff = DB[:tariffsnames].where(:description => description).first[:id_tariff]
+
+      DB[:tariffreseller].insert(:id_tariff => @id_tariff, :id_reseller => session[:current_reseller1_id], :resellerlevel => 1)
+
+      @tariff_list = DB[:tariffs].where(:id_tariff => @id_tariff)
+      #@tariff_list.each_slice(1000).to_a.each do |a|
+      #  temp_array = []
+     #   a.each do |h|
+          #temp_array.push"(@id_tariff, #{h[:description]}, h[:minimal_time], h[:resolution], h[:surcharge_time], h[:surcharge_amount], #{[h[:prefix]}, h[:voice_rate],
+          #h[:rate_multiplier], h[:rate_addition], h[:from_day], h[:to_day],h[:from_hour], h[:to_hour], h[:grace_period], #{h[:free_seconds]})"
+      #   temp_array1 = h.values
+      #   temp_array1[1] = id_tariff
+      #   temp_array1[2] = "'#{temp_array1[2]}'"
+      #   temp_array1[3] = "'#{temp_array1[3]}'"
+      #   temp_array1[16] = "'#{temp_array1[16]}'"
+      #   temp_array.push temp_array1.join(', ')
+      #  end
+        #(0...temp_array.size).each do |i|
+        #   if i.class.eql?(String)
+         #   temp_array[i] = "'#{temp_array[i]}'"
+         # end
+       # end
+      #  @joined = temp_array.join(",")
+      #  puts "HJKGFHJS"
+      #  puts @joined
+        #DB["INSERT INTO tariffs (id_tariff, description, minimal_time, resolution, surcharge_time, surcharge_amount, prefix, voice_rate,
+        #  rate_multiplier, rate_addition, from_day, to_day, from_hour, to_hour, grace_period, free_seconds), VALUES (#{@joined})"].insert
+      #end
+     
+      @tariff_list.each do |t|
+        DB[:tariffs].insert(:id_tariff => @id_tariff, :description => t[:description], :minimal_time => t[:minimal_time], :resolution => t[:resolution],
+          :surcharge_time => t[:surcharge_time], :surcharge_amount => t[:surcharge_amount], :prefix => t[:prefix], :voice_rate => t[:voice_rate],
+          :rate_multiplier => rate_multiplier, :rate_addition => t[:rate_addition], :from_day => t[:from_day], :to_day => t[:to_day],
+          :from_hour => t[:from_hour], :to_hour => t[:to_hour], :grace_period => t[:grace_period], :free_seconds => t[:free_seconds])
+      end
+      flash[:notice_added] = "Tariff successfully created!"
+      redirect_to "/reseller1s/agentsTariffs"
+    rescue Exception => e
+      flash[:error_adding] = "#{e.message}"
+      redirect_to "/reseller1s/createTariffFromBase"
+    end
   end
 
   def createTariffSubmit
-
     identifier = DB[:resellers1].where(:id => session[:current_reseller1_id]).first[:identifier]
     description = identifier + ":" + params[:description].capitalize
     minimal_time = params[:minimal_time].to_i
