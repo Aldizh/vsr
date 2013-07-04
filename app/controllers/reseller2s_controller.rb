@@ -31,7 +31,6 @@ class Reseller2sController < ApplicationController
         @total_cost += (call[:costR2])
       end
     end
-
     @url = "https://209.200.231.9/vsr3/reseller.api"
     @login = "#{session[:current_reseller2_login]}"
     @password = "#{session[:password]}"

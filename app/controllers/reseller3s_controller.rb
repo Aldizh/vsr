@@ -19,13 +19,16 @@ class Reseller3sController < ApplicationController
       end
     end
     
-    @reseller2_calls = []
+    @reseller_calls = []
     @my_resellers2 = DB[:resellers2].where(:idReseller => session[:current_reseller3_id])
-    @my_resellers2.each do |reseller|
-      @reseller2_calls.push(DB[:calls].where(:id_reseller => reseller[:id]))
+    @my_resellers2.each do |reseller2|
+      @my_resellers1 = DB[:resellers1].where(:idReseller => reseller2[:id])
+      @my_resellers1.each do |reseller|
+        @reseller_calls.push(DB[:calls].where(:id_reseller => reseller[:id]))
+      end
     end
 
-    @reseller2_calls.each do |calls|
+    @reseller_calls.each do |calls|
       calls.each do |call|
         @total_revenue += (call[:costR2]) 
         @total_cost += (call[:costR3])
