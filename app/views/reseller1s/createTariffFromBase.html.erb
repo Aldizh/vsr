@@ -1,0 +1,21 @@
+<% if flash[:error_adding] %>
+  <div class="flash_error"><%= flash[:error_adding] %></div>
+<% end %>
+<% if flash[:notice_added] %>
+  <div class="flash_notice"><%= flash[:notice_added] %></div>
+<% end %>
+<%= "Copying from #{@tariff_name}" %>
+<div id="create_tariff">
+<%= form_tag(:action => "createTariffFromBaseSubmit", :id => "create_tariff") do %>
+  <br>
+  <%= label_tag "Identifier:" %><br>
+  <%= text_field_tag 'identifier', session[:identifier] || "test"%><br><br>
+  <%= label_tag "Description:" %><br>
+  <%= text_field_tag 'description', session[:description] || "test1"%><br><br>
+  <%= label_tag "Multpiplier:" %><br>
+  <%= text_field_tag 'rate_multiplier', session[:description] || "0"%><br><br>
+
+  <%= submit_tag "Add", :class => "submit_button" %><br><br>
+<% end %>
+</div>
+
