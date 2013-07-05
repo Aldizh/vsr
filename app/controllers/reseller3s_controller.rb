@@ -308,7 +308,7 @@ class Reseller3sController < ApplicationController
     @my_agents_tariffs = getAgentTariffs()
     if not @my_agents_tariffs[0].first
       flash[:error] = "Sorry no tariffs found!"
-      redirect_to '/reseller2s'
+      redirect_to '/reseller3s'
     end
   end
 
