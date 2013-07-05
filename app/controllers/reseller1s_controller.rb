@@ -420,10 +420,6 @@ class Reseller1sController < ApplicationController
 
   def agentsTariffs
     @my_agents_tariffs = getAgentTariffs()
-    if not @my_agents_tariffs[0].first
-      flash[:error] = "Sorry no tariffs found!"
-      redirect_to '/reseller1s'
-    end
   end
 
   def viewTariff
