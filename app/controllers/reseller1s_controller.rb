@@ -420,10 +420,6 @@ class Reseller1sController < ApplicationController
 
   def agentsTariffs
     @my_agents_tariffs = getAgentTariffs()
-    puts "Empty? #{@my_agents_tariffs.empty?}"
-    @my_agents_tariffs.each do |r|
-      puts r.first.inspect
-    end
   end
 
   def viewTariff
