@@ -1,4 +1,7 @@
 <% if session[:current_reseller3_id] %>
+  <% if flash[:error] %>
+    <div class="flash_error"><%= flash[:error] %></div>
+  <% end %>
   <h3>Welcome <%= @result["result"]["login"] rescue nil %>!</h3>
   <p> Your Balance is $
   	<%begin%><%= @result["result"]["balance"]%>

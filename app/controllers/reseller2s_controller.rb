@@ -286,6 +286,10 @@ class Reseller2sController < ApplicationController
 
   def agentsTariffs
     @my_agents_tariffs = getAgentTariffs()
+    if not @my_agents_tariffs[0].first
+      flash[:error] = "Sorry no tariffs found!"
+      redirect_to '/reseller2s'
+    end
   end
 
   def viewTariff
@@ -433,7 +437,7 @@ class Reseller2sController < ApplicationController
     end
 
     id_tariff_array.each do |id|
-     my_agents_tariffs.push(DB[:tariffsnames].where(:id_tariff => id))
+      my_agents_tariffs.push(DB[:tariffsnames].where(:id_tariff => id))
     end
     return my_agents_tariffs
   end

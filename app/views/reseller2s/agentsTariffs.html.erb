@@ -14,10 +14,10 @@
       </tr>
     </thead>
     <tbody>
-    <% @my_agents_tariffs.each do |t| %>
+    <% @my_agents_tariffs.each do |t|%>
       <tr>
-        <td><%= t.first[:id_tariff] %> </td>
-        <td><%= t.first[:description] %></td>
+        <td><%= t.first[:id_tariff] rescue nil%> </td>
+        <td><%= t.first[:description] rescue nil%></td>
 
         <td><%= link_to "View or Edit Tariff", :tariff => t.first, :action => "viewTariff" %></td>
       </tr>

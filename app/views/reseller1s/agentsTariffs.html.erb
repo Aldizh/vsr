@@ -14,7 +14,7 @@
       </tr>
     </thead>
     <tbody>
-    <% @my_agents_tariffs.each do |t| %>
+    <% @my_agents_tariffs.each do |t| rescue nil%>
       <tr>
         <td><%= t.first[:id_tariff] %> </td>
         <td><%= t.first[:description] %></td>
