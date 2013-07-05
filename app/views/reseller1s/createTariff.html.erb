@@ -18,13 +18,13 @@
   <%= label_tag "Surcharge Time: " %><br>
   <%= number_field_tag 'surcharge_time', session[:surcharge_time] || 0 %><br><br>
   <%= label_tag "Surcharge Amount: " %><br>
-  <%= number_field_tag 'surcharge_amount', session[:surcharge_amount] || 0.0000 %><br><br>
+  <%= text_field_tag 'surcharge_amount', session[:surcharge_amount] || 0.0000 %><br><br>
   <%= label_tag "Type: " %><br>
   <%= number_field_tag 'type', session[:type] || 0 %><br><br>
   <%= label_tag "Rate Multiplier: " %><br>
-  <%= number_field_tag 'rate_multiplier', session[:rate_multiplier] || -1 %><br><br>
+  <%= text_field_tag 'rate_multiplier', session[:rate_multiplier] || -1 %><br><br>
   <%= label_tag "Rate Addition: " %><br>
-  <%= number_field_tag 'rate_addition', session[:rate_addition] || -1 %><br><br>
+  <%= text_field_tag 'rate_addition', session[:rate_addition] || -1 %><br><br>
   <%= label_tag "ID Currency: " %><br>
   <%= number_field_tag 'id_currency', session[:id_currency] || 1 %><br><br>
   <%= label_tag "Time to Start: " %><br>
@@ -32,9 +32,9 @@
   <%= label_tag "Base Tariff ID: " %><br>
   <%= number_field_tag 'base_tariff_id', session[:base_tariff_id] || -1 %><br><br>
   <%= label_tag "Cost Threshold Resolution: " %><br>
-  <%= number_field_tag 'cost_threshold_resolution', session[:cost_threshold_resolution] || 0 %><br><br>
+  <%= text_field_tag 'cost_threshold_resolution', session[:cost_threshold_resolution] || 0 %><br><br>
   <%= label_tag "Cost Threshold: " %><br>
-  <%= number_field_tag 'cost_threshold', session[:cost_threshold] || 0 %><br><br>
+  <%= text_field_tag 'cost_threshold', session[:cost_threshold] || 0 %><br><br>
   <%= submit_tag "Add", :class => "submit_button" %><br><br>
 <% end %>
 </div>
