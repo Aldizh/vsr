@@ -464,6 +464,6 @@ class Reseller3sController < ApplicationController
     id_tariff_array.each do |id|
      my_agents_tariffs.push(DB[:tariffsnames].where(:id_tariff => id))
     end
-    return my_agents_tariffs
+    return my_agents_tariffs.map {|r| r if not r.first.nil?}.compact
   end
 end

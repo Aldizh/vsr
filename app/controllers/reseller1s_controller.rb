@@ -420,6 +420,10 @@ class Reseller1sController < ApplicationController
 
   def agentsTariffs
     @my_agents_tariffs = getAgentTariffs()
+    puts "Empty? #{@my_agents_tariffs.empty?}"
+    @my_agents_tariffs.each do |r|
+      puts r.first.inspect
+    end
   end
 
   def viewTariff
@@ -630,7 +634,7 @@ class Reseller1sController < ApplicationController
     id_tariff_array.each do |id|
      my_agents_tariffs.push(DB[:tariffsnames].where(:id_tariff => id))
     end
-    return my_agents_tariffs
+    return my_agents_tariffs.map {|r| r if not r.first.nil?}.compact
   end
 
   def prefix_match (prefix, number)

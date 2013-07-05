@@ -3,7 +3,7 @@
   <% if flash[:notice_added] %>
     <div class="flash_notice"><%= flash[:notice_added] %></div>
   <% end %>
-  <% if not @my_agents_tariffs[0].first %>
+  <% if @my_agents_tariffs.empty? %>
     <span class="create_tariff_link"><%= link_to "Create New Tariff", :action => "createTariff", :id => "alink" %></span>
   <% else %>
         <span class="create_tariff_link"><%= link_to "Create New Tariff", :action => "createTariff", :id => "alink" %></span>
