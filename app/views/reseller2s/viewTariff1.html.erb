@@ -14,18 +14,20 @@
       <th>Grace Period</th>
       </thead>
       <tbody>
-     <span class="next_link"><%= link_to "Next ->", :tariff => @tariffs.first, :action => "viewTariff1"%></span>
-      <% @tariffs.each do |t| %>
-        <tr>
-          <td><%= text_field_tag 'name', @name, :disabled => true %></td>
-          <td><%= number_field_tag 'prefix', t[:prefix], :disabled => true%></td>
-          <td><%= text_field_tag 'description', t[:description] %></td>
-          <td><%= text_field_tag 'voice_rate', t[:voice_rate] %></td>
-          <td><%= text_field_tag 'rate_addition', t[:rate_addition] %></td>
-          <td><%= text_field_tag 'rate_multiplier', t[:rate_multiplier] %></td>
-          <td><%= text_field_tag 'grace_period', t[:grace_period] %></td>
-          <td><span class="save_link"><%= link_to 'Edit', :t_id => t[:id_tariffs_key], :action => "editTariff" %> </span></td>
-      <% end %>
+      <% if @tariffs.first %>
+        <span class="next_link"><%= link_to "Next ->", :tariff => @tariffs.first, :action => "viewTariff1"%></span>
+        <% @tariffs.each do |t| %>
+          <tr>
+            <td><%= text_field_tag 'name', @name, :disabled => true %></td>
+            <td><%= number_field_tag 'prefix', t[:prefix], :disabled => true%></td>
+            <td><%= text_field_tag 'description', t[:description] %></td>
+            <td><%= text_field_tag 'voice_rate', t[:voice_rate] %></td>
+            <td><%= text_field_tag 'rate_addition', t[:rate_addition] %></td>
+            <td><%= text_field_tag 'rate_multiplier', t[:rate_multiplier] %></td>
+            <td><%= text_field_tag 'grace_period', t[:grace_period] %></td>
+            <td><span class="save_link"><%= link_to 'Edit', :t_id => t[:id_tariffs_key], :action => "editTariff" %> </span></td>
+        <% end %>
+      <%end%>
       </tbody>
   </table>
   <%= submit_tag "Add", :class => "submit_button" %><br><br>
