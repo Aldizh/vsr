@@ -25,7 +25,7 @@
         <td> <%= c[:cost] %></td>
         <td> <%= c[:call_start] %></td>
         <td> <%= c[:call_end] %> </td>
-        <td> <%= c[:duration] %> s </td>
+        <td> <%= (c[:duration].to_f / 60).round %> mins </td>
         <td> <%= number %> </td>
       </tr>
    	<% end %>
