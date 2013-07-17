@@ -4,7 +4,6 @@
 <% ('A'..'Z').each do |char| %>
     <%= link_to char, :first_letter => char, :action => 'viewSelected'%>
 <% end %>
-<%= button_to "All", :action => 'viewMyClientsCDR'%>
 <table class = "list">
   <thead>
     <tr>
@@ -17,8 +16,8 @@
     </tr>
   </thead>
   <tbody>
-    <% @cdr.each do |r| %>
-      <% r.each do |c| %>
+    <% @my_cdr.each do |r| %>
+      <% r.first(40).each do |c| %>
         <% number = c[:called_number] %>
         <% number.slice!("time") %>
      	  <tr>
