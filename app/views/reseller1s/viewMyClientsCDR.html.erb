@@ -15,7 +15,7 @@
       </tr>
     </thead>
     <tbody>
-      <% @my_cdr.each do |r| %>
+      <% @my_cdr.first(40).each do |r| %>
   	   <% r.each do |c| %>
         <% number = c[:called_number] %>
         <% number.slice!("time") %>
