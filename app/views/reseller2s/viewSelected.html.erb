@@ -4,7 +4,6 @@
   <% ('A'..'Z').each do |char| %>
       <%= link_to char, :first_letter => char, :action => 'viewSelected'%>
   <% end %>
-  <%= button_to "All", :action => 'viewMyResellersCDR'%>
   <table class = "list">
     <thead>
       <tr>
