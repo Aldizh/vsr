@@ -50,8 +50,8 @@
      		<td> <%= call[:cost] %></td>
      		<td> <%= call[:call_start] %></td>
      		<td> <%= call[:call_end] %> </td>
-     		<td> <%= call[:duration] %> s </td>
-      		<td> <%= call[:called_number] %> </td>
+        <td> <%= (call[:duration].to_f / 60).round %> mins </td>
+      	<td> <%= call[:called_number] %> </td>
  			</tr>
     	  <% end %>
   		</tr>
