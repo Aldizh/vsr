@@ -9,7 +9,7 @@
   	  0
   	<%end%>
   </p>
-  <p> Your Profit is $<%= (@total_revenue - @total_cost).round(5) rescue nil%></p>
+  <%= button_to "Calculate Profit", "/reseller3s/calculateProfit" %>
 <% else %>
   <%= flash[:error] = "You must be logged in to view this page" %><br><br>
   <span class="login_link"><%= link_to "Login", "/sessions/new" %></span>

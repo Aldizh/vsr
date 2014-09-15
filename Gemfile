@@ -5,7 +5,12 @@ gem 'rails', '3.2.12'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'mysql2'
+group :production do 
+	gem 'mysql2'
+end
+group :development, :test do
+	gem 'mysql2'
+end
 gem "sequel", "~> 3.47.0"
 gem "rest-client", "~>1.6.7"
 # Gems used only for assets and not required

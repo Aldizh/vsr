@@ -67,6 +67,8 @@ Vsr::Application.routes.draw do
   get "reseller2s/addNewTariffSubmit"
   post "reseller2s/addNewTariffSubmit"
 
+  post "reseller3s/calculateProfit"
+  get "reseller3s/calculateProfit"
   get "reseller3s/viewSelectedTariff"
   get "reseller3s/viewSelected"
   get "reseller3s/viewActiveCalls"
