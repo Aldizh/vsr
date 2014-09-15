@@ -1,0 +1,4 @@
+<% if flash[:notice] %>
+    <div class="flash_notice"><%= flash[:notice] %></div>
+<% end %>
+<p> Your Profit is $<%= (@profit).round(5) rescue nil%></p>
